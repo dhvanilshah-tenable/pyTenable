@@ -1,5 +1,5 @@
 '''
-scanners
+Scanners
 ========
 
 The following methods allow for interaction into the Tenable.io
@@ -9,17 +9,7 @@ Methods available on ``tio.scanners``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ScannersAPI
-
-    .. automethod:: control_scan
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: get_aws_targets
-    .. automethod:: get_scanner_key
-    .. automethod:: get_scans
-    .. automethod:: linking_key
-    .. automethod:: list
-    .. automethod:: toggle_link_state
+    :members:
 '''
 from .base import TIOEndpoint
 

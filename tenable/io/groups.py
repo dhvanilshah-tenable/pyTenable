@@ -1,5 +1,5 @@
 '''
-groups
+Groups
 ======
 
 The following methods allow for interaction into the Tenable.io
@@ -9,14 +9,7 @@ Methods available on ``tio.groups``:
 
 .. rst-class:: hide-signature
 .. autoclass:: GroupsAPI
-
-    .. automethod:: add_user
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: delete_user
-    .. automethod:: edit
-    .. automethod:: list
-    .. automethod:: list_users
+    :members:
 '''
 from .base import TIOEndpoint
 

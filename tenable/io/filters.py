@@ -1,5 +1,5 @@
 '''
-filters
+Filters
 =======
 
 The following methods allow for interaction into the Tenable.io
@@ -9,12 +9,7 @@ Methods available on ``tio.filters``:
 
 .. rst-class:: hide-signature
 .. autoclass:: FiltersAPI
-
-    .. automethod:: agents_filters
-    .. automethod:: scan_filters
-    .. automethod:: networks_filters
-    .. automethod:: workbench_asset_filters
-    .. automethod:: workbench_vuln_filters
+    :members:
 '''
 from tenable.io.base import TIOEndpoint
 
@@ -117,8 +112,7 @@ class FiltersAPI(TIOEndpoint):
         '''
         Returns access group rules filters v2.
 
-        :devportal:`filters: access_group_asset_rules_filters_v2
-            <v2-access-groups-list-rule-filters>`
+        :devportal:`filters: access_group_asset_rules_filters_v2 <v2-access-groups-list-rule-filters>`
 
         Returns:
             :obj:`dict`:

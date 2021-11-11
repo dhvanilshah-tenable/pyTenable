@@ -1,5 +1,5 @@
 '''
-policies
+Policies
 ========
 
 The following methods allow for interaction into the Tenable.io
@@ -9,15 +9,7 @@ Methods available on ``tio.policies``:
 
 .. rst-class:: hide-signature
 .. autoclass:: PoliciesAPI
-
-    .. automethod:: configure
-    .. automethod:: copy
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: policy_import
-    .. automethod:: policy_export
-    .. automethod:: list
+    :members:
 '''
 from .base import TIOEndpoint
 from tenable.utils import policy_settings, dict_merge

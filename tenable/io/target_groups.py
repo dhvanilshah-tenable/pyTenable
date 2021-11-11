@@ -1,5 +1,5 @@
 '''
-target_groups
+Target Groups
 =============
 
 The following methods allow for interaction into the Tenable.io
@@ -9,12 +9,7 @@ Methods available on ``tio.target_groups``:
 
 .. rst-class:: hide-signature
 .. autoclass:: TargetGroupsAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
+    :members:
 '''
 from .base import TIOEndpoint
 from tenable.errors import UnexpectedValueError

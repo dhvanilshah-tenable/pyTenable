@@ -1,5 +1,5 @@
 '''
-users
+Users
 =====
 
 The following methods allow for interaction into the Tenable.io
@@ -9,21 +9,7 @@ Methods available on ``tio.users``:
 
 .. rst-class:: hide-signature
 .. autoclass:: UsersAPI
-
-    .. automethod:: create
-    .. automethod:: change_password
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: enabled
-    .. automethod:: gen_api_keys
-    .. automethod:: two_factor
-    .. automethod:: enable_two_factor
-    .. automethod:: verify_two_factor
-    .. automethod:: impersonate
-    .. automethod:: list
-    .. automethod:: list_auths
-    .. automethod:: edit_auths
+    :members:
 '''
 from tenable.utils import dict_merge
 from tenable.io.base import TIOEndpoint
@@ -230,14 +216,16 @@ class UsersAPI(TIOEndpoint):
         self._api.put('users/{}/two-factor'.format(
             self._check('user_id', user_id, int)), json=payload)
 
-    def enable_two_factor(self, user_id, phone):
+    def enable_two_factor(self, user_id, phone, password):
         '''
         Enable phone-based two-factor authorization for a specific user.
 
         :devportal:`users: two-factor-enable <users-two-factor-enable>`
 
         Args:
+            user_id (int): The user id
             phone (str): The phone number to use for two-factor auth.
+            password (str): The user password.
 
         Returns:
             :obj:`None`:
@@ -248,7 +236,9 @@ class UsersAPI(TIOEndpoint):
         '''
         self._api.post('users/{}/two-factor/send-verification'.format(
             self._check('user_id', user_id, int)), json={
-                'sms_phone': self._check('phone', phone, str)})
+                'sms_phone': self._check('phone', phone, str),
+                'password': self._check('password', password, str)
+            })
 
     def verify_two_factor(self, user_id, code):
         '''

@@ -1,5 +1,5 @@
 '''
-permissions
+Permissions
 ===========
 
 The following methods allow for interaction into the Tenable.io
@@ -9,9 +9,7 @@ Methods available on ``tio.permissions``:
 
 .. rst-class:: hide-signature
 .. autoclass:: PermissionsAPI
-
-    .. automethod:: change
-    .. automethod:: list
+    :members:
 '''
 from .base import TIOEndpoint
 

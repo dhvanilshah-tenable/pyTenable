@@ -2,17 +2,15 @@
    :hidden:
    :glob:
 
-   cs
-   nessus
-   reports
-   io
-   sc
+   api/io/index
+   api/sc/index
    api/ot/index
    api/dl/index
-   downloads
+   api/nessus/index
+   api/reports/index
+   api/base/index
    common
    errors
    testing
-   api/index
 
 .. automodule:: tenable

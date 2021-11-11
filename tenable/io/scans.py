@@ -1,5 +1,5 @@
 '''
-scans
+Scans
 =====
 
 The following methods allow for interaction into the Tenable.io
@@ -9,31 +9,7 @@ Methods available on ``tio.scans``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ScansAPI
-
-    .. automethod:: attachment
-    .. automethod:: configure
-    .. automethod:: copy
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: delete_history
-    .. automethod:: details
-    .. automethod:: export
-    .. automethod:: history
-    .. automethod:: host_details
-    .. automethod:: import_scan
-    .. automethod:: info
-    .. automethod:: launch
-    .. automethod:: list
-    .. automethod:: pause
-    .. automethod:: plugin_output
-    .. automethod:: results
-    .. automethod:: resume
-    .. automethod:: schedule
-    .. automethod:: set_read_status
-    .. automethod:: status
-    .. automethod:: stop
-    .. automethod:: timezones
-    .. automethod:: check_auto_targets
+    :members:
 '''
 import time
 from datetime import datetime, timedelta
@@ -895,7 +871,13 @@ class ScansAPI(TIOEndpoint):
                 If set, send the streaming response to this callable. The callable is
                 responsible for iterating over the stream but does *not* need to close
                 the file object. The signature for the callable is:
-                    def f(response: requests.Response, fobj: BytesIO, chunk_size) -> BytesIO
+
+                .. code-block:: python
+
+                    def f(response: requests.Response,
+                          fobj: BytesIO,
+                          chunk_size: int) -> BytesIO:
+
             history_id (int, optional):
                 The unique identifier for the instance of the scan.
             history_uuid (uuid, optional):

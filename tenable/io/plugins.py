@@ -1,5 +1,5 @@
 '''
-plugins
+Plugins
 =======
 
 The following methods allow for interaction into the Tenable.io
@@ -9,11 +9,7 @@ Methods available on ``tio.plugins``:
 
 .. rst-class:: hide-signature
 .. autoclass:: PluginsAPI
-
-    .. automethod:: families
-    .. automethod:: family_details
-    .. automethod:: list
-    .. automethod:: plugin_details
+    :members:
 '''
 from datetime import date
 from tenable.io.base import TIOEndpoint, TIOIterator
@@ -159,7 +155,7 @@ class PluginsAPI(TIOEndpoint):
         '''
         Get the listing of plugin details from Tenable.io.
 
-        :devportal:`plugins: list <>`_
+        :devportal:`plugins: list <io-plugins-list>`
 
         Args:
             size (int, optional):

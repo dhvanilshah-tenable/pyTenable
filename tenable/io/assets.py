@@ -1,5 +1,5 @@
 '''
-assets
+Assets
 ======
 
 The following methods allow for interaction into the Tenable.io
@@ -9,15 +9,7 @@ Methods available on ``tio.assets``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AssetsAPI
-
-    .. automethod:: asset_import
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: import_job_details
-    .. automethod:: list
-    .. automethod:: list_import_jobs
-    .. automethod:: tags
-    .. automethod:: bulk_delete
+    :members:
 '''
 from tenable.io.base import TIOEndpoint
 
@@ -260,7 +252,7 @@ class AssetsAPI(TIOEndpoint):
 
         return self._api.post('api/v2/assets/bulk-jobs/move-to-network', json=payload).json()
 
-    def bulk_delete(self, *filters, filter_type=None):
+    def bulk_delete(self, *filters, hard_delete=None, filter_type=None):
         '''
         Deletes the specified assets.
 
@@ -276,6 +268,8 @@ class AssetsAPI(TIOEndpoint):
                 filters have to match (``AND``) or any of the filters have to
                 match (``OR``).  If not specified, the default behavior is to
                 assume filter_type is ``AND``.
+            hard_delete (bool, optional):
+                Should the assets be completely removed with all related data?
 
         Returns:
             :obj:`dict`:
@@ -294,6 +288,8 @@ class AssetsAPI(TIOEndpoint):
         parsed = self._parse_filters(
             filters, self._api.filters.workbench_asset_filters(), rtype='assets')['asset']
 
+        if hard_delete:
+            payload['hard_delete'] = self._check('hard_delete', hard_delete, bool)
         payload['query'] = {filter_type: parsed}
 
         return self._api.post('api/v2/assets/bulk-jobs/delete', json=payload).json()
