@@ -3,15 +3,12 @@ from typing import Dict, List, Optional
 from requests import Response
 
 from .vm import VulnerabilityManagement
+from tenable.base.platform import APIPlatform
+from tenable.io.base import TIOEndpoint
 
-
-class V3class():  # noqa: PLR0904
+class V3class(TIOEndpoint):  # noqa: PLR0904
     
     @property
     def vm(self):
-        return VulnerabilityManagement(self)
+        return VulnerabilityManagement(self._api)
 
-# 3 import options for child class
-# APIPlatform
-# APIEndpoint
-# UWBaseEndpoint
