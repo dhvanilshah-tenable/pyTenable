@@ -1,4 +1,4 @@
-Welcome to pyTenable's documentation!
+Welcome to pyTenable's documentation !
 =====================================
 
 .. image:: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ftenable%2FpyTenable%2Fbadge&label=build
