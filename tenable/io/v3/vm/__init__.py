@@ -6,12 +6,12 @@ from requests import Response
 from .scanners import ScannersAPI
 from tenable.io.v3.base_pkg.endpoints.uw import UWBaseEndpoint
 from tenable.base.platform import APIPlatform
+from tenable.io.base import TIOEndpoint
 
 
-
-class VulnerabilityManagement(APIPlatform):  # noqa: PLR0904
+class VulnerabilityManagement(TIOEndpoint):  # noqa: PLR0904
     
     @property
     def scanners(self):
-        return ScannersAPI(self)
+        return ScannersAPI(self._api)
 
