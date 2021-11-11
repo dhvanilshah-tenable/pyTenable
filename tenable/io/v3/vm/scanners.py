@@ -21,9 +21,11 @@ Methods available on ``tio.scanners``:
     .. automethod:: list
     .. automethod:: toggle_link_state
 '''
-from tenable.io.v3.base import TIOEndpoint
+# from tenable.io.v3.base import TIOEndpoint 
+from tenable.io.v3.base_pkg.endpoints.uw import UWBaseEndpoint
 
-class ScannersAPI(TIOEndpoint):
+# TIOEndpoint is not used as base class as Methods defined in TIO are not used in scanners but should we still keep TIOEndpoint for consistency purposes?
+class ScannersAPI(UWBaseEndpoint):
 
     def linking_key(self):
         '''
