@@ -4,8 +4,8 @@ from tenable.io.v3.vm.api import VM_API
 
 class Version3_API:
 
-    def __init__(self, api):
-        self._api = api
+    def __init__(self, APISession):
+        self._APISession = APISession
 
     @property
     def vm(self):
@@ -13,4 +13,4 @@ class Version3_API:
         The interface object for the
         :doc:`Tenable.io Vul Mngmnt APIs <images>`.
         '''
-        return VM_API(self._api)
+        return VM_API(self._APISession)

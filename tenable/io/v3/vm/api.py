@@ -14,8 +14,8 @@ if we don't inherit the APIEndpoint here then we have to create a constructor
 
 class VM_API:
 
-    def __init__(self, api):
-        self._api = api
+    def __init__(self, APISession):
+        self._APISession = APISession
 
     @property
     def users(self):
@@ -23,4 +23,4 @@ class VM_API:
         The interface object for the
         :doc:`Tenable.io Vul Mngmnt users APIs <images>`.
         '''
-        return UsersAPI(self._api)
+        return UsersAPI(self._APISession)
