@@ -7,7 +7,7 @@ from .filters import FilterSchema
 
 class AnalysisSchema(Schema):
     '''
-    Schema supporting the base_pkg analysis structure
+    Schema supporting the base analysis structure
     '''
     filter = fields.Nested(FilterSchema)
     template = fields.Str()

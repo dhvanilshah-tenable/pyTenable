@@ -5,8 +5,8 @@ from typing import Union, Dict, List, Optional, Type
 from uuid import UUID
 import time
 from tenable.base.endpoint import APIEndpoint
-# from tenable.io.v3.base_pkg.iterators.uw.search import UWSearchIterator # todo commented because dir is empty
-from tenable.io.v3.base_pkg.schema.uw.search import SearchSchema
+# from tenable.io.v3.base.iterators.uw.search import UWSearchIterator # todo commented because dir is empty
+from tenable.io.v3.base.schema.uw.search import SearchSchema
 
 
 class UWBaseEndpoint(APIEndpoint):
