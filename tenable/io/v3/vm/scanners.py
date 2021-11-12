@@ -5,7 +5,7 @@ scanners
 The following methods allow for interaction into the Tenable.io
 :devportal:`scanners <scanners>` API.
 
-Methods available on ``tio.scanners``:
+Methods available on ``tio.v3.vm.scanners``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ScannersAPI
@@ -18,7 +18,7 @@ Methods available on ``tio.scanners``:
     .. automethod:: get_scanner_key
     .. automethod:: get_scans
     .. automethod:: linking_key
-    .. automethod:: list
+    .. automethod:: search
     .. automethod:: toggle_link_state
 '''
 # from tenable.io.v3.base import TIOEndpoint 
@@ -36,7 +36,7 @@ class ScannersAPI(UWBaseEndpoint):
                 The linking key
 
         Examples:
-            >>> print(tio.scanners.linking_key())
+            >>> print(tio.v3.vm.scanners.linking_key())
         '''
         scanners = self.list()
         for scanner in scanners:
@@ -53,7 +53,7 @@ class ScannersAPI(UWBaseEndpoint):
                 List of scanner documents.
 
         Examples:
-            >>> for scanner in tio.scanners.allowed_scanners():
+            >>> for scanner in tio.v3.vm.scanners.allowed_scanners():
             ...     pprint(scanner)
         '''
         # We want to get the scanners that are available for scanning.  To do so,
@@ -95,7 +95,7 @@ class ScannersAPI(UWBaseEndpoint):
         Examples:
             Stop a scan running on the scanner:
 
-            >>> tio.scanners.control_scan(1, '00000000-0000-0000-0000-000000000000', 'stop')
+            >>> tio.v3.vm.scanners.control_scan(1, '00000000-0000-0000-0000-000000000000', 'stop')
         '''
         self._api.post('scanners/{}/scans/{}/control'.format(
             self._check('scanner_id', scanner_id, int),
@@ -118,7 +118,7 @@ class ScannersAPI(UWBaseEndpoint):
                 The scanner was successfully deleted.
 
         Examples:
-            >>> tio.scanners.delete(1)
+            >>> tio.v3.vm.scanners.delete(1)
         '''
         self._api.delete('scanners/{}'.format(self._check('id', id, int)))
 
@@ -137,7 +137,7 @@ class ScannersAPI(UWBaseEndpoint):
                 The scanner resource record.
 
         Examples:
-            >>> scanner = tio.scanners.details(1)
+            >>> scanner = tio.v3.vm.scanners.details(1)
             >>> pprint(scanner)
         '''
         return self._api.get('scanners/{}'.format(
@@ -172,7 +172,7 @@ class ScannersAPI(UWBaseEndpoint):
         Examples:
             Force a plugin update on a scanner:
 
-            >>> tio.scanners.edit(1, force_plugin_update=True)
+            >>> tio.v3.vm.scanners.edit(1, force_plugin_update=True)
         '''
         payload = dict()
         if ('force_plugin_update' in kwargs
@@ -208,7 +208,7 @@ class ScannersAPI(UWBaseEndpoint):
                 List of aws target resource records.
 
         Examples:
-            >>> for target in tio.scanners.get_aws_targets(1):
+            >>> for target in tio.v3.vm.scanners.get_aws_targets(1):
             ...      pprint(target)
         '''
         return self._api.get('scanners/{}/aws-targets'.format(
@@ -228,7 +228,7 @@ class ScannersAPI(UWBaseEndpoint):
                 The scanner key
 
         Examples:
-            >>> print(tio.scanners.get_scanner_key(1))
+            >>> print(tio.v3.vm.scanners.get_scanner_key(1))
         '''
         return str(self._api.get('scanners/{}/key'.format(
             self._check('id', id, int))).json()['key'])
@@ -247,7 +247,7 @@ class ScannersAPI(UWBaseEndpoint):
                 List of scan resource records associated to the scanner.
 
         Examples:
-            >>> for scan in tio.scanners.get_scans(1):
+            >>> for scan in tio.v3.vm.scanners.get_scans(1):
             ...     pprint(scan)
         '''
         return self._api.get('scanners/{}/scans'.format(
@@ -264,7 +264,7 @@ class ScannersAPI(UWBaseEndpoint):
                 List of scanner resource records.
 
         Examples:
-            >>> for scanner in tio.scanners.list():
+            >>> for scanner in tio.v3.vm.scanners.list():
             ...     pprint(scanner)
         '''
         pass
@@ -289,7 +289,7 @@ class ScannersAPI(UWBaseEndpoint):
         Examples:
             to deactivate a linked scanner:
 
-            >>> tio.scanners.toggle_link_state(1, False)
+            >>> tio.v3.vm.scanners.toggle_link_state(1, False)
         '''
         self._api.put('scanners/{}/link'.format(self._check('id', id, int)),
             json={'link': int(self._check('linked', linked, bool))})
@@ -306,7 +306,7 @@ class ScannersAPI(UWBaseEndpoint):
                 The permissions resource for the scanner
 
         Examples:
-            >>> tio.scanners.get_permissions(1)
+            >>> tio.v3.vm.scanners.get_permissions(1)
         '''
         return self._api.permissions.list('scanner', self._check('id', id, int))
 
@@ -323,7 +323,7 @@ class ScannersAPI(UWBaseEndpoint):
                 The permissions have been updated successfully.
 
         Examples:
-            >>> tio.scanners.edit_permissions(1,
+            >>> tio.v3.vm.scanners.edit_permissions(1,
             ...     {'type': 'default, 'permissions': 16},
             ...     {'type': 'user', 'id': 2, 'permissions': 16})
         '''
