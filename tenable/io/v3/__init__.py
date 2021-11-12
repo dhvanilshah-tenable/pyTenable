@@ -1,7 +1,7 @@
 from tenable.base.endpoint import APIEndpoint
-from .vm import VulnerabilityManagement
+from .vm.api import VulnerabilityManagement
 
-class V3class(APIEndpoint):  # noqa: PLR0904
+class version3API(APIEndpoint):  # noqa: PLR0904
     """
     This will contain property for all resources/app under io i.e Container Security, Web Application Security.
     """
