@@ -24,7 +24,6 @@ Methods available on ``tio.v3.vm.scanners``:
 # from tenable.io.v3.base import TIOEndpoint 
 from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
 
-# TIOEndpoint is not used as base class as Methods defined in TIO are not used in scanners but should we still keep TIOEndpoint for consistency purposes?
 class ScannersAPI(UWBaseEndpoint):
 
     def linking_key(self):
@@ -253,22 +252,20 @@ class ScannersAPI(UWBaseEndpoint):
         return self._api.get('scanners/{}/scans'.format(
             self._check('id', id, int))).json()['scans']
 
-    def search(self):
+    def search(self, fields, sort, filter, limit, next, return_resp, iterator_cls, schema_cls):
         '''
-        List endpoint is to be replaced with search endpoint.
+        Search endpoint introduced in v3.
 
-        :devportal:`scanners: list <scanners-list>`
+        :devportal:`scanners: search <scanners-search>`
 
         Returns:
             :obj:`list`:
-                List of scanner resource records.
-
+                Iterator Class object
+                base iterator class UWSearchIterator missing under v3/base/iterator
         Examples:
-            >>> for scanner in tio.v3.vm.scanners.list():
-            ...     pprint(scanner)
+            TODO
         '''
         pass
-        # return self._api.get('scanners').json()['scanners']
 
     def toggle_link_state(self, id, linked):
         '''
