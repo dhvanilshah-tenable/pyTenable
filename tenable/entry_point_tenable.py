@@ -1,5 +1,5 @@
-from tenable.io.v3 import TenableIO
-# from tenable.io import TenableIO
+# from tenable.io.v3 import TenableIO
+from tenable.io import TenableIO
 
 
 def tenable_connection():
@@ -30,7 +30,7 @@ def get_users():
 
 def get_users_v3():
     tio = tenable_connection()
-    users = tio.users.details(2236708)
+    users = tio.v3.vm.users.details(2236708)
     # users = tio.v3.users.list()
     for user in users:
         print(user)

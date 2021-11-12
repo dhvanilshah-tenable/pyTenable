@@ -21,14 +21,14 @@ Methods available on ``tio.users``:
     .. automethod:: enable_two_factor
     .. automethod:: verify_two_factor
     .. automethod:: impersonate
-    .. automethod:: list
     .. automethod:: list_auths
     .. automethod:: edit_auths
 '''
 from tenable.utils import dict_merge
-from tenable.io.v3.base import TIOEndpoint
+from tenable.io.v3.base_pkg.endpoints.uw import UWBaseEndpoint
 
-class UsersAPI(TIOEndpoint):
+
+class UsersAPI(UWBaseEndpoint):
     '''
     This will contain all methods related to Users
     '''
