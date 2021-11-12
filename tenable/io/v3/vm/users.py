@@ -25,7 +25,7 @@ Methods available on ``tio.users``:
     .. automethod:: edit_auths
 '''
 from tenable.utils import dict_merge
-from tenable.io.v3.base_pkg.endpoints.uw import UWBaseEndpoint
+from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
 
 
 class UsersAPI(UWBaseEndpoint):

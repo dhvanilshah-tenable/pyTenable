@@ -1,26 +1,13 @@
 from tenable.base.endpoint import APIEndpoint
-
-
-from tenable.io.cs.images import ImagesAPI
 from tenable.io.v3.vm.users import UsersAPI
-from tenable.io.cs.reports import ReportsAPI
-from tenable.io.cs.repositories import RepositoriesAPI
-
-'''
-if we don't inherit the APIEndpoint here then we have to create a constructor 
- -->
-'''
 
 
-class VM_API:
-
-    def __init__(self, APISession):
-        self._APISession = APISession
+class VulnerabilityManagement(APIEndpoint):
 
     @property
     def users(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Vul Mngmnt users APIs <images>`.
+        :doc:`Tenable.io Vul Mngmnt users APIs`.
         '''
-        return UsersAPI(self._APISession)
+        return UsersAPI(self._api)
