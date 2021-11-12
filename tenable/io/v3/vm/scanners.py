@@ -278,10 +278,9 @@ class ScannersAPI(UWBaseEndpoint):
         :devportal:`scanners: search <scanners-search>`
 
         Returns:
-            TODO
             :obj:`list`:
                 Iterator Class object
-                base iterator class UWSearchIterator needs to be updated at v3/base/iterator
+                TODO Implementation of base iterator class UWSearchIterator needs to be updated at v3/base/iterator
         Examples:
             TODO
         """
