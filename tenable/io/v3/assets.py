@@ -1,24 +1,26 @@
-'''
+"""
 Assets
 ======
 
 The following methods allow for interaction into the Tenable.io
 :devportal:`assets <assets>` API endpoints.
 
-Methods available on ``tio.assets``:
+Methods available on ``tio.v3.assets``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AssetsAPI
     :members:
-'''
-from tenable.io.v3.base import TIOEndpoint
+"""
+from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
 
-class AssetsAPI(TIOEndpoint):
-    '''
+
+class AssetsAPI(UWBaseEndpoint):
+    """
     This will contain all methods related to Assets
-    '''
+    """
+
     def list(self):
-        '''
+        """
         Returns a list of assets.
 
         :devportal:`assets: list-assets <assets-list-assets>`
@@ -28,13 +30,13 @@ class AssetsAPI(TIOEndpoint):
                 List of asset records.
 
         Examples:
-            >>> for asset in tio.vm.assets.list():
+            >>> for asset in tio.v3.assets.list():
             ...     pprint(asset)
-        '''
-        return self._api.get('assets').json()['assets']
+        """
+        return self._api.get("assets").json()["assets"]
 
     def delete(self, uuid):
-        '''
+        """
         Deletes the asset.
 
         :devportal:`workbenches: asset-delete <workbenches-asset-delete>`
@@ -47,35 +49,35 @@ class AssetsAPI(TIOEndpoint):
 
         Examples:
             >>> asset_id = '00000000-0000-0000-0000-000000000000'
-            >>> tio.vm.workbenches.asset_delete(asset_id)
-        '''
-        raise NotImplementedError("Delete asset has not been implemented yet as depends on workbenches")
+            >>> tio.v3.workbenches.asset_delete(asset_id)
+        """
+        raise NotImplementedError(
+            "Delete has not been implemented as it depends on workbenches"
+        )
 
-    def details(self, uuid):
-        '''
+    def details(self, obj_id):
+        """
         Retrieves the details about a specific asset.
 
         :devportal:`assets: asset-info <assets-asset-info>`
 
         Args:
-            uuid (str):
-                The UUID (unique identifier) for the asset.
+            obj_id (str):
+                The Object ID (unique identifier) for the asset.
 
         Returns:
             :obj:`dict`:
                 Asset resource definition.
 
         Examples:
-            >>> asset = tio.assets.details(
+            >>> asset = tio.v3.assets.details(
             ...     '00000000-0000-0000-0000-000000000000')
-        '''
-        return self._api.get(
-            'assets/{}'.format(
-                self._check('uuid', uuid, str)
-            )).json()
+        """
+        check_obj_id = self._check("obj_id", obj_id, str)
+        return self._api.get(f"assets/{check_obj_id}").json()
 
     def assign_tags(self, action, assets, tags):
-        '''
+        """
         Add/remove tags for asset(s).
 
         :devportal:`tags: assign-asset-tags <tags-assign-asset-tags>`
@@ -96,16 +98,11 @@ class AssetsAPI(TIOEndpoint):
             >>> asset = tio.assets.assign_tags(
             ...     'add', ['00000000-0000-0000-0000-000000000000'],
             ...     ['00000000-0000-0000-0000-000000000000'])
-        '''
-        return self._api.post(
-            'tags/assets/assignments', json={
-                'action': self._check('action', action, str, choices=['add', 'remove']),
-                'assets': [self._check('asset', i, 'uuid') for i in assets],
-                'tags': [self._check('source', i, 'uuid') for i in tags]
-            }).json()
+        """
+        raise NotImplementedError("Not implemented yet as it depends on tags")
 
     def tags(self, uuid):
-        '''
+        """
         Retrieves the details about a specific asset.
 
         :devportal:`tags: asset-tags <tags-list-asset-tags>`
@@ -121,14 +118,11 @@ class AssetsAPI(TIOEndpoint):
         Examples:
             >>> asset = tio.assets.tags(
             ...     '00000000-0000-0000-0000-000000000000')
-        '''
-        return self._api.get(
-            'tags/assets/{}/assignments'.format(
-                self._check('uuid', uuid, 'uuid')
-            )).json()
+        """
+        raise NotImplementedError("Not implemented yet as it depends on tags")
 
     def asset_import(self, source, *assets):
-        '''
+        """
         Imports asset information into Tenable.io from an external source.
 
         :devportal:`assets: import <assets-import>`
@@ -172,18 +166,20 @@ class AssetsAPI(TIOEndpoint):
             ...         'netbios_name': 'example_two',
             ...         'mac_address': ['00:00:00:00:00:00']
             ...     })
-        '''
+        """
         # We will likely want to perform some more stringent checking of the
         # asset resources that are being defined, however a simple type check
         # should suffice for now.
         return self._api.post(
-            'import/assets', json={
-                'assets': [self._check('asset', i, dict) for i in assets],
-                'source': self._check('source', source, str)
-            }).json()['asset_import_job_uuid']
+            "import/assets",
+            json={
+                "assets": [self._check("asset", i, dict) for i in assets],
+                "source": self._check("source", source, str),
+            },
+        ).json()["asset_import_job_uuid"]
 
     def list_import_jobs(self):
-        '''
+        """
         Returns a list of asset import jobs.
 
         :devportal:`assets: list-import-jobs <assets-list-import-jobs>`
@@ -195,11 +191,11 @@ class AssetsAPI(TIOEndpoint):
         Examples:
             >>> for job in tio.assets.list_import_jobs():
             ...     pprint(job)
-        '''
-        return self._api.get('import/asset-jobs').json()['asset_import_jobs']
+        """
+        return self._api.get("import/asset-jobs").json()["asset_import_jobs"]
 
     def import_job_details(self, uuid):
-        '''
+        """
         Returns the details about a specific asset import job.
 
         :devportal:`assets: import-job-info <assets-import-job-info>`
@@ -215,14 +211,12 @@ class AssetsAPI(TIOEndpoint):
             >>> job = tio.assets.import_job_details(
             ...     '00000000-0000-0000-0000-000000000000')
             >>> pprint(job)
-        '''
-        return self._api.get(
-            'import/asset-jobs/{}'.format(
-                self._check('uuid', uuid, str)
-            )).json()
+        """
+        check_uuid = self._check("uuid", uuid, str)
+        return self._api.get(f"import/asset-jobs/{check_uuid}").json()
 
     def move_assets(self, source, destination, targets):
-        '''
+        """
         Moves assets from the specified network to another network.
 
         :devportal:`assets: move-assets <assets-bulk-move>`
@@ -242,17 +236,19 @@ class AssetsAPI(TIOEndpoint):
             >>> asset = tio.assets.move_assets('00000000-0000-0000-0000-000000000000',
             ...         '10000000-0000-0000-0000-000000000001', ["127.0.0.1"])
             >>> pprint(asset)
-        '''
+        """
         payload = {
-            'source': self._check('source', source, 'uuid'),
-            'destination': self._check('destination', destination, 'uuid'),
-            'targets': ','.join(self._check('targets', targets, list))
+            "source": self._check("source", source, "uuid"),
+            "destination": self._check("destination", destination, "uuid"),
+            "targets": ",".join(self._check("targets", targets, list)),
         }
 
-        return self._api.post('api/v2/assets/bulk-jobs/move-to-network', json=payload).json()
+        return self._api.post(
+            "api/v2/assets/bulk-jobs/move-to-network", json=payload
+        ).json()
 
     def bulk_delete(self, *filters, filter_type=None):
-        '''
+        """
         Deletes the specified assets.
 
         :devportal:`assets: bulk_delete <assets-bulk-delete>`
@@ -276,15 +272,18 @@ class AssetsAPI(TIOEndpoint):
             >>> asset = tio.assets.bulk_delete(
             ...     ('host.hostname', 'match', 'asset.com'), filter_type='or')
             >>> pprint(asset)
-        '''
-        payload = dict()
+        """
+        # payload = {}
 
-        # run the rules through the filter parser...
-        filter_type = self._check('filter_type', filter_type, str,
-            choices=['and', 'or'], default='and', case='lower')
-        parsed = self._parse_filters(
-            filters, self._api.filters.workbench_asset_filters(), rtype='assets')['asset']
+        # # run the rules through the filter parser...
+        # filter_type = self._check('filter_type', filter_type, str,
+        #     choices=['and', 'or'], default='and', case='lower')
+        # parsed = self._parse_filters(
+        #     filters, self._api.filters.workbench_asset_filters(), rtype='assets')['asset']
 
-        payload['query'] = {filter_type: parsed}
+        # payload['query'] = {filter_type: parsed}
 
-        return self._api.post('api/v2/assets/bulk-jobs/delete', json=payload).json()
+        # return self._api.post('api/v2/assets/bulk-jobs/delete', json=payload).json()
+        raise NotImplementedError(
+            "Not implemented yet as it depends on search functionality"
+        )
