@@ -5,7 +5,7 @@ users
 The following methods allow for interaction into the Tenable.io
 :devportal:`users <users>` API endpoints.
 
-Methods available on ``tio.users``:
+Methods available on ``tio.v3.vm.users``:
 
 .. rst-class:: hide-signature
 .. autoclass:: UsersAPI
@@ -60,11 +60,11 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             Create a standard user:
 
-            >>> user = tio.users.create('jsmith@company.com', 'password1', 32)
+            >>> user = tio.v3.vm.users.create('jsmith@company.com', 'password1', 32)
 
             Create an admin user and add the email and name:
 
-            >>> user = tio.users.create('jdoe@company.com', 'password', 64,
+            >>> user = tio.v3.vm.users.create('jdoe@company.com', 'password', 64,
             ...     name='Jane Doe', email='jdoe@company.com')
 
         '''
@@ -96,7 +96,7 @@ class UsersAPI(UWBaseEndpoint):
                 The user was successfully deleted.
 
         Examples:
-            >>> tio.users.delete(1)
+            >>> tio.v3.vm.users.delete(1)
         '''
         self._api.delete('users/{}'.format(self._check('user_id', user_id, int)))
 
@@ -114,7 +114,7 @@ class UsersAPI(UWBaseEndpoint):
                 The resource record for the user.
 
         Examples:
-            >>> user = tio.users.details(1)
+            >>> user = tio.v3.vm.users.details(1)
         '''
         return self._api.get('users/{}'.format(self._check('user_id', user_id, int))).json()
 
@@ -141,7 +141,7 @@ class UsersAPI(UWBaseEndpoint):
                 The modified user resource record.
 
         Examples:
-            >>> user = tio.users.edit(1, name='New Full Name')
+            >>> user = tio.v3.vm.users.edit(1, name='New Full Name')
         '''
         payload = dict()
 
@@ -182,11 +182,11 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             Enable a user:
 
-            >>> tio.users.enabled(1, True)
+            >>> tio.v3.vm.users.enabled(1, True)
 
             Disable a user:
 
-            >>> tio.users.enabled(1, False)
+            >>> tio.v3.vm.users.enabled(1, False)
         '''
         return self._api.put('users/{}/enabled'.format(
             self._check('user_id', user_id, int)), json={
@@ -215,11 +215,11 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             Enable email authorization for a user:
 
-            >>> tio.users.two_factor(1, True, False)
+            >>> tio.v3.vm.users.two_factor(1, True, False)
 
             Enable SMS authorization for a user:
 
-            >>> tio.users.two_factor(1, False, True, '9998887766')
+            >>> tio.v3.vm.users.two_factor(1, False, True, '9998887766')
         '''
         payload = {
             'email_enabled': self._check('email', email, bool),
@@ -244,7 +244,7 @@ class UsersAPI(UWBaseEndpoint):
                 One-time activation code sent to the provided phone number.
 
         Examples:
-            >>> tio.users.enable_two_factor(1, '9998887766')
+            >>> tio.v3.vm.users.enable_two_factor(1, '9998887766')
         '''
         self._api.post('users/{}/two-factor/send-verification'.format(
             self._check('user_id', user_id, int)), json={
@@ -264,7 +264,7 @@ class UsersAPI(UWBaseEndpoint):
                 The verification code was valid and two-factor is enabled.
 
         Examples:
-            >>> tio.users.verify_two_factor(1, 'abc123')
+            >>> tio.v3.vm.users.verify_two_factor(1, 'abc123')
         '''
         self._api.post('users/{}/two-factor/verify-code'.format(
             self._check('user_id', user_id, int)), json={
@@ -284,7 +284,7 @@ class UsersAPI(UWBaseEndpoint):
                 Impersonation successful.
 
         Examples:
-            >>> tio.users.impersonate('jdoe@company.com')
+            >>> tio.v3.vm.users.impersonate('jdoe@company.com')
         '''
         self._api._session.headers.update({
             'X-Impersonate': 'username={}'.format(self._check('name', name, str))
@@ -302,7 +302,7 @@ class UsersAPI(UWBaseEndpoint):
     #             List of user resource records.
     #
     #     Examples:
-    #         >>> for user in tio.users.list():
+    #         >>> for user in tio.v3.vm.users.list():
     #         ...     pprint(user)
     #     '''
     #     return self._api.get('users').json()['users']
@@ -323,7 +323,7 @@ class UsersAPI(UWBaseEndpoint):
                 The password has been successfully changed.
 
         Examples:
-            >>> tio.users.change_password(1, 'old_pass', 'new_pass')
+            >>> tio.v3.vm.users.change_password(1, 'old_pass', 'new_pass')
         '''
         self._api.put('users/{}/chpasswd'.format(self._check('user_id', user_id, int)), json={
             'password': self._check('new_password', new_password, str),
@@ -344,7 +344,7 @@ class UsersAPI(UWBaseEndpoint):
                 A dictionary containing the new API Key-pair.
 
         Examples:
-            >>> keys = tio.users.gen_api_keys(1)
+            >>> keys = tio.v3.vm.users.gen_api_keys(1)
         '''
         return self._api.put('users/{}/keys'.format(
             self._check('user_id', user_id, int))).json()
@@ -363,7 +363,7 @@ class UsersAPI(UWBaseEndpoint):
                 Returns authorizations for the user.
 
         Examples:
-            >>> auth = tio.users.list_auths(1)
+            >>> auth = tio.v3.vm.users.list_auths(1)
         '''
         return self._api.get('users/{}/authorizations'.format(
             self._check('user_id', user_id, int))).json()
@@ -389,7 +389,7 @@ class UsersAPI(UWBaseEndpoint):
                 Returned if Tenable.io successfully updates the user's authorizations.
 
         Examples:
-            >>> tio.users.edit_auths(1, True, True, False)
+            >>> tio.v3.vm.users.edit_auths(1, True, True, False)
         '''
         # get current settings
         current = self.list_auths(self._check('user_id', user_id, int))
