@@ -9,31 +9,36 @@ Methods available on ``tio.v3.vm.users``:
 
 .. rst-class:: hide-signature
 .. autoclass:: UsersAPI
-
-    .. automethod:: create
-    .. automethod:: change_password
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: enabled
-    .. automethod:: gen_api_keys
-    .. automethod:: two_factor
-    .. automethod:: enable_two_factor
-    .. automethod:: verify_two_factor
-    .. automethod:: impersonate
-    .. automethod:: list_auths
-    .. automethod:: edit_auths
+    :members:
 '''
 from tenable.utils import dict_merge
 from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
+from tenable.io.v3.base.schema.uw.filters import FilterSchema
+from tenable.io.v3.base.schema.uw.search import SearchSchema
+from typing import Dict
+from tenable.io.v3.vm.schema import UsersCreateSchema, UserEditSchema
 
 
 class UsersAPI(UWBaseEndpoint):
     '''
     This will contain all methods related to Users
     '''
-    def create(self, username, password, permissions,
-            name=None, email=None, account_type=None):
+    _path = 'users'
+    _conv_json = True
+
+    def _get_search_schema(self):
+        return SearchSchema()
+
+    def _get_filter_schema(self):
+        return FilterSchema()
+
+    def _get_create_schema(self):
+        return UsersCreateSchema()
+
+    def _get_edit_schema(self):
+        return UserEditSchema()
+
+    def create(self, **kw) -> Dict:
         '''
         Create a new user.
 
@@ -68,21 +73,12 @@ class UsersAPI(UWBaseEndpoint):
             ...     name='Jane Doe', email='jdoe@company.com')
 
         '''
-        payload = {
-            'username': self._check('username', username, str),
-            'password': self._check('password', password, str),
-            'permissions': self._check('permissions', permissions, int),
-            'type': self._check('account_type', account_type, str, default='local'),
-        }
 
-        if name:
-            payload['name'] = self._check('name', name, str)
-        if email:
-            payload['email'] = self._check('email', email, str)
+        schema = self._get_create_schema()
+        payload = schema.dump(schema.load(kw))
+        return self._post('', json=payload)
 
-        return self._api.post('users', json=payload).json()
-
-    def delete(self, user_id):
+    def delete(self, user_id: int) -> None:
         '''
         Removes a user from Tenable.io.
 
@@ -98,9 +94,9 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> tio.v3.vm.users.delete(1)
         '''
-        self._api.delete('users/{}'.format(self._check('user_id', user_id, int)))
+        self._delete(f'{user_id}')
 
-    def details(self, user_id):
+    def details(self, user_id: int) -> Dict:
         '''
         Retrieve the details of a user.
 
@@ -116,9 +112,9 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> user = tio.v3.vm.users.details(1)
         '''
-        return self._api.get('users/{}'.format(self._check('user_id', user_id, int))).json()
+        return self._get(f'{user_id}')
 
-    def edit(self, user_id, permissions=None, name=None, email=None, enabled=None):
+    def edit(self, user_id: int, **kw) -> Dict:
         '''
         Modify an existing user.
 
@@ -143,29 +139,20 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> user = tio.v3.vm.users.edit(1, name='New Full Name')
         '''
-        payload = dict()
-
-        if permissions:
-            payload['permissions'] = self._check('permissions', permissions,
-                                                 int)
-        if enabled is not None:
-            payload['enabled'] = self._check('enabled', enabled, bool)
-        if email:
-            payload['email'] = self._check('email', email, str)
-        if name:
-            payload['name'] = self._check('name', name, str)
+        schema = self._get_edit_schema()
+        payload = schema.dump(schema.load(kw))
 
         # Merge the data that we build with the payload with the user details.
-        user = self.details(self._check('user_id', user_id, int))
+        user = self.details(user_id)
         payload = dict_merge({
             'permissions': user['permissions'],
             'enabled': user['enabled'],
             'email': user['email'],
             'name': user.get('name', None),
         }, payload)
-        return self._api.put('users/{}'.format(user_id), json=payload).json()
+        return self._put(f'{user_id}', json=payload)
 
-    def enabled(self, user_id, enabled):
+    def enabled(self, user_id: int, enabled: bool) -> Dict:
         '''
         Enable the user account.
 
@@ -188,11 +175,10 @@ class UsersAPI(UWBaseEndpoint):
 
             >>> tio.v3.vm.users.enabled(1, False)
         '''
-        return self._api.put('users/{}/enabled'.format(
-            self._check('user_id', user_id, int)), json={
-                'enabled': self._check('enabled', enabled, bool)}).json()
+        return self._put(f'{user_id}/enabled', json={
+                'enabled': enabled})
 
-    def two_factor(self, user_id, email, sms, phone=None):
+    def two_factor(self, user_id: int, email: bool, sms: bool, phone: str = None) -> None:
         '''
         Configure two-factor authorization for a specific user.
 
@@ -222,15 +208,14 @@ class UsersAPI(UWBaseEndpoint):
             >>> tio.v3.vm.users.two_factor(1, False, True, '9998887766')
         '''
         payload = {
-            'email_enabled': self._check('email', email, bool),
-            'sms_enabled': self._check('sms', sms, bool)
+            'email_enabled': email,
+            'sms_enabled': sms
         }
         if phone:
-            payload['sms_phone'] = self._check('phone', phone, str)
-        self._api.put('users/{}/two-factor'.format(
-            self._check('user_id', user_id, int)), json=payload)
+            payload['sms_phone'] = phone
+        self._put(f'{user_id}/two-factor', json=payload)
 
-    def enable_two_factor(self, user_id, phone):
+    def enable_two_factor(self, user_id: int, phone: str) -> None:
         '''
         Enable phone-based two-factor authorization for a specific user.
 
@@ -246,11 +231,10 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> tio.v3.vm.users.enable_two_factor(1, '9998887766')
         '''
-        self._api.post('users/{}/two-factor/send-verification'.format(
-            self._check('user_id', user_id, int)), json={
-                'sms_phone': self._check('phone', phone, str)})
+        self._post(f'{user_id}/two-factor/send-verification', json={
+                'sms_phone': phone})
 
-    def verify_two_factor(self, user_id, code):
+    def verify_two_factor(self, user_id: int, code: str) -> None:
         '''
         Send the verification code for two-factor authorization.
 
@@ -266,11 +250,10 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> tio.v3.vm.users.verify_two_factor(1, 'abc123')
         '''
-        self._api.post('users/{}/two-factor/verify-code'.format(
-            self._check('user_id', user_id, int)), json={
-                'verification_code': self._check('code', code, str)})
+        self._post(f'{user_id}/two-factor/verify-code', json={
+                'verification_code': code})
 
-    def impersonate(self, name):
+    def impersonate(self, name) -> None:
         '''
         Impersonate as a specific user.
 
@@ -287,25 +270,35 @@ class UsersAPI(UWBaseEndpoint):
             >>> tio.v3.vm.users.impersonate('jdoe@company.com')
         '''
         self._api._session.headers.update({
-            'X-Impersonate': 'username={}'.format(self._check('name', name, str))
+            'X-Impersonate': f'username={name}'
         })
 
-    # todo will use the search api instead-
-    # def list(self):
-    #     '''
-    #     Retrieves a list of users.
-    #
-    #     :devportal:`users: list <users-list>`
-    #
-    #     Returns:
-    #         :obj:`list`:
-    #             List of user resource records.
-    #
-    #     Examples:
-    #         >>> for user in tio.v3.vm.users.list():
-    #         ...     pprint(user)
-    #     '''
-    #     return self._api.get('users').json()['users']
+    # todo -> this method is still in progress
+    def search_users(self, *filters, **kw):
+        '''
+        Retrieves the users.
+
+        Requires -
+            fields -- list of string = ["field1", "field2"]
+            filter -- tuple ("field_name", "operator", "value") -- ('and', ('test', 'oper', '1'), ('test', 'oper', '2'))
+            sort -- list of dictionary [{"property": "field_name", "order": "asc"}]
+                 -- sort is not supported by search api for now.
+            limit -- integer = (10)
+            next -- integer = (10)
+        '''
+
+        filterSchema = FilterSchema()
+        search_schema = SearchSchema()
+        # sort_schema = SortSchema()
+        query = filterSchema.dump(filterSchema.load(filters[0]))
+        # todo try with multiple dict for sorting.
+        # sr = dict(property="name", order="asc")
+        # srl = sort_schema.load(sr)
+        # making a dictionary which will consists of all the key value pairs.
+        kw.update({"filter": query})
+
+        sed = search_schema.dump(search_schema.load(kw))
+        print(sed)
 
     def change_password(self, user_id, old_password, new_password):
         '''
@@ -325,12 +318,12 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> tio.v3.vm.users.change_password(1, 'old_pass', 'new_pass')
         '''
-        self._api.put('users/{}/chpasswd'.format(self._check('user_id', user_id, int)), json={
-            'password': self._check('new_password', new_password, str),
-            'current_password': self._check('old_password', old_password, str)
+        self._put(f'{user_id}/chpasswd', json={
+            'password': new_password,
+            'current_password': old_password
         })
 
-    def gen_api_keys(self, user_id):
+    def gen_api_keys(self, user_id: int) -> Dict:
         '''
         Generate the API keys for a specific user.
 
@@ -346,8 +339,7 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> keys = tio.v3.vm.users.gen_api_keys(1)
         '''
-        return self._api.put('users/{}/keys'.format(
-            self._check('user_id', user_id, int))).json()
+        return self._put(f'users/{user_id}/keys')
 
     def list_auths(self, user_id):
         '''
@@ -365,8 +357,7 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> auth = tio.v3.vm.users.list_auths(1)
         '''
-        return self._api.get('users/{}/authorizations'.format(
-            self._check('user_id', user_id, int))).json()
+        return self._get(f'{user_id}/authorizations')
 
     def edit_auths(self, user_id, api_permitted=None, password_permitted=None, saml_permitted=None):
         '''
@@ -392,17 +383,15 @@ class UsersAPI(UWBaseEndpoint):
             >>> tio.v3.vm.users.edit_auths(1, True, True, False)
         '''
         # get current settings
-        current = self.list_auths(self._check('user_id', user_id, int))
-
+        current = self.list_auths(user_id)
+        api_permitted = api_permitted if api_permitted is not None else current['api_permitted']
+        password_permitted = password_permitted if password_permitted is not None else current['password_permitted']
+        saml_permitted = saml_permitted if saml_permitted is not None else current['saml_permitted']
         # update payload with new settings
         payload = {
-            'api_permitted': self._check('api_permitted', api_permitted, bool,
-                default=current['api_permitted']),
-            'password_permitted': self._check('password_permitted', password_permitted, bool,
-                default=current['password_permitted']),
-            'saml_permitted': self._check('saml_permitted', saml_permitted, bool,
-                default=current['saml_permitted'])
+            'api_permitted': api_permitted,
+            'password_permitted': password_permitted,
+            'saml_permitted': saml_permitted
         }
 
-        return self._api.put('users/{}/authorizations'.format(
-            self._check('user_id', user_id, int)), json=payload)
+        return self._put(f'{user_id}/authorizations', json=payload)

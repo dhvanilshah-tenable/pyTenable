@@ -8,6 +8,6 @@ class VulnerabilityManagement(APIEndpoint):
     def users(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Vul Mngmnt users APIs`.
+        :doc:`Tenable.io Vulnerability Management users APIs`.
         '''
         return UsersAPI(self._api)
