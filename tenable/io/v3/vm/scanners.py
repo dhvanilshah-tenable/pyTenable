@@ -9,29 +9,26 @@ Methods available on ``tio.v3.vm.scanners``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ScannersAPI
-
-    .. automethod:: control_scan
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: get_aws_targets
-    .. automethod:: get_scanner_key
-    .. automethod:: get_scans
-    .. automethod:: linking_key
-    .. automethod:: search
-    .. automethod:: toggle_link_state
+    :members:
 """
-# from tenable.io.v3.base import TIOEndpoint
-from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
 
+import uuid
+from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
+from uuid import UUID
+from typing import Dict, List
+from typing_extensions import Literal 
 
 class ScannersAPI(UWBaseEndpoint):
-    def linking_key(self):
+
+    _path = "scanners"
+    _conv_json = True
+
+    def linking_key(self) -> str:
         """
         The linking key for the Tenable.io instance.
 
         Returns:
-            :obj:`str`:
+            str:
                 The linking key
 
         Examples:
@@ -45,13 +42,13 @@ class ScannersAPI(UWBaseEndpoint):
             ):
                 return scanner["key"]
 
-    def allowed_scanners(self):
+    def allowed_scanners(self) -> List:
         """
         A simple convenience function that returns the list of scanners that the
         current user is allowed to use.
 
         Returns:
-            :obj:`list`:
+            List:
                 List of scanner documents.
 
         Examples:
@@ -62,22 +59,28 @@ class ScannersAPI(UWBaseEndpoint):
         # we will want to pull the information from the scan template.  This
         # isn't the prettiest way to handle this, however it will consistently
         # return the results that we are looking for.
-        def get_scanners(tmpl):
-            for item in tmpl["settings"]["basic"]["inputs"]:
-                if item["id"] == "scanner_id":
-                    return item["options"]
-            return []
+        # def get_scanners(tmpl):
+        #     for item in tmpl["settings"]["basic"]["inputs"]:
+        #         if item["id"] == "scanner_id":
+        #             return item["options"]
+        #     return []
 
-        vm_tmpl = self._api.policies.templates().get("advanced", None)
-        was_tmpl = self._api.policies.templates().get("was_scan", None)
-        scanners = get_scanners(self._api.editor.template_details("scan", vm_tmpl))
-        if was_tmpl is not None:
-            scanners.extend(
-                get_scanners(self._api.editor.template_details("scan", was_tmpl))
-            )
-        return scanners
+        # vm_tmpl = self._api.policies.templates().get("advanced", None)
+        # was_tmpl = self._api.policies.templates().get("was_scan", None)
+        # scanners = get_scanners(self._api.editor.template_details("scan", vm_tmpl))
+        # if was_tmpl is not None:
+        #     scanners.extend(
+        #         get_scanners(self._api.editor.template_details("scan", was_tmpl))
+        #     )
+        # return scanners
 
-    def control_scan(self, scanner_id, scan_uuid, action):
+        return NotImplementedError("This method will be updated once Policies and Editor API's are implemented in v3")
+
+    def control_scan(self,
+         scanner_id: int,
+         scan_uuid: UUID,
+         action: Literal['resume', 'pause', 'stop']
+        ) -> None:
         """
         Perform actions against scans on a given scanner.
 
@@ -93,7 +96,7 @@ class ScannersAPI(UWBaseEndpoint):
                 `pause`, and `resume`.
 
         Returns:
-            :obj:`None`:
+            None:
                 The action was sent to the scan successfully.
 
         Examples:
@@ -101,19 +104,9 @@ class ScannersAPI(UWBaseEndpoint):
 
             >>> tio.v3.vm.scanners.control_scan(1, '00000000-0000-0000-0000-000000000000', 'stop')
         """
-        self._api.post(
-            "scanners/{}/scans/{}/control".format(
-                self._check("scanner_id", scanner_id, int),
-                self._check("scan_uuid", scan_uuid, str),
-            ),
-            json={
-                "action": self._check(
-                    "action", action, str, choices=["stop", "pause", "resume"]
-                )
-            },
-        )
+        self._api.post(f"{scanner_id}/scans/{scan_uuid}/control", json={"action": action})
 
-    def delete(self, id):
+    def delete(self, id: int) -> None:
         """
         Delete a scanner from Tenable.io.
 
@@ -124,15 +117,15 @@ class ScannersAPI(UWBaseEndpoint):
                 The unique identifier for the scanner to delete.
 
         Returns:
-            :obj:`None`:
+            None:
                 The scanner was successfully deleted.
 
         Examples:
             >>> tio.v3.vm.scanners.delete(1)
         """
-        self._api.delete("scanners/{}".format(self._check("id", id, int)))
+        self._api.delete(f"{id}")
 
-    def details(self, id):
+    def details(self, id: int) -> Dict:
         """
         Retrieve the details for a specified scanner.
 
@@ -143,16 +136,16 @@ class ScannersAPI(UWBaseEndpoint):
                 The unique identifier for the scanner
 
         Returns:
-            :obj:`dict`:
+            Dict:
                 The scanner resource record.
 
         Examples:
             >>> scanner = tio.v3.vm.scanners.details(1)
             >>> pprint(scanner)
         """
-        return self._api.get("scanners/{}".format(self._check("id", id, int))).json()
+        return self._api.get(f"{id}").json()
 
-    def edit(self, id, **kwargs):
+    def edit(self, id: int, **kwargs) -> None:
         """
         Modify the scanner.
 
@@ -175,7 +168,7 @@ class ScannersAPI(UWBaseEndpoint):
                 into Tenable.io.
 
         Returns:
-            :obj:`None`:
+            None:
                 The operation was requested successfully.
 
         Examples:
@@ -207,7 +200,7 @@ class ScannersAPI(UWBaseEndpoint):
 
         self._api.put("settings/{}".format(self._check("id", id, int)), json=payload)
 
-    def get_aws_targets(self, id):
+    def get_aws_targets(self, id: int) -> List:
         """
         Returns the list of AWS targets the scanner can reach.
 
@@ -217,18 +210,16 @@ class ScannersAPI(UWBaseEndpoint):
             id (int): The unique identifier for the scanner.
 
         Returns:
-            :obj:`list`:
+            List:
                 List of aws target resource records.
 
         Examples:
             >>> for target in tio.v3.vm.scanners.get_aws_targets(1):
             ...      pprint(target)
         """
-        return self._api.get(
-            "scanners/{}/aws-targets".format(self._check("id", id, int))
-        ).json()["targets"]
+        return self._api.get(f"{id}/aws-targets").json()["targets"]
 
-    def get_scanner_key(self, id):
+    def get_scanner_key(self, id: int) -> str:
         """
         Return the key associated with the scanner.
 
@@ -238,19 +229,19 @@ class ScannersAPI(UWBaseEndpoint):
             id (int): The unique identifier for the scanner.
 
         Returns:
-            :obj:`str`:
+            str:
                 The scanner key
 
         Examples:
             >>> print(tio.v3.vm.scanners.get_scanner_key(1))
         """
         return str(
-            self._api.get("scanners/{}/key".format(self._check("id", id, int))).json()[
+            self._api.get(f"{id}/key").json()[
                 "key"
             ]
         )
 
-    def get_scans(self, id):
+    def get_scans(self, id: int) -> List:
         """
         Retrieves the scans associated to the scanner.
 
@@ -260,7 +251,7 @@ class ScannersAPI(UWBaseEndpoint):
             id (int): The unique identifier for the scanner.
 
         Returns:
-            :obj:`list`:
+            List:
                 List of scan resource records associated to the scanner.
 
         Examples:
@@ -268,17 +259,17 @@ class ScannersAPI(UWBaseEndpoint):
             ...     pprint(scan)
         """
         return self._api.get(
-            "scanners/{}/scans".format(self._check("id", id, int))
+            f"{id}/scans"
         ).json()["scans"]
 
-    def search(self):
+    def search(self) -> List:
         """
         Search endpoint introduced in v3.
 
         :devportal:`scanners: search <scanners-search>`
 
         Returns:
-            :obj:`list`:
+            List:
                 Iterator Class object
                 TODO Implementation of base iterator class UWSearchIterator needs to be updated at v3/base/iterator
         Examples:
@@ -286,14 +277,14 @@ class ScannersAPI(UWBaseEndpoint):
         """
         raise NotImplementedError
     
-    def list(self):
+    def list(self) -> List:
         '''
         Retrieves the list of scanners.
 
         :devportal:`scanners: list <scanners-list>`
 
         Returns:
-            :obj:`list`:
+            List:
                 List of scanner resource records.
 
         Examples:
@@ -302,7 +293,7 @@ class ScannersAPI(UWBaseEndpoint):
         '''
         return self._api.get('scanners').json()['scanners']
 
-    def toggle_link_state(self, id, linked):
+    def toggle_link_state(self, id: int, linked: bool) -> None:
         """
         Toggles the scanner's activated state.
 
@@ -315,7 +306,7 @@ class ScannersAPI(UWBaseEndpoint):
                 the link, whereas setting to `True` will enable the link.
 
         Returns:
-            :obj:`None`:
+            None:
                 The status change was successful.
 
         Examples:
@@ -324,11 +315,11 @@ class ScannersAPI(UWBaseEndpoint):
             >>> tio.v3.vm.scanners.toggle_link_state(1, False)
         """
         self._api.put(
-            "scanners/{}/link".format(self._check("id", id, int)),
-            json={"link": int(self._check("linked", linked, bool))},
+            "{id}/link",
+            json={"link": int(linked)},
         )
 
-    def get_permissions(self, id):
+    def get_permissions(self, id: int) -> Dict:
         """
         Returns the permission list for a given scanner.
 
@@ -336,15 +327,16 @@ class ScannersAPI(UWBaseEndpoint):
             id (int): The unique identifier for the scanner.
 
         Returns:
-            :obj:`dict`:
+            Dict:
                 The permissions resource for the scanner
 
         Examples:
             >>> tio.v3.vm.scanners.get_permissions(1)
         """
-        return self._api.permissions.list("scanner", self._check("id", id, int))
+        # return self._api.permissions.list("scanner", self._check("id", id, int))
+        raise NotImplementedError("This method will be updated once Permissions API is migrated to v3")
 
-    def edit_permissions(self, id, *acls):
+    def edit_permissions(self, id: int, *acls) -> None:
         """
         Modifies the permissions list for the given scanner.
 
@@ -353,7 +345,7 @@ class ScannersAPI(UWBaseEndpoint):
             *acls (dict): The permissions record(s) for the scanner.
 
         Returns:
-            :obj:`None`:
+            None:
                 The permissions have been updated successfully.
 
         Examples:
@@ -361,4 +353,5 @@ class ScannersAPI(UWBaseEndpoint):
             ...     {'type': 'default, 'permissions': 16},
             ...     {'type': 'user', 'id': 2, 'permissions': 16})
         """
-        self._api.permissions.change("scanner", self._check("id", id, int), *acls)
+        # self._api.permissions.change("scanner", self._check("id", id, int), *acls)
+        raise NotImplementedError("This method will be updated once Permissions API is migrated to v3")
