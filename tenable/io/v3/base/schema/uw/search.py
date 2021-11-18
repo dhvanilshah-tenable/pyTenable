@@ -1,7 +1,10 @@
 '''
 Base Universal Workspace Search Schema
 '''
-from marshmallow import Schema, fields as marshm_fields, validate as v
+from marshmallow import Schema
+from marshmallow import fields as marshm_fields
+from marshmallow import validate as v
+
 from .filters import FilterSchema
 
 

@@ -1,7 +1,7 @@
 '''
 Base Universal Workspace Filter Schema
 '''
-from marshmallow import Schema, fields, pre_load, ValidationError
+from marshmallow import Schema, ValidationError, fields, pre_load
 
 
 class FilterSchema(Schema):
