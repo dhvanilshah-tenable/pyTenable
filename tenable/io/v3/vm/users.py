@@ -92,7 +92,7 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> tio.v3.vm.users.delete(1)
         '''
-        self._delete(f'{user_id}')
+        self._delete(user_id)
 
     def details(self, user_id: int) -> Dict:
         '''
@@ -110,7 +110,7 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> user = tio.v3.vm.users.details(1)
         '''
-        return self._get(f'{user_id}')
+        return self._get(user_id)
 
     def edit(self, user_id: int, **kw) -> Dict:
         '''
@@ -148,7 +148,7 @@ class UsersAPI(UWBaseEndpoint):
             'email': user['email'],
             'name': user.get('name', None),
         }, payload)
-        return self._put(f'{user_id}', json=payload)
+        return self._put(user_id, json=payload)
 
     def enabled(self, user_id: int, enabled: bool) -> Dict:
         '''
