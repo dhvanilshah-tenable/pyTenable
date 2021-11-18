@@ -208,24 +208,26 @@ class UsersAPI(UWBaseEndpoint):
             payload['sms_phone'] = phone
         self._put(f'{user_id}/two-factor', json=payload)
 
-    def enable_two_factor(self, user_id: int, phone: str) -> None:
+    def enable_two_factor(self, user_id: int, phone: str, password: str) -> None:
         '''
         Enable phone-based two-factor authorization for a specific user.
 
         :devportal:`users: two-factor-enable <users-two-factor-enable>`
 
         Args:
+            user_id (int): The user id
             phone (str): The phone number to use for two-factor auth.
+            password (str): The user password.
 
         Returns:
             :obj:`None`:
                 One-time activation code sent to the provided phone number.
 
         Examples:
-            >>> tio.v3.vm.users.enable_two_factor(1, '9998887766')
+            >>> tio.v3.vm.users.enable_two_factor(1, '9998887766', 'password')
         '''
         self._post(f'{user_id}/two-factor/send-verification', json={
-                'sms_phone': phone})
+                'sms_phone': phone, 'password': password})
 
     def verify_two_factor(self, user_id: int, code: str) -> None:
         '''
