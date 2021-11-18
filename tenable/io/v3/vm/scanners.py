@@ -12,7 +12,8 @@ Methods available on ``tio.v3.vm.scanners``:
     :members:
 """
 
-import uuid
+from marshmallow import schema
+from .schema import ScannerEditSchema
 from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
 from uuid import UUID
 from typing import Dict, List
@@ -104,7 +105,7 @@ class ScannersAPI(UWBaseEndpoint):
 
             >>> tio.v3.vm.scanners.control_scan(1, '00000000-0000-0000-0000-000000000000', 'stop')
         """
-        self._api.post(f"{scanner_id}/scans/{scan_uuid}/control", json={"action": action})
+        self._post(f"{scanner_id}/scans/{scan_uuid}/control", json={"action": action})
 
     def delete(self, id: int) -> None:
         """
@@ -143,7 +144,7 @@ class ScannersAPI(UWBaseEndpoint):
             >>> scanner = tio.v3.vm.scanners.details(1)
             >>> pprint(scanner)
         """
-        return self._api.get(f"{id}").json()
+        return self._get(f"{id}")
 
     def edit(self, id: int, **kwargs) -> None:
         """
@@ -177,28 +178,10 @@ class ScannersAPI(UWBaseEndpoint):
             >>> tio.v3.vm.scanners.edit(1, force_plugin_update=True)
         """
         payload = dict()
-        if "force_plugin_update" in kwargs and self._check(
-            "force_plugin_update", kwargs["force_plugin_update"], bool
-        ):
-            payload["force_plugin_update"] = 1
-        if "force_ui_update" in kwargs and self._check(
-            "force_ui_update", kwargs["force_ui_update"], bool
-        ):
-            payload["force_ui_update"] = 1
-        if "finish_update" in kwargs and self._check(
-            "finish_update", kwargs["finish_update"], bool
-        ):
-            payload["finish_update"] = 1
-        if "registration_code" in kwargs and self._check(
-            "registration_code", kwargs["registration_code"], str
-        ):
-            payload["registration_code"] = kwargs["registration_code"]
-        if "aws_update_interval" in kwargs and self._check(
-            "aws_update_interval", kwargs["aws_update_interval"], int
-        ):
-            payload["aws_update_interval"] = kwargs["aws_update_interval"]
-
-        self._api.put("settings/{}".format(self._check("id", id, int)), json=payload)
+        schema = ScannerEditSchema()
+        kwargs["id"] = id
+        payload = schema.dump(schema.load(kwargs))
+        self._api.put(f"settings/{id}", json=payload)
 
     def get_aws_targets(self, id: int) -> List:
         """
@@ -217,7 +200,7 @@ class ScannersAPI(UWBaseEndpoint):
             >>> for target in tio.v3.vm.scanners.get_aws_targets(1):
             ...      pprint(target)
         """
-        return self._api.get(f"{id}/aws-targets").json()["targets"]
+        return self._get(f"{id}/aws-targets").json()["targets"]
 
     def get_scanner_key(self, id: int) -> str:
         """
@@ -236,7 +219,7 @@ class ScannersAPI(UWBaseEndpoint):
             >>> print(tio.v3.vm.scanners.get_scanner_key(1))
         """
         return str(
-            self._api.get(f"{id}/key").json()[
+            self._get(f"{id}/key").json()[
                 "key"
             ]
         )
@@ -258,7 +241,7 @@ class ScannersAPI(UWBaseEndpoint):
             >>> for scan in tio.v3.vm.scanners.get_scans(1):
             ...     pprint(scan)
         """
-        return self._api.get(
+        return self._get(
             f"{id}/scans"
         ).json()["scans"]
 
@@ -291,7 +274,7 @@ class ScannersAPI(UWBaseEndpoint):
             >>> for scanner in tio.scanners.list():
             ...     pprint(scanner)
         '''
-        return self._api.get('scanners').json()['scanners']
+        return self._get('scanners').json()['scanners']
 
     def toggle_link_state(self, id: int, linked: bool) -> None:
         """
@@ -314,7 +297,7 @@ class ScannersAPI(UWBaseEndpoint):
 
             >>> tio.v3.vm.scanners.toggle_link_state(1, False)
         """
-        self._api.put(
+        self._put(
             "{id}/link",
             json={"link": int(linked)},
         )
