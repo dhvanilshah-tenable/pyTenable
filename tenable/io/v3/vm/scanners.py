@@ -12,12 +12,15 @@ Methods available on ``tio.v3.vm.scanners``:
     :members:
 """
 
-from marshmallow import schema
-from .schema import ScannerEditSchema
-from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
-from uuid import UUID
 from typing import Dict, List
-from typing_extensions import Literal 
+from uuid import UUID
+
+from marshmallow import schema
+from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
+from typing_extensions import Literal
+
+from .schema import ScannerEditSchema
+
 
 class ScannersAPI(UWBaseEndpoint):
 
@@ -75,13 +78,16 @@ class ScannersAPI(UWBaseEndpoint):
         #     )
         # return scanners
 
-        return NotImplementedError("This method will be updated once Policies and Editor API's are implemented in v3")
+        return NotImplementedError(
+            "This method will be updated once Policies and Editor API's are implemented in v3"
+        )
 
-    def control_scan(self,
-         scanner_id: int,
-         scan_uuid: UUID,
-         action: Literal['resume', 'pause', 'stop']
-        ) -> None:
+    def control_scan(
+        self,
+        scanner_id: int,
+        scan_uuid: UUID,
+        action: Literal["resume", "pause", "stop"],
+    ) -> None:
         """
         Perform actions against scans on a given scanner.
 
@@ -218,11 +224,7 @@ class ScannersAPI(UWBaseEndpoint):
         Examples:
             >>> print(tio.v3.vm.scanners.get_scanner_key(1))
         """
-        return str(
-            self._get(f"{id}/key").json()[
-                "key"
-            ]
-        )
+        return str(self._get(f"{id}/key").json()["key"])
 
     def get_scans(self, id: int) -> List:
         """
@@ -241,9 +243,7 @@ class ScannersAPI(UWBaseEndpoint):
             >>> for scan in tio.v3.vm.scanners.get_scans(1):
             ...     pprint(scan)
         """
-        return self._get(
-            f"{id}/scans"
-        ).json()["scans"]
+        return self._get(f"{id}/scans").json()["scans"]
 
     def search(self) -> List:
         """
@@ -259,9 +259,9 @@ class ScannersAPI(UWBaseEndpoint):
             TODO
         """
         raise NotImplementedError
-    
+
     def list(self) -> List:
-        '''
+        """
         Retrieves the list of scanners.
 
         :devportal:`scanners: list <scanners-list>`
@@ -273,8 +273,8 @@ class ScannersAPI(UWBaseEndpoint):
         Examples:
             >>> for scanner in tio.scanners.list():
             ...     pprint(scanner)
-        '''
-        return self._get('scanners').json()['scanners']
+        """
+        return self._get("scanners").json()["scanners"]
 
     def toggle_link_state(self, id: int, linked: bool) -> None:
         """
@@ -317,7 +317,9 @@ class ScannersAPI(UWBaseEndpoint):
             >>> tio.v3.vm.scanners.get_permissions(1)
         """
         # return self._api.permissions.list("scanner", self._check("id", id, int))
-        raise NotImplementedError("This method will be updated once Permissions API is migrated to v3")
+        raise NotImplementedError(
+            "This method will be updated once Permissions API is migrated to v3"
+        )
 
     def edit_permissions(self, id: int, *acls) -> None:
         """
@@ -337,4 +339,6 @@ class ScannersAPI(UWBaseEndpoint):
             ...     {'type': 'user', 'id': 2, 'permissions': 16})
         """
         # self._api.permissions.change("scanner", self._check("id", id, int), *acls)
-        raise NotImplementedError("This method will be updated once Permissions API is migrated to v3")
+        raise NotImplementedError(
+            "This method will be updated once Permissions API is migrated to v3"
+        )
