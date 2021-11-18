@@ -11,34 +11,23 @@ Methods available on ``tio.v3.vm.users``:
 .. autoclass:: UsersAPI
     :members:
 '''
-from tenable.utils import dict_merge
+from typing import Dict
+
 from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
 from tenable.io.v3.base.schema.uw.filters import FilterSchema
 from tenable.io.v3.base.schema.uw.search import SearchSchema
-from typing import Dict
-from tenable.io.v3.vm.schema import UsersCreateSchema, UserEditSchema
+from tenable.io.v3.vm.schema import UserEditSchema, UsersCreateSchema
+from tenable.utils import dict_merge
 
 
 class UsersAPI(UWBaseEndpoint):
     '''
     This will contain all methods related to Users
     '''
-    _path = 'users'
+    _path = 'v3/users'
     _conv_json = True
 
-    def _get_search_schema(self):
-        return SearchSchema()
-
-    def _get_filter_schema(self):
-        return FilterSchema()
-
-    def _get_create_schema(self):
-        return UsersCreateSchema()
-
-    def _get_edit_schema(self):
-        return UserEditSchema()
-
-    def create(self, **kw) -> Dict:
+    def create(self, username: str, password: str, permissions: int, **kw) -> Dict:
         '''
         Create a new user.
 
@@ -55,7 +44,7 @@ class UsersAPI(UWBaseEndpoint):
                 table to see what permissions are accepted.
             name (str, optional): The human-readable name of the user.
             email (str, optional): The email address of the user.
-            account_type (str, optional):
+            type (str, optional):
                 The account type for the user.  The default is `local`.
 
         Returns:
@@ -73,10 +62,14 @@ class UsersAPI(UWBaseEndpoint):
             ...     name='Jane Doe', email='jdoe@company.com')
 
         '''
-
-        schema = self._get_create_schema()
+        kw.update({
+            "username": username,
+            "password": password,
+            "permissions": permissions
+        })
+        schema = UsersCreateSchema()
         payload = schema.dump(schema.load(kw))
-        return self._post('', json=payload)
+        return self._post(json=payload)
 
     def delete(self, user_id: int) -> None:
         '''
@@ -139,7 +132,7 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> user = tio.v3.vm.users.edit(1, name='New Full Name')
         '''
-        schema = self._get_edit_schema()
+        schema = UserEditSchema()
         payload = schema.dump(schema.load(kw))
 
         # Merge the data that we build with the payload with the user details.
@@ -253,7 +246,7 @@ class UsersAPI(UWBaseEndpoint):
         self._post(f'{user_id}/two-factor/verify-code', json={
                 'verification_code': code})
 
-    def impersonate(self, name) -> None:
+    def impersonate(self, name: str) -> None:
         '''
         Impersonate as a specific user.
 
@@ -300,7 +293,7 @@ class UsersAPI(UWBaseEndpoint):
         sed = search_schema.dump(search_schema.load(kw))
         print(sed)
 
-    def change_password(self, user_id, old_password, new_password):
+    def change_password(self, user_id: int, old_password: str, new_password: str) -> None:
         '''
         Change the password for a specific user.
 
@@ -341,7 +334,7 @@ class UsersAPI(UWBaseEndpoint):
         '''
         return self._put(f'users/{user_id}/keys')
 
-    def list_auths(self, user_id):
+    def list_auths(self, user_id: int) -> Dict:
         '''
         list user authorizations for accessing a Tenable.io instance.
 
@@ -359,7 +352,7 @@ class UsersAPI(UWBaseEndpoint):
         '''
         return self._get(f'{user_id}/authorizations')
 
-    def edit_auths(self, user_id, api_permitted=None, password_permitted=None, saml_permitted=None):
+    def edit_auths(self, user_id: int, api_permitted: bool=None, password_permitted: bool=None, saml_permitted: bool=None) -> None:
         '''
         update user authorizations for accessing a Tenable.io instance.
 
@@ -393,5 +386,4 @@ class UsersAPI(UWBaseEndpoint):
             'password_permitted': password_permitted,
             'saml_permitted': saml_permitted
         }
-
         return self._put(f'{user_id}/authorizations', json=payload)

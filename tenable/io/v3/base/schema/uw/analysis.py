@@ -1,7 +1,8 @@
 '''
 Base Universal Workspace Analysis Schema
 '''
-from marshmallow import Schema, fields, validate as v
+from marshmallow import Schema, fields
+
 from .filters import FilterSchema
 
 

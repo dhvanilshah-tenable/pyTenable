@@ -1,5 +1,5 @@
 '''
-Export API Endpoints Schemas
+Users API Endpoints Schemas
 '''
 from marshmallow import Schema, fields
 
@@ -24,4 +24,3 @@ class UserEditSchema(Schema):
     name = fields.Str()
     email = fields.Email()
     enabled = fields.Boolean()
-
