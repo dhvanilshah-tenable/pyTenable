@@ -21,13 +21,11 @@ class ScannerEditSchema(Schema):
 
     @post_dump
     def post_serialization(self, data, **kwargs):  # noqa PLR0201 PLW0613
-        data_dict = copy.deepcopy(data)
 
-        for key, value in data.items():
-            if isinstance(value, bool):
-                if value:
-                    data_dict[key] = 1
-                else:
-                    data_dict.pop(key)
-        data_dict.pop("id")
-        return data_dict
+        data = dict(filter(lambda item: item[1] != False, data.items()))
+
+        data.update(map(lambda item: (item[0], 1) if item[1] == True else item, data.items()))
+
+        data.pop("id")
+
+        return data
