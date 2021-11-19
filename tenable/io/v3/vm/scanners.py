@@ -150,7 +150,7 @@ class ScannersAPI(UWBaseEndpoint):
             >>> scanner = tio.v3.vm.scanners.details(1)
             >>> pprint(scanner)
         """
-        return self._get(f"{id}")
+        return self._get(str(id))
 
     def edit(self, id: int, **kwargs) -> None:
         """
