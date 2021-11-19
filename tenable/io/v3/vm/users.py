@@ -92,7 +92,7 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> tio.v3.vm.users.delete(1)
         '''
-        self._delete(user_id)
+        self._delete(str(user_id))
 
     def details(self, user_id: int) -> Dict:
         '''
@@ -110,9 +110,10 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> user = tio.v3.vm.users.details(1)
         '''
-        return self._get(user_id)
+        return self._get(str(user_id))
 
-    def edit(self, user_id: int, **kw) -> Dict:
+    def edit(self, user_id: int, permissions: int = None, name: str = None,
+             email: str = None, enabled: bool = None) -> Dict:
         '''
         Modify an existing user.
 
@@ -137,8 +138,14 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> user = tio.v3.vm.users.edit(1, name='New Full Name')
         '''
+        payload = dict_clean(dict(
+            permissions=permissions,
+            name=name,
+            email=email,
+            enabled=enabled
+        ))
         schema = UserEditSchema()
-        payload = schema.dump(schema.load(kw))
+        payload = schema.dump(schema.load(payload))
 
         # Merge the data that we build with the payload with the user details.
         user = self.details(user_id)
@@ -148,7 +155,7 @@ class UsersAPI(UWBaseEndpoint):
             'email': user['email'],
             'name': user.get('name', None),
         }, payload)
-        return self._put(user_id, json=payload)
+        return self._put(str(user_id), json=payload)
 
     def enabled(self, user_id: int, enabled: bool) -> Dict:
         '''
@@ -340,7 +347,7 @@ class UsersAPI(UWBaseEndpoint):
         Examples:
             >>> keys = tio.v3.vm.users.gen_api_keys(1)
         '''
-        return self._put(f'users/{user_id}/keys')
+        return self._put(f'{user_id}/keys')
 
     def list_auths(self, user_id: int) -> Dict:
         '''
