@@ -130,7 +130,7 @@ class ScannersAPI(UWBaseEndpoint):
         Examples:
             >>> tio.v3.vm.scanners.delete(1)
         """
-        self._api.delete(f"{id}")
+        self._delete(f"{id}")
 
     def details(self, id: int) -> Dict:
         """
@@ -206,7 +206,7 @@ class ScannersAPI(UWBaseEndpoint):
             >>> for target in tio.v3.vm.scanners.get_aws_targets(1):
             ...      pprint(target)
         """
-        return self._get(f"{id}/aws-targets").json()["targets"]
+        return self._get(f"{id}/aws-targets")["targets"]
 
     def get_scanner_key(self, id: int) -> str:
         """
@@ -224,7 +224,7 @@ class ScannersAPI(UWBaseEndpoint):
         Examples:
             >>> print(tio.v3.vm.scanners.get_scanner_key(1))
         """
-        return str(self._get(f"{id}/key").json()["key"])
+        return str(self._get(f"{id}/key")["key"])
 
     def get_scans(self, id: int) -> List:
         """
@@ -243,7 +243,7 @@ class ScannersAPI(UWBaseEndpoint):
             >>> for scan in tio.v3.vm.scanners.get_scans(1):
             ...     pprint(scan)
         """
-        return self._get(f"{id}/scans").json()["scans"]
+        return self._get(f"{id}/scans")["scans"]
 
     def search(self) -> List:
         """
@@ -274,7 +274,7 @@ class ScannersAPI(UWBaseEndpoint):
             >>> for scanner in tio.scanners.list():
             ...     pprint(scanner)
         """
-        return self._get("scanners").json()["scanners"]
+        return self._get()["scanners"]
 
     def toggle_link_state(self, id: int, linked: bool) -> None:
         """
@@ -298,7 +298,7 @@ class ScannersAPI(UWBaseEndpoint):
             >>> tio.v3.vm.scanners.toggle_link_state(1, False)
         """
         self._put(
-            "{id}/link",
+            f"{id}/link",
             json={"link": int(linked)},
         )
 
