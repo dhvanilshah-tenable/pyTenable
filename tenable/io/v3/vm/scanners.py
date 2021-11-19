@@ -130,7 +130,7 @@ class ScannersAPI(UWBaseEndpoint):
         Examples:
             >>> tio.v3.vm.scanners.delete(1)
         """
-        self._api.delete(f"{id}")
+        self._delete(f"{id}")
 
     def details(self, id: int) -> Dict:
         """
