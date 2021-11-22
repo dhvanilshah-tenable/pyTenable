@@ -2,7 +2,7 @@
 Base Universal Workspace Filter Schema
 """
 from marshmallow import Schema, ValidationError, fields, pre_load
-
+from typing import Union, Dict, Tuple
 
 class FilterSchema(Schema):
     """
@@ -24,7 +24,17 @@ class FilterSchema(Schema):
         if (  # noqa: PLR1705
             isinstance(data, dict) and ("and" in data or "or" in data)
         ) or (isinstance(data, tuple) and data[0] in ["and", "or"]):
-            return self.filter_group_tuple_expansion(data)
+            # We need to check to see if the data dictionary is a group of filters.
+            # To do so we will check to see if the following conditions are met:
+            # 
+            # 1. The data obj is a dictionary and has either an "and" key or an 
+            #    "or" key.
+            # 2. The data obj is a tuple and the first element is a string with a 
+            #    value of "and" or "or"
+            # 
+            # If either condition is met, then we will pass the data obj to the 
+            # filter_group_tuple_expansion method for validation and transformation
+            return self.filter_group_transform(data)
         elif (
             isinstance(data, dict)
             and (
@@ -37,13 +47,15 @@ class FilterSchema(Schema):
         else:
             raise ValidationError("Invalid Filter definition")
 
-    def filter_group_tuple_expansion(self, data):  # noqa: PLR0201
-        """
+    def filter_group_transform(self,  # noqa: PLR0201
+                            data: Union[Tuple, Dict]
+                            ) -> Dict:
+        '''
         Handles expanding a tuple definition of a filter group into the
         dictionary equivalent.
-
+        
         Example:
-
+        
             >>> f = ('or', ('and', ('test', 'oper', '1'),
             ...                    ('test', 'oper', '2')
             ...             ),
@@ -56,36 +68,61 @@ class FilterSchema(Schema):
                     {'value': '2', 'operator': 'oper', 'property': '2'}
                     ]
                 }],
-             'and': [
-                 {'value': '3', 'operator': 'oper', 'property': 3}
-                 ]
-             }
-        """
-        resp = {}
-        errors = {}
-        if isinstance(data, tuple):
-            oper = None
-            for elem in data:
-                if (
-                    isinstance(elem, str)
-                    and elem in ["and", "or"]
-                    and not resp.get(elem)
-                ):
-                    resp[elem] = []
-                    oper = elem
-                elif isinstance(elem, str) and elem in ["and", "or"] and resp.get(elem):
-                    errors[elem] = [
-                        (
-                            "attempting to use logical condition"
-                            f"{elem} multiple times."
-                        )
+                'and': [
+                    {'value': '3', 'operator': 'oper', 'property': 3}
                     ]
-                elif oper is None:
-                    errors["NoneOper"] = ["No valid logical condition detected"]
-                else:
-                    resp[oper].append(elem)
+                }
+        '''
+        if isinstance(data, tuple):
+            # if the data object is a tuple, then we will need to pass it to
+            # the tuple -> dict transformer.
+            return self.filter_group_tuple_expansion(data)
         else:
-            resp = data
+            # pass the data object right through if it's not a tuple and rely
+            # on the schema to validate the data object.
+            return data
+
+    def filter_group_tuple_expansion(self, data: Tuple) -> Dict:
+        '''
+        Transforms a logical group tuple into a logical group dictionary.
+        
+        '''
+        resp = {}
+        oper = None
+        errors = {}
+        for element in data:
+            # If the element is either "and" or "or" and doesn't already exist
+            # within the response dict, then we will store the operator and
+            # create the list within the response to store this logical
+            # grouping.
+            if (
+                isinstance(element, str) 
+                and element in ['and', 'or']
+                and not resp.get(element)
+            ):
+                resp[element] = []
+                oper = element
+            # if the element is a logical condition that we have already seen
+            # before, we should assume that this is a malformed tuple and log
+            # the error into the errors dict.
+            elif (
+                isinstance(element, str) 
+                and element in ['and', 'or'] 
+                and resp.get(element)
+            ):
+                errors[element] = [(
+                    'attempted to use logical condition '
+                    f'{element} multiple times'
+                )]
+            # If there is no stored operator, when we will log a "NoneOper"
+            # validation error.
+            elif oper is None:
+                errors["NoneOper"] = ["No valid logical condition detected"]
+            # If none of the above conditions have been met, then we can safely
+            # assume that the element is a filter and we should append it to
+            # the current logical grouping.
+            else:
+                resp[oper].append(element)
         if errors:
             raise ValidationError(errors)
         return resp
