@@ -16,7 +16,7 @@ from typing import Dict, List
 from uuid import UUID
 
 from marshmallow import schema
-from tenable.io.v3.base.endpoints.export import UWBaseEndpoint
+from tenable.io.v3.base.endpoints.explore import UWBaseEndpoint
 from typing_extensions import Literal
 
 from .schema import ScannerEditSchema
@@ -111,7 +111,10 @@ class ScannersAPI(UWBaseEndpoint):
 
             >>> tio.v3.vm.scanners.control_scan(1, '00000000-0000-0000-0000-000000000000', 'stop')
         """
-        self._post(f"{scanner_id}/scans/{scan_uuid}/control", json={"action": action})
+        self._post(
+            f"{scanner_id}/scans/{scan_uuid}/control",
+            json={
+                "action": action})
 
     def delete(self, id: int) -> None:
         """
@@ -316,7 +319,8 @@ class ScannersAPI(UWBaseEndpoint):
         Examples:
             >>> tio.v3.vm.scanners.get_permissions(1)
         """
-        # return self._api.permissions.list("scanner", self._check("id", id, int))
+        # return self._api.permissions.list("scanner", self._check("id", id,
+        # int))
         raise NotImplementedError(
             "This method will be updated once Permissions API is migrated to v3"
         )
