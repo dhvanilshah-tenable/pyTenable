@@ -45,7 +45,7 @@ def test_details(api):
                   )
     details = api.v3.vm.users.details(255)
     assert isinstance(details, dict)
-    assert details['uuid'] == "60f73e4f-8983-41c2-a13c-39074cbb6229"
+    assert details['id'] == "60f73e4f-8983-41c2-a13c-39074cbb6229"
 
 
 @responses.activate
@@ -110,7 +110,7 @@ def test_edit(api):
                   )
     edit_data = api.v3.vm.users.edit(4, name='Test User')
     assert isinstance(edit_data, dict)
-    assert edit_data['uuid'] == "1eddf745-7f6b-440a-90c6-df88efe2cf77"
+    assert edit_data['id'] == "1eddf745-7f6b-440a-90c6-df88efe2cf77"
 
 
 @responses.activate
