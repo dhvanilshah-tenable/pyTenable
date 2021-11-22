@@ -122,7 +122,7 @@ def test_scanners_edit(api):
     Test the edit function
     """
     schema = ScannerEditSchema()
-    kwargs = {"id": SCANNER_ID, "force_plugin_update": True}
+    kwargs = {"force_plugin_update": True, "force_ui_update": False}
     payload = schema.dump(schema.load(kwargs))
     responses.add(
         responses.PUT,
@@ -131,7 +131,7 @@ def test_scanners_edit(api):
     )
 
     assert None is api.v3.vm.scanners.edit(
-        SCANNER_ID, force_plugin_update=True)
+        SCANNER_ID, force_plugin_update=False)
 
 
 @responses.activate
