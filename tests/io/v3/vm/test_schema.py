@@ -73,5 +73,5 @@ def test_users_edit_schema(users_edit):
     assert test_resp == schema.dump(schema.load(users_edit))
 
     with pytest.raises(ValidationError):
-        users_create['new_val'] = 'something'
+        users_edit['new_val'] = 'something'
         schema.load(users_edit)

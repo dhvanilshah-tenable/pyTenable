@@ -3,18 +3,17 @@ Testing the Users endpoints
 '''
 import re
 import responses
+from responses import matchers
 
+USERS_BASE_URL = r'https://cloud.tenable.com/v3/users'
+USERS_API_ID = r'([0-9a-fA-F\-]+)'
 
 @responses.activate
 def test_details(api):
     responses.add(responses.GET,
-                  re.compile(r'https://cloud.tenable.com/v3/users/'
-                             r'([0-9a-fA-F\-]+)'
-                             ),
+                  re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}'),
                   json={
-                      "uuid": "60f73e4f-8983-41c2-a13c-39074cbb6229",
-                      "id": 255,
-                      "user_name": "user@example.com",
+                      "id": "60f73e4f-8983-41c2-a13c-39074cbb6229",
                       "username": "user@example.com",
                       "email": "user@example.com",
                       "name": "User One",
@@ -40,8 +39,8 @@ def test_details(api):
                       ],
                       "lockout": 0,
                       "container_uuid": "270f77d7-3b5b-478c-ac06-be827c00753e",
-                      "lastlogin": 1605630009020,
-                      "uuid_id": "73cc516b-51d0-445a-8e0d-6f618455770e",
+                      "last_login": 1605630009020,
+                      "uuid_id": "73cc516b-51d0-445a-8e0d-6f618455770e"
                   }
                   )
     details = api.v3.vm.users.details(255)
@@ -51,26 +50,51 @@ def test_details(api):
 
 @responses.activate
 def test_delete(api):
-    responses.add(responses.PUT,
-                  re.compile(r'https://cloud.tenable.com/v3/users/'
-                             r'([0-9a-fA-F\-]+)'
-                             ),
-                  json={}
+    responses.add(responses.DELETE,
+                  re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}')
                   )
-    del_data = api.v3.vm.users.delete(255)
-    assert isinstance(del_data, dict)
+    assert None is api.v3.vm.users.delete(255)
 
 
 @responses.activate
 def test_edit(api):
-    responses.add(responses.PUT,
-                  re.compile(r'https://cloud.tenable.com/v3/users/'
-                             r'([0-9a-fA-F\-]+)'
-                             ),
+    responses.add(responses.GET,
+                  re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}'),
                   json={
-                      "uuid": "1eddf745-7f6b-440a-90c6-df88efe2cf77",
-                      "id": 4,
-                      "user_name": "user3@example.com",
+                      "id": "60f73e4f-8983-41c2-a13c-39074cbb6229",
+                      "username": "user@example.com",
+                      "email": "user@example.com",
+                      "name": "User One",
+                      "type": "local",
+                      "permissions": 64,
+                      "roles": ["ADMIN"],
+                      "last_login_attempt": 1569429971576,
+                      "login_fail_count": 0,
+                      "login_fail_total": 3,
+                      "enabled": True,
+                      "undeletable": False,
+                      "two_factor": {
+                          "sms_phone": "+15551236789",
+                          "sms_enabled": 1,
+                          "email_enabled": 0,
+                      },
+                      "group_uuids": [
+                          "f3cd0bb2-cabb-4825-9d0c-49c77fe5fba7",
+                          "00000000-0000-0000-0000-000000000000",
+                          "2d5c70da-b177-43ed-8325-a25a846c8977",
+                          "a507f383-3130-4c89-b202-b69ad9a75a84",
+                          "afed07ce-8e51-4574-a420-90057fea6a7f",
+                      ],
+                      "lockout": 0,
+                      "container_uuid": "270f77d7-3b5b-478c-ac06-be827c00753e",
+                      "last_login": 1605630009020,
+                      "uuid_id": "73cc516b-51d0-445a-8e0d-6f618455770e"
+                  }
+                  )
+    responses.add(responses.PUT,
+                  re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}'),
+                  json={
+                      "id": "1eddf745-7f6b-440a-90c6-df88efe2cf77",
                       "username": "user3@example.com",
                       "email": "user3@example.com",
                       "name": "Test User",
@@ -92,9 +116,7 @@ def test_edit(api):
 @responses.activate
 def test_enabled(api):
     responses.add(responses.PUT,
-                  re.compile(r'https://cloud.tenable.com/v3/users/'
-                             r'([0-9a-fA-F\-]+)/enabled'
-                             ),
+                  re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}/enabled'),
                   json={
                       "object": "user"
                   }
@@ -106,22 +128,20 @@ def test_enabled(api):
 
 @responses.activate
 def test_change_password(api):
+    old_pass = 'old_pass'
+    new_pass = 'new_pass'
     responses.add(responses.PUT,
-                  re.compile(r'https://cloud.tenable.com/v3/users/'
-                             r'([0-9a-fA-F\-]+)/chpasswd'
-                             ),
-                  json={}
+                  re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}/chpasswd'),
+                  match=[matchers.json_params_matcher({"password": new_pass,
+                                                       'current_password': old_pass})]
                   )
-    change_pass_res = api.v3.vm.users.change_password(1, 'old_pass', 'new_pass')
-    assert isinstance(change_pass_res, dict)
+    assert None is api.v3.vm.users.change_password(1, old_pass, new_pass)
 
 
 @responses.activate
 def test_gen_api_keys(api):
     responses.add(responses.PUT,
-                  re.compile(r'https://cloud.tenable.com/v3/users/'
-                             r'([0-9a-fA-F\-]+)/keys'
-                             ),
+                  re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}/keys'),
                   json={
                       'accessKey': '2342sdfjsdfads86e1bc7a240ce398645cf2bb80bbbefc178f100d6f5ffc067d',
                       'secretKey': '876dfasdf6a87df6ad2910f1d54d23c14190a267285de4b05a481b1e6d3f0fd6'
@@ -129,17 +149,15 @@ def test_gen_api_keys(api):
                   )
     api_data = api.v3.vm.users.gen_api_keys(12345)
     assert isinstance(api_data, dict)
-    assert api_data['access_key'] == '2342sdfjsdfads86e1bc7a240ce398645cf2bb80bbbefc178f100d6f5ffc067d'
+    assert api_data['accessKey'] == '2342sdfjsdfads86e1bc7a240ce398645cf2bb80bbbefc178f100d6f5ffc067d'
 
 
 @responses.activate
 def test_create(api):
     responses.add(responses.POST,
-                  re.compile(r'https://cloud.tenable.com/v3/users/'),
+                  re.compile(f'{USERS_BASE_URL}'),
                   json={
-                      "uuid": "d748ab37-f2cf-461c-8648-a8328c0f483e",
-                      "id": 5,
-                      "user_name": "user2@example.com",
+                      "id": "d748ab37-f2cf-461c-8648-a8328c0f483e",
                       "username": "user4@api.demo",
                       "email": "user2@example.com",
                       "name": "Test User",
@@ -162,9 +180,7 @@ def test_create(api):
 @responses.activate
 def test_list_auths(api):
     responses.add(responses.GET,
-                  re.compile(r'https://cloud.tenable.com/v3/users/'
-                             r'([0-9a-fA-F\-]+)/authorizations'
-                             ),
+                  re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}/authorizations'),
                   json={
                       "account_uuid": "6c8ffd08-53dc-493e-9823-9f99d4adeab4",
                       "user_uuid": "4a5e55d6-fd20-465d-9a29-0f1f166d0f49",
@@ -180,47 +196,59 @@ def test_list_auths(api):
 
 @responses.activate
 def test_edit_auths(api):
-    responses.add(responses.PUT,
-                  re.compile(r'https://cloud.tenable.com/v3/users/'
-                             r'([0-9a-fA-F\-]+)/authorizations'
-                             ),
-                  json={}
+    payload = {
+        'api_permitted': True,
+        'password_permitted': True,
+        'saml_permitted': False
+    }
+    responses.add(responses.GET,
+                  re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}/authorizations'),
+                  json={
+                      "account_uuid": "6c8ffd08-53dc-493e-9823-9f99d4adeab4",
+                      "user_uuid": "4a5e55d6-fd20-465d-9a29-0f1f166d0f49",
+                      "api_permitted": True,
+                      "password_permitted": False,
+                      "saml_permitted": True
+                  }
                   )
-    data = api.v3.vm.users.edit_auths('4a5e55d6-fd20-465d-9a29-0f1f166d0f49')
-    assert isinstance(data, dict)
+    responses.add(responses.PUT,
+                  re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}/authorizations'),
+                  match=[matchers.json_params_matcher(payload)],
+                  status=200
+                  )
+    assert 200 == api.v3.vm.users.edit_auths(12345, True, True, False).status_code
 
 
 @responses.activate
 def test_enable_two_factor(api):
     responses.add(responses.POST,
-                  re.compile(r'https://cloud.tenable.com/v3/users/'
-                             r'([0-9a-fA-F\-]+)/two-factor/send-verification'
-                             ),
-                  json={}
+                  re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}/two-factor/send-verification'),
+                  match=[matchers.json_params_matcher({
+                      'sms_phone': '9847484848', 'password': 'password'
+                  })],
                   )
-    data = api.v3.vm.users.enable_two_factor(12345, '9847484848', 'password')
-    assert isinstance(data, dict)
+    assert None is api.v3.vm.users.enable_two_factor(12345, '9847484848', 'password')
 
 
 @responses.activate
 def test_verify_two_factor(api):
     responses.add(responses.POST,
-                  re.compile(r'https://cloud.tenable.com/v3/users/'
-                             r'([0-9a-fA-F\-]+)/two-factor/verify-code'
-                             ),
-                  json={}
+                  re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}/two-factor/verify-code'),
+                  match=[matchers.json_params_matcher({
+                      'verification_code': '9847484848'})],
                   )
-    data = api.v3.vm.users.verify_two_factor(12345, '9847484848')
-    assert isinstance(data, dict)
+    assert None is api.v3.vm.users.verify_two_factor(12345, '9847484848')
 
 
 @responses.activate
 def test_two_factor(api):
+    payload = {
+        'email_enabled': True,
+        'sms_enabled': True,
+        'sms_phone': '93949494959'
+    }
     responses.add(responses.PUT,
-                  re.compile(r'https://cloud.tenable.com/v3/users/'
-                             r'([0-9a-fA-F\-]+)/two-factor'
-                             ),
-                  json={}
+                  re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}/two-factor'),
+                  match=[matchers.json_params_matcher(payload)],
                   )
-    data = api.v3.vm.users.two_factor(12345, True, True, '93949494959')
-    assert isinstance(data, dict)
+    assert None is api.v3.vm.users.two_factor(12345, True, True, '93949494959')
