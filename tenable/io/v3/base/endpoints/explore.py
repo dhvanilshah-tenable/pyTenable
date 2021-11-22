@@ -6,7 +6,6 @@ from typing import Dict, List, Optional, Type, Union
 from uuid import UUID
 
 from tenable.base.endpoint import APIEndpoint
-
 from tenable.io.v3.base.schema.export.search import SearchSchema
 
 
@@ -99,7 +98,11 @@ class UWBaseEndpoint(APIEndpoint):
         payload = schema.dump(schema.load(kwargs))
         if return_resp:
             return self._post("search", json=payload)
-        return iterator_cls(self._api, _path=f"{self._path}/search", _payload=payload)
+        return iterator_cls(
+                self._api,
+                _path=f"{self._path}/search",
+                _payload=payload
+            )
 
     def search_results(self, search_id: str, wait_for_results: bool = True):
         """ """

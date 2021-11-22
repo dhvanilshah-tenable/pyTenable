@@ -2,9 +2,6 @@
 Base Universal Workspace Export Schema
 """
 from marshmallow import Schema, fields
-from marshmallow import validate as v
-
-from .filters import FilterSchema
 
 
 class ExportSchema(Schema):

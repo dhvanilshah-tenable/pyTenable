@@ -1,8 +1,10 @@
 """
 Base Universal Workspace Filter Schema
 """
+from typing import Dict, Tuple, Union
+
 from marshmallow import Schema, ValidationError, fields, pre_load
-from typing import Union, Dict, Tuple
+
 
 class FilterSchema(Schema):
     """
@@ -24,16 +26,18 @@ class FilterSchema(Schema):
         if (  # noqa: PLR1705
             isinstance(data, dict) and ("and" in data or "or" in data)
         ) or (isinstance(data, tuple) and data[0] in ["and", "or"]):
-            # We need to check to see if the data dictionary is a group of filters.
-            # To do so we will check to see if the following conditions are met:
-            # 
-            # 1. The data obj is a dictionary and has either an "and" key or an 
-            #    "or" key.
-            # 2. The data obj is a tuple and the first element is a string with a 
-            #    value of "and" or "or"
-            # 
-            # If either condition is met, then we will pass the data obj to the 
-            # filter_group_tuple_expansion method for validation and transformation
+            # We need to check to see if the data dictionary
+            # is a group of filters. To do so we will check to see
+            # if the following conditions are met:
+            #
+            # 1. The data obj is a dictionary and has either an "and" key
+            #    or an "or" key.
+            # 2. The data obj is a tuple and the first element is a string
+            #    with a value of "and" or "or"
+            #
+            # If either condition is met, then we will pass the data obj
+            # to the filter_group_tuple_expansion method for validation
+            # and transformation
             return self.filter_group_transform(data)
         elif (
             isinstance(data, dict)
@@ -47,15 +51,16 @@ class FilterSchema(Schema):
         else:
             raise ValidationError("Invalid Filter definition")
 
-    def filter_group_transform(self,  # noqa: PLR0201
-                            data: Union[Tuple, Dict]
-                            ) -> Dict:
-        '''
+    def filter_group_transform(
+                self,
+                data: Union[Tuple, Dict]
+            ) -> Dict:  # noqa: PLR0201
+        """
         Handles expanding a tuple definition of a filter group into the
         dictionary equivalent.
-        
+
         Example:
-        
+
             >>> f = ('or', ('and', ('test', 'oper', '1'),
             ...                    ('test', 'oper', '2')
             ...             ),
@@ -72,7 +77,7 @@ class FilterSchema(Schema):
                     {'value': '3', 'operator': 'oper', 'property': 3}
                     ]
                 }
-        '''
+        """
         if isinstance(data, tuple):
             # if the data object is a tuple, then we will need to pass it to
             # the tuple -> dict transformer.
@@ -83,10 +88,10 @@ class FilterSchema(Schema):
             return data
 
     def filter_group_tuple_expansion(self, data: Tuple) -> Dict:
-        '''
+        """
         Transforms a logical group tuple into a logical group dictionary.
-        
-        '''
+
+        """
         resp = {}
         oper = None
         errors = {}
@@ -96,8 +101,8 @@ class FilterSchema(Schema):
             # create the list within the response to store this logical
             # grouping.
             if (
-                isinstance(element, str) 
-                and element in ['and', 'or']
+                isinstance(element, str)
+                and element in ["and", "or"]
                 and not resp.get(element)
             ):
                 resp[element] = []
@@ -106,14 +111,14 @@ class FilterSchema(Schema):
             # before, we should assume that this is a malformed tuple and log
             # the error into the errors dict.
             elif (
-                isinstance(element, str) 
-                and element in ['and', 'or'] 
+                isinstance(element, str)
+                and element in ["and", "or"]
                 and resp.get(element)
             ):
-                errors[element] = [(
-                    'attempted to use logical condition '
-                    f'{element} multiple times'
-                )]
+                errors[element] = [
+                    (f"attempted to use logical condition {element}\
+                        multiple times")
+                ]
             # If there is no stored operator, when we will log a "NoneOper"
             # validation error.
             elif oper is None:
