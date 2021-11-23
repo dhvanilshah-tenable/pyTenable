@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, Type, Union
 from uuid import UUID
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.io.v3.base.schema.export.search import SearchSchema
+from tenable.io.v3.base.schema.explore.search import SearchSchema
 
 
 class UWBaseEndpoint(APIEndpoint):

@@ -36,7 +36,7 @@ class FilterSchema(Schema):
             #    with a value of "and" or "or"
             #
             # If either condition is met, then we will pass the data obj
-            # to the filter_group_tuple_expansion method for validation
+            # to the filter_group_transform method for validation
             # and transformation
             return self.filter_group_transform(data)
         elif (
