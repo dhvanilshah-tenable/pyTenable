@@ -261,26 +261,6 @@ class UsersAPI(UWBaseEndpoint):
         self._post(f'{user_id}/two-factor/verify-code', json={
                 'verification_code': code})
 
-    def impersonate(self, name: str) -> None:
-        '''
-        Impersonate as a specific user.
-
-        :devportal:`users: impersonate <users/impersonate>`
-
-        Args:
-            name (str): The user-name of the user to impersonate.
-
-        Returns:
-            :obj:`None`:
-                Impersonation successful.
-
-        Examples:
-            >>> tio.v3.vm.users.impersonate('jdoe@company.com')
-        '''
-        self._api._session.headers.update({
-            'X-Impersonate': f'username={name}'
-        })
-
     # todo -> this method is still in progress
     def search_users(self, *filters, **kw):
         '''

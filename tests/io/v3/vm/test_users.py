@@ -30,7 +30,7 @@ def test_details(api):
                           "sms_enabled": 1,
                           "email_enabled": 0,
                       },
-                      "group_uuids": [
+                      "group_ids": [
                           "f3cd0bb2-cabb-4825-9d0c-49c77fe5fba7",
                           "00000000-0000-0000-0000-000000000000",
                           "2d5c70da-b177-43ed-8325-a25a846c8977",
@@ -39,8 +39,7 @@ def test_details(api):
                       ],
                       "lockout": 0,
                       "container_uuid": "270f77d7-3b5b-478c-ac06-be827c00753e",
-                      "last_login": 1605630009020,
-                      "uuid_id": "73cc516b-51d0-445a-8e0d-6f618455770e"
+                      "last_login": 1605630009020
                   }
                   )
     details = api.v3.vm.users.details(255)
@@ -78,7 +77,7 @@ def test_edit(api):
                           "sms_enabled": 1,
                           "email_enabled": 0,
                       },
-                      "group_uuids": [
+                      "group_ids": [
                           "f3cd0bb2-cabb-4825-9d0c-49c77fe5fba7",
                           "00000000-0000-0000-0000-000000000000",
                           "2d5c70da-b177-43ed-8325-a25a846c8977",
@@ -87,8 +86,7 @@ def test_edit(api):
                       ],
                       "lockout": 0,
                       "container_uuid": "270f77d7-3b5b-478c-ac06-be827c00753e",
-                      "last_login": 1605630009020,
-                      "uuid_id": "73cc516b-51d0-445a-8e0d-6f618455770e"
+                      "last_login": 1605630009020
                   }
                   )
     responses.add(responses.PUT,
@@ -104,8 +102,7 @@ def test_edit(api):
                       "login_fail_count": 0,
                       "login_fail_total": 0,
                       "enabled": False,
-                      "lockout": 0,
-                      "uuid_id": "1eddf745-7f6b-440a-90c6-df88efe2cf77"
+                      "lockout": 0
                   }
                   )
     edit_data = api.v3.vm.users.edit(4, name='Test User')
@@ -168,8 +165,7 @@ def test_create(api):
                       "login_fail_count": 0,
                       "login_fail_total": 0,
                       "enabled": True,
-                      "lockout": 0,
-                      "uuid_id": "d748ab37-f2cf-461c-8648-a8328c0f483e"
+                      "lockout": 0
                   }
                   )
     data = api.v3.vm.users.create('user4@api.demo', 'password', 32)
