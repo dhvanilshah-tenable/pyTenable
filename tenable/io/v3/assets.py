@@ -43,7 +43,7 @@ class AssetsAPI(UWBaseEndpoint):
             ...     pprint(asset)
         """
         # Search is not available yet on our instance. Hence, it fails
-        return self._get("search")["assets"]
+        return self._post("search", json={})["assets"]
 
     def delete(self, uuid: UUID) -> None:
         """
@@ -188,7 +188,7 @@ class AssetsAPI(UWBaseEndpoint):
         # should suffice for now.
         schema = ImportAssetSchema()
         payload = schema.dump(schema.load({"assets": assets, "source": source}))
-        return self.post("import", json=payload)["asset_import_job_uuid"]
+        return self._post("import", json=payload)["asset_import_job_uuid"]
 
     def list_import_jobs(self) -> List:
         """
