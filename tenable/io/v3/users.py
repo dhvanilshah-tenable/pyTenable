@@ -25,7 +25,7 @@ class UsersAPI(UWBaseEndpoint):
     '''
     This will contain all methods related to Users
     '''
-    _path = 'users'
+    _path = 'v3/users'
     _conv_json = True
 
     def create(self, username: str, password: str, permissions: int, name: str = None,
