@@ -1,5 +1,5 @@
 from tenable.base.endpoint import APIEndpoint
-from tenable.io.v3.vm.api import VulnerabilityManagement
+from tenable.io.v3.users import UsersAPI
 
 '''
 Version3API
@@ -16,7 +16,7 @@ Version3API APIs.
     :hidden:
     :glob:
 
-    vm
+    users
 
 '''
 
@@ -27,9 +27,9 @@ class Version3API(APIEndpoint):
     '''
 
     @property
-    def vm(self):
+    def users(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Vul Management APIs`.
+        :doc:`Tenable.io users APIs`.
         '''
-        return VulnerabilityManagement(self._api)
+        return UsersAPI(self._api)

@@ -17,7 +17,7 @@ from typing import Dict
 from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
 from tenable.io.v3.base.schema.uw.filters import FilterSchema
 from tenable.io.v3.base.schema.uw.search import SearchSchema
-from tenable.io.v3.vm.schema import UserEditSchema, UsersCreateSchema
+from tenable.io.v3.schema import UserEditSchema, UsersCreateSchema
 from tenable.utils import dict_merge
 
 
@@ -25,7 +25,7 @@ class UsersAPI(UWBaseEndpoint):
     '''
     This will contain all methods related to Users
     '''
-    _path = 'v3/users'
+    _path = 'users'
     _conv_json = True
 
     def create(self, username: str, password: str, permissions: int, name: str = None,
