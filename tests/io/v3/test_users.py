@@ -42,7 +42,7 @@ def test_details(api):
                       "last_login": 1605630009020
                   }
                   )
-    details = api.v3.vm.users.details(255)
+    details = api.v3.users.details(255)
     assert isinstance(details, dict)
     assert details['id'] == "60f73e4f-8983-41c2-a13c-39074cbb6229"
 
@@ -52,7 +52,7 @@ def test_delete(api):
     responses.add(responses.DELETE,
                   re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}')
                   )
-    assert None is api.v3.vm.users.delete(255)
+    assert None is api.v3.users.delete(255)
 
 
 @responses.activate
@@ -105,7 +105,7 @@ def test_edit(api):
                       "lockout": 0
                   }
                   )
-    edit_data = api.v3.vm.users.edit(4, name='Test User')
+    edit_data = api.v3.users.edit(4, name='Test User')
     assert isinstance(edit_data, dict)
     assert edit_data['id'] == "1eddf745-7f6b-440a-90c6-df88efe2cf77"
 
@@ -118,7 +118,7 @@ def test_enabled(api):
                       "object": "user"
                   }
                   )
-    enabled_data = api.v3.vm.users.enabled(4, True)
+    enabled_data = api.v3.users.enabled(4, True)
     assert isinstance(enabled_data, dict)
     assert enabled_data['object'] == "user"
 
@@ -132,7 +132,7 @@ def test_change_password(api):
                   match=[matchers.json_params_matcher({"password": new_pass,
                                                        'current_password': old_pass})]
                   )
-    assert None is api.v3.vm.users.change_password(1, old_pass, new_pass)
+    assert None is api.v3.users.change_password(1, old_pass, new_pass)
 
 
 @responses.activate
@@ -144,7 +144,7 @@ def test_gen_api_keys(api):
                       'secretKey': '876dfasdf6a87df6ad2910f1d54d23c14190a267285de4b05a481b1e6d3f0fd6'
                   }
                   )
-    api_data = api.v3.vm.users.gen_api_keys(12345)
+    api_data = api.v3.users.gen_api_keys(12345)
     assert isinstance(api_data, dict)
     assert api_data['accessKey'] == '2342sdfjsdfads86e1bc7a240ce398645cf2bb80bbbefc178f100d6f5ffc067d'
 
@@ -168,7 +168,7 @@ def test_create(api):
                       "lockout": 0
                   }
                   )
-    data = api.v3.vm.users.create('user4@api.demo', 'password', 32)
+    data = api.v3.users.create('user4@api.demo', 'password', 32)
     assert isinstance(data, dict)
     assert data['username'] == 'user4@api.demo'
 
@@ -185,7 +185,7 @@ def test_list_auths(api):
                       "saml_permitted": True
                   }
                   )
-    auths_data = api.v3.vm.users.list_auths('4a5e55d6-fd20-465d-9a29-0f1f166d0f49')
+    auths_data = api.v3.users.list_auths('4a5e55d6-fd20-465d-9a29-0f1f166d0f49')
     assert isinstance(auths_data, dict)
     assert auths_data['account_uuid'] == '6c8ffd08-53dc-493e-9823-9f99d4adeab4'
 
@@ -212,7 +212,7 @@ def test_edit_auths(api):
                   match=[matchers.json_params_matcher(payload)],
                   status=200
                   )
-    assert 200 == api.v3.vm.users.edit_auths(12345, True, True, False).status_code
+    assert 200 == api.v3.users.edit_auths(12345, True, True, False).status_code
 
 
 @responses.activate
@@ -223,7 +223,7 @@ def test_enable_two_factor(api):
                       'sms_phone': '9847484848', 'password': 'password'
                   })],
                   )
-    assert None is api.v3.vm.users.enable_two_factor(12345, '9847484848', 'password')
+    assert None is api.v3.users.enable_two_factor(12345, '9847484848', 'password')
 
 
 @responses.activate
@@ -233,7 +233,7 @@ def test_verify_two_factor(api):
                   match=[matchers.json_params_matcher({
                       'verification_code': '9847484848'})],
                   )
-    assert None is api.v3.vm.users.verify_two_factor(12345, '9847484848')
+    assert None is api.v3.users.verify_two_factor(12345, '9847484848')
 
 
 @responses.activate
@@ -247,4 +247,4 @@ def test_two_factor(api):
                   re.compile(f'{USERS_BASE_URL}/{USERS_API_ID}/two-factor'),
                   match=[matchers.json_params_matcher(payload)],
                   )
-    assert None is api.v3.vm.users.two_factor(12345, True, True, '93949494959')
+    assert None is api.v3.users.two_factor(12345, True, True, '93949494959')
