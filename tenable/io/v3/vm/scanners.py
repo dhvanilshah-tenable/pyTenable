@@ -119,8 +119,10 @@ class ScannersAPI(UWBaseEndpoint):
                 'stop'
                 )
         """
-        self._post(f"{scanner_id}/scans/{scan_uuid}/control",
-                   json={"action": action})
+        self._post(
+            f"{scanner_id}/scans/{scan_uuid}/control",
+            json={
+                "action": action})
 
     def delete(self, id: int) -> None:
         """

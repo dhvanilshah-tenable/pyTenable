@@ -52,9 +52,7 @@ class FilterSchema(Schema):
             raise ValidationError("Invalid Filter definition")
 
     def filter_group_transform(
-                self,
-                data: Union[Tuple, Dict]
-            ) -> Dict:  # noqa: PLR0201
+            self, data: Union[Tuple, Dict]) -> Dict:  # noqa: PLR0201
         """
         Handles expanding a tuple definition of a filter group into the
         dictionary equivalent.
@@ -116,8 +114,10 @@ class FilterSchema(Schema):
                 and resp.get(element)
             ):
                 errors[element] = [
-                    (f"attempted to use logical condition {element}\
-                        multiple times")
+                    (
+                        f"attempted to use logical condition {element}\
+                        multiple times"
+                    )
                 ]
             # If there is no stored operator, when we will log a "NoneOper"
             # validation error.
