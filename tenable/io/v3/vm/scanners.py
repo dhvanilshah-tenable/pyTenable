@@ -15,7 +15,6 @@ Methods available on ``tio.v3.vm.scanners``:
 from typing import Dict, List
 from uuid import UUID
 
-from marshmallow import schema
 from tenable.io.v3.base.endpoints.explore import UWBaseEndpoint
 from typing_extensions import Literal
 
@@ -48,8 +47,8 @@ class ScannersAPI(UWBaseEndpoint):
 
     def allowed_scanners(self) -> List:
         """
-        A simple convenience function that returns the list of scanners that the
-        current user is allowed to use.
+        A simple convenience function that returns the list
+        of scanners that the current user is allowed to use.
 
         Returns:
             List:
@@ -59,9 +58,10 @@ class ScannersAPI(UWBaseEndpoint):
             >>> for scanner in tio.v3.vm.scanners.allowed_scanners():
             ...     pprint(scanner)
         """
-        # We want to get the scanners that are available for scanning.  To do so,
-        # we will want to pull the information from the scan template.  This
-        # isn't the prettiest way to handle this, however it will consistently
+        # We want to get the scanners that are available for scanning.
+        # To do so, we will want to pull the information from the
+        # scan template.  This isn't the prettiest way to handle this,
+        # however it will consistently
         # return the results that we are looking for.
         # def get_scanners(tmpl):
         #     for item in tmpl["settings"]["basic"]["inputs"]:
@@ -71,15 +71,20 @@ class ScannersAPI(UWBaseEndpoint):
 
         # vm_tmpl = self._api.policies.templates().get("advanced", None)
         # was_tmpl = self._api.policies.templates().get("was_scan", None)
-        # scanners = get_scanners(self._api.editor.template_details("scan", vm_tmpl))
+        # scanners = get_scanners(
+        #    self._api.editor.template_details("scan", vm_tmpl)
+        # )
         # if was_tmpl is not None:
         #     scanners.extend(
-        #         get_scanners(self._api.editor.template_details("scan", was_tmpl))
+        #         get_scanners(
+        #           self._api.editor.template_details("scan", was_tmpl)
+        #         )
         #     )
         # return scanners
 
         return NotImplementedError(
-            "This method will be updated once Policies and Editor API's are implemented in v3"
+            "This method will be updated once Policies and Editor API's\
+                are implemented in v3"
         )
 
     def control_scan(
@@ -109,12 +114,13 @@ class ScannersAPI(UWBaseEndpoint):
         Examples:
             Stop a scan running on the scanner:
 
-            >>> tio.v3.vm.scanners.control_scan(1, '00000000-0000-0000-0000-000000000000', 'stop')
+            >>> tio.v3.vm.scanners.control_scan(
+                1, '00000000-0000-0000-0000-000000000000',
+                'stop'
+                )
         """
-        self._post(
-            f"{scanner_id}/scans/{scan_uuid}/control",
-            json={
-                "action": action})
+        self._post(f"{scanner_id}/scans/{scan_uuid}/control",
+                   json={"action": action})
 
     def delete(self, id: int) -> None:
         """
@@ -153,7 +159,7 @@ class ScannersAPI(UWBaseEndpoint):
             >>> scanner = tio.v3.vm.scanners.details(1)
             >>> pprint(scanner)
         """
-        return self._get(str(id))
+        return self._get(f"{id}")
 
     def edit(self, id: int, **kwargs) -> None:
         """
@@ -174,8 +180,8 @@ class ScannersAPI(UWBaseEndpoint):
             registration_code (str, optional):
                 Sets the registration code for the scanner.
             aws_update_interval (int, optional):
-                For AWS scanners this will inform the scanner how often to check
-                into Tenable.io.
+                For AWS scanners this will inform the scanner
+                how often to check into Tenable.io.
 
         Returns:
             None:
@@ -188,7 +194,6 @@ class ScannersAPI(UWBaseEndpoint):
         """
         payload = dict()
         schema = ScannerEditSchema()
-        kwargs["id"] = id
         payload = schema.dump(schema.load(kwargs))
         self._api.put(f"settings/{id}", json=payload)
 
@@ -257,7 +262,8 @@ class ScannersAPI(UWBaseEndpoint):
         Returns:
             List:
                 Iterator Class object
-                TODO Implementation of base iterator class UWSearchIterator needs to be updated at v3/base/iterator
+                TODO Implementation of base iterator class
+                UWSearchIterator needs to be updated at v3/base/iterator
         Examples:
             TODO
         """
@@ -288,7 +294,8 @@ class ScannersAPI(UWBaseEndpoint):
         Args:
             id (int): The unique identifier for the scanner
             linked (bool):
-                The link status of the scanner.  Setting to `False` will disable
+                The link status of the scanner.
+                Setting to `False` will disable
                 the link, whereas setting to `True` will enable the link.
 
         Returns:
@@ -322,7 +329,8 @@ class ScannersAPI(UWBaseEndpoint):
         # return self._api.permissions.list("scanner", self._check("id", id,
         # int))
         raise NotImplementedError(
-            "This method will be updated once Permissions API is migrated to v3"
+            "This method will be updated once Permissions API is \
+                migrated to v3"
         )
 
     def edit_permissions(self, id: int, *acls) -> None:
@@ -342,7 +350,11 @@ class ScannersAPI(UWBaseEndpoint):
             ...     {'type': 'default, 'permissions': 16},
             ...     {'type': 'user', 'id': 2, 'permissions': 16})
         """
-        # self._api.permissions.change("scanner", self._check("id", id, int), *acls)
+        # self._api.permissions.change("scanner",
+        #   self._check("id", id, int),
+        #   *acls
+        # )
         raise NotImplementedError(
-            "This method will be updated once Permissions API is migrated to v3"
+            "This method will be updated once Permissions API is migrated \
+                to v3"
         )

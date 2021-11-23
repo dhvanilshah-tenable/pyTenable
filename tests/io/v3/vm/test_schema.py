@@ -11,7 +11,7 @@ def edit_payload():
     """
     Example scanner edit request
     """
-    return {"force_plugin_update": True, "id": 12345}
+    return {"force_plugin_update": True, "force_ui_update": False}
 
 
 def test_scanner_edit_schema(edit_payload):
@@ -21,7 +21,3 @@ def test_scanner_edit_schema(edit_payload):
     test_resp = {"force_plugin_update": 1}
     schema = ScannerEditSchema()
     assert test_resp == schema.dump(schema.load(edit_payload))
-
-    with pytest.raises(ValidationError):
-        edit_payload["id"] = "something"
-        schema.load(edit_payload)

@@ -131,7 +131,7 @@ def test_scanners_edit(api):
     )
 
     assert None is api.v3.vm.scanners.edit(
-        SCANNER_ID, force_plugin_update=False)
+        SCANNER_ID, force_plugin_update=True, force_ui_update=False)
 
 
 @responses.activate

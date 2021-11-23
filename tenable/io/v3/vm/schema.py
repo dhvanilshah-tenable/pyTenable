@@ -11,8 +11,6 @@ class ScannerEditSchema(Schema):
     Args:
 
     """
-
-    id = fields.Int(required=True)
     force_plugin_update = fields.Bool()
     force_ui_update = fields.Bool()
     finish_update = fields.Bool()
@@ -21,11 +19,6 @@ class ScannerEditSchema(Schema):
 
     @post_dump
     def post_serialization(self, data, **kwargs):  # noqa PLR0201 PLW0613
-
-        data = dict(filter(lambda item: item[1] != False, data.items()))
-
-        data.update(map(lambda item: (item[0], 1) if item[1] == True else item, data.items()))
-
-        data.pop("id")
-
+        data = dict(filter(lambda item: item[1] not in fields.Bool.falsy, data.items()))
+        data.update(map(lambda item: (item[0], 1) if item[1] in fields.Bool.truthy else item, data.items()))
         return data
