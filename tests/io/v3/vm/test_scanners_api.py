@@ -11,19 +11,17 @@ from tenable.io.v3.vm.schema import ScannerEditSchema
 
 SCANNER_BASE_URL = r"https://cloud.tenable.com/scanners"
 BASE_URL = r"https://cloud.tenable.com"
-SCANNER_ID = "12345"
+SCANNER_ID = str(uuid.uuid1())
 
 
 @responses.activate
 def test_scanner_details(api):
-    scanner_uuid = str(uuid.uuid1())
     responses.add(
         responses.GET,
         f"{SCANNER_BASE_URL}/{SCANNER_ID}",
         json={
             "creation_date": 1635431656,
             "group": True,
-            "id": 12345,
             "key": "random_key",
             "last_connect": "null",
             "last_modification_date": 1637162052,
@@ -45,14 +43,14 @@ def test_scanner_details(api):
             "timestamp": 1637654052,
             "type": "local",
             "user_permissions": 64,
-            "uuid": scanner_uuid,
+            "id": SCANNER_ID,
             "supports_remote_logs": False,
             "supports_webapp": True,
         },
     )
     status = api.v3.vm.scanners.details(SCANNER_ID)
     assert isinstance(status, dict)
-    assert status["uuid"] == scanner_uuid
+    assert status["id"] == SCANNER_ID
 
 
 @responses.activate
@@ -65,7 +63,6 @@ def test_scanners_linking_key(api):
         {
             "creation_date": 1635431656,
             "group": True,
-            "id": 50392313,
             "key": key1,
             "last_connect": None,
             "last_modification_date": 1635431656,
@@ -85,7 +82,6 @@ def test_scanners_linking_key(api):
             "num_scans": 0,
             "owner":{
                 "owner": "system",
-                "id": 2236706,
                 "name": "system",
                 "uuid": "3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e"
             },
@@ -97,14 +93,13 @@ def test_scanners_linking_key(api):
             "timestamp": 1635431656,
             "type": "local",
             "user_permissions": 64,
-            "uuid": "00000000-0000-0000-0000-00000000000000000000000000001",
+            "id": "00000000-0000-0000-0000-00000000000000000000000000001",
             "supports_remote_logs": False,
             "supports_webapp": True,
         },
         {
             "creation_date": 1635431655,
             "group": True,
-            "id": 50392292,
             "key": "a02hc58d8gfcf1dh44568eh95he9hd5eb3904db5955a7ge10g0h1e793e2100ba",
             "last_connect": None,
             "last_modification_date": 1635431655,
@@ -124,9 +119,8 @@ def test_scanners_linking_key(api):
             "num_scans": 0,
             "owner":{
                 "owner": "system",
-                "id": 2236706,
                 "name": "system",
-                "owner_uuid": "3bfcfb11-6c12-405b-b7ba-bbc705cd2r4e"
+                "id": "3bfcfb11-6c12-405b-b7ba-bbc705cd2r4e"
             },
             "pool": True,
             "scan_count": 0,
@@ -136,7 +130,7 @@ def test_scanners_linking_key(api):
             "timestamp": 1635431655,
             "type": "local",
             "user_permissions": 64,
-            "uuid": "2bd8dddb-397f-4ef7-9866-f9e4b8fa4d7d",
+            "id": "2bd8dddb-397f-4ef7-9866-f9e4b8fa4d7d",
             "supports_remote_logs": False,
             "supports_webapp": True,
         },
@@ -164,14 +158,14 @@ def test_scanners_control_scan(api):
     """
     Test the control_scan function
     """
-    scanner_uuid = str(uuid.uuid1())
+    scan_uuid = str(uuid.uuid1())
     action = "stop"
     responses.add(
         responses.POST,
-        f"{SCANNER_BASE_URL}/{SCANNER_ID}/scans/{scanner_uuid}/control",
+        f"{SCANNER_BASE_URL}/{SCANNER_ID}/scans/{scan_uuid}/control",
         match=[matchers.json_params_matcher({"action": action})],
     )
-    assert None is api.v3.vm.scanners.control_scan(SCANNER_ID, scanner_uuid, action)
+    assert None is api.v3.vm.scanners.control_scan(SCANNER_ID, scan_uuid, action)
 
 
 @responses.activate

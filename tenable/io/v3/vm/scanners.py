@@ -40,7 +40,7 @@ class ScannersAPI(ExploreBaseEndpoint):
         scanners = self.list()
         for scanner in scanners:
             if (
-                scanner["uuid"]
+                scanner["id"]
                 == "00000000-0000-0000-0000-00000000000000000000000000001"
             ):
                 return scanner["key"]
@@ -89,7 +89,7 @@ class ScannersAPI(ExploreBaseEndpoint):
 
     def control_scan(
         self,
-        scanner_id: int,
+        scanner_id: UUID,
         scan_uuid: UUID,
         action: Literal["resume", "pause", "stop"],
     ) -> None:
@@ -99,7 +99,7 @@ class ScannersAPI(ExploreBaseEndpoint):
         :devportal:`scanners: control-scans <scanners-control-scans>`
 
         Args:
-            scanner_id (int):
+            scanner_id: (uuid):
                 The unique identifier for the scanner.
             scan_uuid (uuid):
                 The unique identifier for the scan.
@@ -124,14 +124,14 @@ class ScannersAPI(ExploreBaseEndpoint):
             json={
                 "action": action})
 
-    def delete(self, id: int) -> None:
+    def delete(self, id: UUID) -> None:
         """
         Delete a scanner from Tenable.io.
 
         :devportal:`scanners: delete <scanners-delete>`
 
         Args:
-            id (int):
+            id (uuid):
                 The unique identifier for the scanner to delete.
 
         Returns:
@@ -143,14 +143,14 @@ class ScannersAPI(ExploreBaseEndpoint):
         """
         self._delete(f"{id}")
 
-    def details(self, id: int) -> Dict:
+    def details(self, id: UUID) -> Dict:
         """
         Retrieve the details for a specified scanner.
 
         :devportal:`scanners: details <scanners-details>`
 
         Args:
-            id (int):
+            id: (uuid):
                 The unique identifier for the scanner
 
         Returns:
@@ -163,14 +163,14 @@ class ScannersAPI(ExploreBaseEndpoint):
         """
         return self._get(f"{id}")
 
-    def edit(self, id: int, **kwargs) -> None:
+    def edit(self, id: UUID, **kwargs) -> None:
         """
         Modify the scanner.
 
         :devportal:`scanners: edit <scanners-edit>`
 
         Args:
-            id (int):
+            id: (uuid):
                 The unique identifier for the scanner.
             force_plugin_update (bool, optional):
                 Force the scanner to perform a plugin update .
@@ -199,14 +199,14 @@ class ScannersAPI(ExploreBaseEndpoint):
         payload = schema.dump(schema.load(kwargs))
         self._api.put(f"settings/{id}", json=payload)
 
-    def get_aws_targets(self, id: int) -> List:
+    def get_aws_targets(self, id: UUID) -> List:
         """
         Returns the list of AWS targets the scanner can reach.
 
         :devportal:`scanners: get-aws-targets <scanners-get-aws-targets>`
 
         Args:
-            id (int): The unique identifier for the scanner.
+            id: (uuid): The unique identifier for the scanner.
 
         Returns:
             List:
@@ -218,14 +218,14 @@ class ScannersAPI(ExploreBaseEndpoint):
         """
         return self._get(f"{id}/aws-targets")["targets"]
 
-    def get_scanner_key(self, id: int) -> str:
+    def get_scanner_key(self, id: UUID) -> str:
         """
         Return the key associated with the scanner.
 
         :devportal:`scanners: get-scanner-key <scanners-get-scanner-key>`
 
         Args:
-            id (int): The unique identifier for the scanner.
+            id: (uuid): The unique identifier for the scanner.
 
         Returns:
             str:
@@ -236,14 +236,14 @@ class ScannersAPI(ExploreBaseEndpoint):
         """
         return str(self._get(f"{id}/key")["key"])
 
-    def get_scans(self, id: int) -> List:
+    def get_scans(self, id: UUID) -> List:
         """
         Retrieves the scans associated to the scanner.
 
         :devportal:`scanners: get-scans <scanners-get-scans>`
 
         Args:
-            id (int): The unique identifier for the scanner.
+            id: (uuid): The unique identifier for the scanner.
 
         Returns:
             List:
@@ -290,14 +290,14 @@ class ScannersAPI(ExploreBaseEndpoint):
         """
         return self._get()["scanners"]
 
-    def toggle_link_state(self, id: int, linked: bool) -> None:
+    def toggle_link_state(self, id: UUID, linked: bool) -> None:
         """
         Toggles the scanner's activated state.
 
         :devportal:`scanners: toggle-link-state <scanners-toggle-link-state>`
 
         Args:
-            id (int): The unique identifier for the scanner
+            id: (uuid): The unique identifier for the scanner
             linked (bool):
                 The link status of the scanner.
                 Setting to `False` will disable
@@ -317,12 +317,12 @@ class ScannersAPI(ExploreBaseEndpoint):
             json={"link": int(linked)},
         )
 
-    def get_permissions(self, id: int) -> Dict:
+    def get_permissions(self, id: UUID) -> Dict:
         """
         Returns the permission list for a given scanner.
 
         Args:
-            id (int): The unique identifier for the scanner.
+            id: (uuid): The unique identifier for the scanner.
 
         Returns:
             Dict:
@@ -338,12 +338,12 @@ class ScannersAPI(ExploreBaseEndpoint):
                 migrated to v3"
         )
 
-    def edit_permissions(self, id: int, *acls) -> None:
+    def edit_permissions(self, id: UUID, *acls) -> None:
         """
         Modifies the permissions list for the given scanner.
 
         Args:
-            id (int):The unique identifier for the scanner.
+            id: (uuid):The unique identifier for the scanner.
             *acls (dict): The permissions record(s) for the scanner.
 
         Returns:
