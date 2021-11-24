@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, Type, Union
 from uuid import UUID
 
 from tenable.base.endpoint import APIEndpoint
-# from tenable.io.v3.base.iterators.uw.search import UWSearchIterator # todo commented because dir is empty
+# from tenable.io.v3.base.iterators.uw.search import UWSearchIterator # todo commented because dir is empty-update later
 from tenable.io.v3.base.schema.uw.search import SearchSchema
 
 

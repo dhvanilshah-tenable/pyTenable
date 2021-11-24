@@ -110,7 +110,7 @@ class PluginsAPI(UWBaseEndpoint):
             >>> for family in tio.plugins.families():
             ...     pprint(family)
         """
-        return NotImplementedError()
+        return NotImplementedError("Search and Filter functionality will be updated later.")
 
     def family_details(self, family_id: int) -> Dict:
         """
@@ -206,4 +206,4 @@ class PluginsAPI(UWBaseEndpoint):
         #     _path='plugins/plugin',
         #     _resource='plugin_details'
         # )
-        return NotImplemented()
+        return NotImplemented("Search and Filter functionality will be updated later.")
