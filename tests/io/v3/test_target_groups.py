@@ -1,8 +1,8 @@
 """
 Testing the exports endpoints
 """
-import re
 import responses
+
 
 RE_BASE = 'https://cloud.tenable.com/target-groups'
 TARGET_GROUP = {
