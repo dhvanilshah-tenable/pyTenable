@@ -1,5 +1,5 @@
 """
-Base Universal Workspace Filter Schema
+Base Explore Filter Schema
 """
 from typing import Dict, Tuple, Union
 

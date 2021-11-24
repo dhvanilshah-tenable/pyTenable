@@ -15,13 +15,13 @@ Methods available on ``tio.v3.vm.scanners``:
 from typing import Dict, List
 from uuid import UUID
 
-from tenable.io.v3.base.endpoints.explore import UWBaseEndpoint
+from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from typing_extensions import Literal
 
 from .schema import ScannerEditSchema
 
 
-class ScannersAPI(UWBaseEndpoint):
+class ScannersAPI(ExploreBaseEndpoint):
 
     _path = "scanners"
     _conv_json = True

@@ -1,5 +1,5 @@
 """
-Base UW Endpoint Class
+Base Explore Endpoint Class
 """
 import time
 from typing import Dict, List, Optional, Type, Union
@@ -9,7 +9,7 @@ from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.base.schema.explore.search import SearchSchema
 
 
-class UWBaseEndpoint(APIEndpoint):
+class ExploreBaseEndpoint(APIEndpoint):
     _conv_json = False
 
     def details(self, obj_id: Union[str, UUID]):
