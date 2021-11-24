@@ -19,7 +19,6 @@ Version3API APIs.
 
     vm
     users
-
 '''
 
 
@@ -35,7 +34,8 @@ class Version3API(APIEndpoint):
         :doc:`Tenable.io Vul Management APIs`.
         '''
         return VulnerabilityManagement(self._api)
-        
+
+    @property
     def users(self):
         '''
         The interface object for the
