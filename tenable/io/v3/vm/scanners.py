@@ -16,7 +16,7 @@ from typing import Dict, List
 from uuid import UUID
 
 from marshmallow import schema
-from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
+from tenable.io.v3.base.endpoints.export import UWBaseEndpoint
 from typing_extensions import Literal
 
 from .schema import ScannerEditSchema
