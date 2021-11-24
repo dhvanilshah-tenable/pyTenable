@@ -1,7 +1,6 @@
 import copy
 
-from marshmallow import Schema, fields, post_dump
-from marshmallow import validate as v
+from marshmallow import Schema, fields, post_dump, validate
 
 
 class ScannerEditSchema(Schema):
@@ -31,3 +30,16 @@ class ScannerEditSchema(Schema):
                     data_dict.pop(key)
         data_dict.pop("id")
         return data_dict
+
+
+class ACLSchema(Schema):
+    type = fields.Str(validate=validate.OneOf(["default", "user", "group"]))
+    id = fields.Int()
+    permissions = fields.Int()
+
+
+class TargetGroupsSchema(Schema):
+    id = fields.Int()
+    name = fields.Str()
+    members = fields.Str()
+    acls = fields.List(fields.Nested(ACLSchema))

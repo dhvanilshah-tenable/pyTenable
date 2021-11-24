@@ -13,8 +13,8 @@ Methods available on ``tio.target_groups``:
 """
 from typing import List, Dict
 
-from tenable.errors import UnexpectedValueError
 from tenable.io.v3.base.endpoints.export import UWBaseEndpoint
+from tenable.io.v3.vm.schema import TargetGroupsSchema
 from tenable.utils import dict_merge
 
 
@@ -22,7 +22,7 @@ class TargetGroupsAPI(UWBaseEndpoint):
     _path = "target-groups"
     _conv_json = True
 
-    def create(self, name: str, members: List, acls=None, **kw) -> Dict:
+    def create(self, name: str, members: List, **kw) -> Dict:
         """
         Create a target-group.
 
@@ -45,18 +45,11 @@ class TargetGroupsAPI(UWBaseEndpoint):
         Examples:
             >>> tg = tio.target_groups.create('Example', ['192.168.0.0/24'])
         """
-
-        payload = {
-            'name': name
-        }
-
-        if 'acls':
-            payload['acls'] = kw['acls']
-        if len(members) > 0:
-            payload['members'] = ','.join(members)
-        else:
-            raise UnexpectedValueError('No members in members list')
-
+        schema = TargetGroupsSchema()
+        if not members:
+            members = []
+        members = ",".join(members)
+        payload = schema.load({"name": name, "members": members, **kw})
         return self._post(json=payload)
 
     def delete(self, id: int) -> None:
@@ -75,7 +68,7 @@ class TargetGroupsAPI(UWBaseEndpoint):
         Examples:
             >>> tio.target_groups.delete(1)
         """
-        self._delete('{}'.format(id))
+        self._delete(id)
 
     def details(self, id: int) -> Dict:
         """
@@ -87,13 +80,13 @@ class TargetGroupsAPI(UWBaseEndpoint):
             id (int): The unique identifier for the target group.
 
         Returns:
-            :obj:`dict`:
+            Dict:
                 The resource record for the target group.
 
         Examples:
             >>> tg = tio.target_groups.details(1)
         """
-        return self._get('{}'.format(id))
+        return self._get(id)
 
     def edit(self, id: int, **kw) -> Dict:
         """
@@ -117,32 +110,20 @@ class TargetGroupsAPI(UWBaseEndpoint):
                 list of ACLs that this asset group will need.
 
         Returns:
-            :obj:`dict`:
+            Dict:
                 The modified target group resource record.
 
         Examples:
             >>> tio.target_groups.edit(1, name='Updated TG Name')
         """
-        payload = dict()
-
-        if 'name' in kw:
-            payload['name'] = kw['name']
-        if 'acls' in kw:
-            payload['acls'] = self._check('acls', kw['acls'], list)
-        if 'members' in kw and len(kw['members']) > 0:
-            payload['members'] = ','.join(self._check('members', kw['members'], list))
-
         # We need to get the current asset group and then merge in the modified
         # data.  We will store the information in the same variable as the
         # modified information was built into.
-        craw = self.details(id)
-        current = {
-            'name': craw.get('name'),
-            'acls': craw.get('acls'),
-            'members': craw.get('members'),
-        }
-        payload = dict_merge(current, payload)
-        return self._put('{}'.format(id), json=payload)
+        schema = TargetGroupsSchema(only=("name", "members", "acls"))
+        payload = schema.load(kw)
+        craw = schema.dump(self.details(id))
+        payload = dict_merge(craw, payload)
+        return self._put(id, json=payload)
 
     def list(self) -> List:
         """
@@ -151,7 +132,8 @@ class TargetGroupsAPI(UWBaseEndpoint):
         :devportal:`target-groups: list <target-groups-list>`
 
         Returns:
-            list: Listing of target group resource records.
+            List:
+                Listing of target group resource records.
 
         Examples:
             >>> for tg in tio.target_groups.list():

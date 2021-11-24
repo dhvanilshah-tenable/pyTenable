@@ -1,6 +1,7 @@
 from restfly.endpoint import APIEndpoint
 
 from .scanners import ScannersAPI
+from .target_groups import TargetGroupsAPI
 
 
 class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
@@ -11,3 +12,7 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
     @property
     def scanners(self):
         return ScannersAPI(self._api)
+
+    @property
+    def target_groups(self):
+        return TargetGroupsAPI(self._api)
