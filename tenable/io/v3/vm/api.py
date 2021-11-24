@@ -1,5 +1,6 @@
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.vm.users import UsersAPI
+from tenable.io.v3.vm.plugins import PluginsAPI
 
 '''
 VulnerabilityManagement
@@ -29,3 +30,11 @@ class VulnerabilityManagement(APIEndpoint):
         :doc:`Tenable.io Vulnerability Management users APIs`.
         '''
         return UsersAPI(self._api)
+
+    @property
+    def plugins(self):
+        """
+        The interface object for plugin API
+        Returns:
+        """
+        return PluginsAPI(self._api)
