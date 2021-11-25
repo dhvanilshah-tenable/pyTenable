@@ -417,8 +417,8 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     @property
     def v3(self):
         '''
-        The interface object for the v3 API's
-        :doc:`Tenable.io.v3 APIs`.
+        The interface object for the
+        :doc:`Tenable.io v3 APIs`.
         '''
         return Version3API(self)
 
@@ -429,11 +429,3 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         :doc:`Tenable.io Workbenches APIs <workbenches>`.
         '''
         return WorkbenchesAPI(self)
-
-    @property
-    def v3(self):
-        '''
-        The interface object for the v3 API's
-        :doc:`Tenable.io v3 APIs`.
-        '''
-        return Version3API(self)
