@@ -15,6 +15,17 @@ from typing import Dict, List, Literal, Tuple, Union
 from uuid import UUID
 
 from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
+from tenable.io.v3.base.iterators.search_iterator import SearchIterator
+from tenable.io.v3.base.schema.uw.filters import FilterSchema
+from tenable.io.v3.base.schema.uw.search import SearchSchema
+from tenable.io.v3.base.schema.uw.utils import generate_sort_data
+
+
+class AssetIterator(SearchIterator):
+    '''
+    asset iterator
+    '''
+    pass
 
 from .asset_schema import (AssignTagsAssetSchema, ImportAssetSchema,
                            MoveAssetSchema)
@@ -24,6 +35,37 @@ class AssetsAPI(UWBaseEndpoint):
     """
     This will contain all methods related to Assets
     """
+    _path = 'api/v3/assets'
+    _conv_json = True
+
+    def search_assets(self, *filters, **kw):
+        '''
+        Retrieves the assets.
+
+        Requires -
+            fields -- list of string = ["field1", "field2"] -> fields is not supported by the search_assets api
+            filter -- tuple ("field_name", "operator", "value") -- ('and', ('test', 'oper', '1'), ('test', 'oper', '2'))
+            sort -- "sort": [
+                        {"last_observed": "desc"}
+                    ]
+            limit -- integer = (10)
+            next -- str = ("adfj3u4j34u9j48wi3j5w84jt5") -> next token
+        '''
+
+        filterSchema = FilterSchema()
+        search_schema = SearchSchema()
+        query = filterSchema.dump(filterSchema.load(filters[0]))
+        sort_data = generate_sort_data(kw, is_with_prop=False)
+        kw.update({"filter": query,
+                   "sort": sort_data})
+        payload = search_schema.dump(search_schema.load(kw))
+        return AssetIterator(
+            api=self._api,
+            _limit=payload['limit'],
+            _path='search',
+            _resource='assets',
+            _payload=payload
+        )
 
     _path = "api/v3/assets"
     _conv_json = True
