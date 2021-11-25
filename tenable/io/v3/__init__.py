@@ -1,9 +1,6 @@
-from tenable.base.endpoint import APIEndpoint
-from tenable.io.v3.users import UsersAPI
-
 '''
 Version3API
-==================
+===========
 
 The following sub-package allows for interaction with the Tenable.io
 Version3API APIs.
@@ -16,15 +13,29 @@ Version3API APIs.
     :hidden:
     :glob:
 
+    assets
     users
 
+
 '''
+from tenable.base.endpoint import APIEndpoint
+from .assets import AssetsAPI
+from .users import UsersAPI
 
 
 class Version3API(APIEndpoint):
     '''
-    Version 3 API base class
+    This will contain property for all resources/app under io
+    i.e Container Security, Web Application Security.
     '''
+
+    @property
+    def assets(self):
+        """
+        The interface object for the Assets APIs
+        :doc:`Tenable.io.v3.assets Assets APIs <assets>`.
+        """
+        return AssetsAPI(self._api)
 
     @property
     def users(self):
