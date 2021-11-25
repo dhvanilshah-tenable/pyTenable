@@ -23,7 +23,7 @@ from .schema import ScannerEditSchema
 
 class ScannersAPI(ExploreBaseEndpoint):
 
-    _path = "scanners"
+    _path = "api/v3/scanners"
     _conv_json = True
 
     def linking_key(self) -> str:

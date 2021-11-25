@@ -9,7 +9,7 @@ import responses
 from responses import matchers
 from tenable.io.v3.vm.schema import ScannerEditSchema
 
-SCANNER_BASE_URL = r"https://cloud.tenable.com/scanners"
+SCANNER_BASE_URL = r"https://cloud.tenable.com/api/v3/scanners"
 BASE_URL = r"https://cloud.tenable.com"
 SCANNER_ID = str(uuid.uuid1())
 
