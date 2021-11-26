@@ -28,7 +28,7 @@ class AssetIterator(SearchIterator):
     '''
     pass
 
-from .asset_schema import (AssignTagsAssetSchema, ImportAssetSchema,
+from .schema import (AssignTagsAssetSchema, ImportAssetSchema,
                            MoveAssetSchema)
 
 

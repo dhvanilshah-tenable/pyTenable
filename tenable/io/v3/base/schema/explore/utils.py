@@ -1,5 +1,5 @@
 from tenable.errors import ValidationError
-from tenable.io.v3.base.schema.uw.search import SortSchema
+from tenable.io.v3.base.schema.explore.search import SortSchema
 from typing import Dict, List, Tuple
 
 
