@@ -1,31 +1,22 @@
-from tenable.base.endpoint import APIEndpoint
+'''
+API's under Vulnerability Management
+'''
+from restfly.endpoint import APIEndpoint
+from .scanners import ScannersAPI
 from tenable.io.v3.vm.plugins import PluginsAPI
 
-'''
-VulnerabilityManagement
-==================
 
-The following sub-package allows for interaction with the Tenable.io
-Vulnerability Management APIs.
+class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
+    """
+    This class will contain property for all resources
+    under Vulnerability Management
+    i.e assets, agents, scanners etc.
+    """
 
-.. rst-class:: hide-signature
-.. autoclass:: VulnerabilityManagement
-    :members:
-
-.. toctree::
-    :hidden:
-    :glob:
-    
-    plugins
-'''
-
-
-class VulnerabilityManagement(APIEndpoint):
+    @property
+    def scanners(self):
+        return ScannersAPI(self._api)
 
     @property
     def plugins(self):
-        """
-        The interface object for plugin API
-        Returns:
-        """
         return PluginsAPI(self._api)
