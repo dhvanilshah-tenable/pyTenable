@@ -1,6 +1,6 @@
-"""
+'''
 Base Explore Endpoint Class
-"""
+'''
 import time
 from typing import Dict, List, Optional, Type, Union
 from uuid import UUID
@@ -13,7 +13,7 @@ class ExploreBaseEndpoint(APIEndpoint):
     _conv_json = False
 
     def details(self, obj_id: Union[str, UUID]):
-        """
+        '''
         Gets the details for the specified id.
 
         Args:
@@ -27,12 +27,10 @@ class ExploreBaseEndpoint(APIEndpoint):
         Example:
 
             >>> tio.{PATHWAY}.details('00000000-0000-0000-0000-000000000000')
-        """
+        '''
         self._get(obj_id).json()
 
-    def search(
-        self,
-        *,
+    def search(self, *,
         fields: Optional[List[str]] = None,
         sort: Optional[List[Dict]] = None,
         filter: Optional[Dict] = None,
@@ -43,7 +41,7 @@ class ExploreBaseEndpoint(APIEndpoint):
         schema_cls: Optional[Type[SearchSchema]] = None,
         **kwargs,
     ):
-        """
+        '''
         Initiate a search
 
         Args:
@@ -82,34 +80,35 @@ class ExploreBaseEndpoint(APIEndpoint):
         Examples:
 
             >>>
-        """
-        kwargs["fields"] = fields
-        kwargs["sort"] = sort
-        kwargs["filter"] = filter
-        kwargs["limit"] = limit
-        kwargs["next"] = next
+        '''
+        kwargs['fields'] = fields
+        kwargs['sort'] = sort
+        kwargs['filter'] = filter
+        kwargs['limit'] = limit
+        kwargs['next'] = next
         if not schema_cls:
             schema_cls = SearchSchema
         if not iterator_cls:
             # todo - commenting this temporarily
-            # iterator_cls = UWSearchIterator
+            # iterator_cls = ExploreSearchIterator
             pass
         schema = schema_cls()
         payload = schema.dump(schema.load(kwargs))
         if return_resp:
-            return self._post("search", json=payload)
+            return self._post('search', json=payload)
         return iterator_cls(
                 self._api,
-                _path=f"{self._path}/search",
+                _path=f'{self._path}/search',
                 _payload=payload
             )
 
     def search_results(self, search_id: str, wait_for_results: bool = True):
-        """ """
-        resp = self._get(f"search/{search_id}")
+        ''' 
+        '''
+        resp = self._get(f'search/{search_id}')
         if resp.status_code == 202:
-            retry_after = resp.headers.get("retry-after", 10)
-            search_id = resp.headers.get("request-result-id", search_id)
+            retry_after = resp.headers.get('retry-after', 10)
+            search_id = resp.headers.get('request-result-id', search_id)
         if wait_for_results:
             time.sleep(retry_after)
             return self.search_results(search_id, wait_for_results=True)

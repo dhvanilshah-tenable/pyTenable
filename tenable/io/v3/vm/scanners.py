@@ -1,5 +1,5 @@
-"""
-scanners
+'''
+Scanners
 ========
 
 The following methods allow for interaction into the Tenable.io
@@ -10,7 +10,7 @@ Methods available on ``tio.v3.vm.scanners``:
 .. rst-class:: hide-signature
 .. autoclass:: ScannersAPI
     :members:
-"""
+'''
 
 from typing import Dict, List
 from uuid import UUID
@@ -23,11 +23,11 @@ from .schema import ScannerEditSchema
 
 class ScannersAPI(ExploreBaseEndpoint):
 
-    _path = "api/v3/scanners"
+    _path = 'api/v3/scanners'
     _conv_json = True
 
     def linking_key(self) -> str:
-        """
+        '''
         The linking key for the Tenable.io instance.
 
         Returns:
@@ -36,17 +36,17 @@ class ScannersAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> print(tio.v3.vm.scanners.linking_key())
-        """
+        '''
         scanners = self.list()
         for scanner in scanners:
             if (
-                scanner["id"]
-                == "00000000-0000-0000-0000-00000000000000000000000000001"
+                scanner['id']
+                == '00000000-0000-0000-0000-00000000000000000000000000001'
             ):
-                return scanner["key"]
+                return scanner['key']
 
     def allowed_scanners(self) -> List:
-        """
+        '''
         A simple convenience function that returns the list
         of scanners that the current user is allowed to use.
 
@@ -57,43 +57,43 @@ class ScannersAPI(ExploreBaseEndpoint):
         Examples:
             >>> for scanner in tio.v3.vm.scanners.allowed_scanners():
             ...     pprint(scanner)
-        """
+        '''
         # We want to get the scanners that are available for scanning.
         # To do so, we will want to pull the information from the
         # scan template.  This isn't the prettiest way to handle this,
         # however it will consistently
         # return the results that we are looking for.
         # def get_scanners(tmpl):
-        #     for item in tmpl["settings"]["basic"]["inputs"]:
-        #         if item["id"] == "scanner_id":
-        #             return item["options"]
+        #     for item in tmpl['settings']['basic']['inputs']:
+        #         if item['id'] == 'scanner_id':
+        #             return item['options']
         #     return []
 
-        # vm_tmpl = self._api.policies.templates().get("advanced", None)
-        # was_tmpl = self._api.policies.templates().get("was_scan", None)
+        # vm_tmpl = self._api.policies.templates().get('advanced', None)
+        # was_tmpl = self._api.policies.templates().get('was_scan', None)
         # scanners = get_scanners(
-        #    self._api.editor.template_details("scan", vm_tmpl)
+        #    self._api.editor.template_details('scan', vm_tmpl)
         # )
         # if was_tmpl is not None:
         #     scanners.extend(
         #         get_scanners(
-        #           self._api.editor.template_details("scan", was_tmpl)
+        #           self._api.editor.template_details('scan', was_tmpl)
         #         )
         #     )
         # return scanners
 
         return NotImplementedError(
-            "This method will be updated once Policies and Editor API's\
-                are implemented in v3"
+            'This method will be updated once Policies and Editor APIs\
+                are implemented in v3'
         )
 
     def control_scan(
         self,
         scanner_id: UUID,
         scan_uuid: UUID,
-        action: Literal["resume", "pause", "stop"],
+        action: Literal['resume', 'pause', 'stop'],
     ) -> None:
-        """
+        '''
         Perform actions against scans on a given scanner.
 
         :devportal:`scanners: control-scans <scanners-control-scans>`
@@ -118,14 +118,14 @@ class ScannersAPI(ExploreBaseEndpoint):
                 1, '00000000-0000-0000-0000-000000000000',
                 'stop'
                 )
-        """
+        '''
         self._post(
-            f"{scanner_id}/scans/{scan_uuid}/control",
+            f'{scanner_id}/scans/{scan_uuid}/control',
             json={
-                "action": action})
+                'action': action})
 
     def delete(self, id: UUID) -> None:
-        """
+        '''
         Delete a scanner from Tenable.io.
 
         :devportal:`scanners: delete <scanners-delete>`
@@ -140,11 +140,11 @@ class ScannersAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> tio.v3.vm.scanners.delete(1)
-        """
-        self._delete(f"{id}")
+        '''
+        self._delete(f'{id}')
 
     def details(self, id: UUID) -> Dict:
-        """
+        '''
         Retrieve the details for a specified scanner.
 
         :devportal:`scanners: details <scanners-details>`
@@ -160,11 +160,11 @@ class ScannersAPI(ExploreBaseEndpoint):
         Examples:
             >>> scanner = tio.v3.vm.scanners.details(1)
             >>> pprint(scanner)
-        """
-        return self._get(f"{id}")
+        '''
+        return self._get(f'{id}')
 
     def edit(self, id: UUID, **kwargs) -> None:
-        """
+        '''
         Modify the scanner.
 
         :devportal:`scanners: edit <scanners-edit>`
@@ -193,14 +193,14 @@ class ScannersAPI(ExploreBaseEndpoint):
             Force a plugin update on a scanner:
 
             >>> tio.v3.vm.scanners.edit(1, force_plugin_update=True)
-        """
+        '''
         payload = dict()
         schema = ScannerEditSchema()
         payload = schema.dump(schema.load(kwargs))
-        self._api.put(f"settings/{id}", json=payload)
+        self._api.put(f'settings/{id}', json=payload)
 
     def get_aws_targets(self, id: UUID) -> List:
-        """
+        '''
         Returns the list of AWS targets the scanner can reach.
 
         :devportal:`scanners: get-aws-targets <scanners-get-aws-targets>`
@@ -215,11 +215,11 @@ class ScannersAPI(ExploreBaseEndpoint):
         Examples:
             >>> for target in tio.v3.vm.scanners.get_aws_targets(1):
             ...      pprint(target)
-        """
-        return self._get(f"{id}/aws-targets")["targets"]
+        '''
+        return self._get(f'{id}/aws-targets')['targets']
 
     def get_scanner_key(self, id: UUID) -> str:
-        """
+        '''
         Return the key associated with the scanner.
 
         :devportal:`scanners: get-scanner-key <scanners-get-scanner-key>`
@@ -233,11 +233,11 @@ class ScannersAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> print(tio.v3.vm.scanners.get_scanner_key(1))
-        """
-        return str(self._get(f"{id}/key")["key"])
+        '''
+        return str(self._get(f'{id}/key')['key'])
 
     def get_scans(self, id: UUID) -> List:
-        """
+        '''
         Retrieves the scans associated to the scanner.
 
         :devportal:`scanners: get-scans <scanners-get-scans>`
@@ -252,11 +252,11 @@ class ScannersAPI(ExploreBaseEndpoint):
         Examples:
             >>> for scan in tio.v3.vm.scanners.get_scans(1):
             ...     pprint(scan)
-        """
-        return self._get(f"{id}/scans")["scans"]
+        '''
+        return self._get(f'{id}/scans')['scans']
 
     def search(self) -> List:
-        """
+        '''
         Search endpoint introduced in v3.
 
         :devportal:`scanners: search <scanners-search>`
@@ -265,17 +265,17 @@ class ScannersAPI(ExploreBaseEndpoint):
             List:
                 Iterator Class object
                 TODO Implementation of base iterator class
-                UWSearchIterator needs to be updated at v3/base/iterator
+                ExploreSearchIterator needs to be updated at v3/base/iterator
         Examples:
             TODO
-        """
+        '''
         raise NotImplementedError(
-            "This method will be updated once UWSearchIterator is \
-                implemented for v3"
+            'This method will be updated once ExploreSearchIterator is \
+                implemented for v3'
         )
 
     def list(self) -> List:
-        """
+        '''
         Retrieves the list of scanners.
 
         :devportal:`scanners: list <scanners-list>`
@@ -287,11 +287,11 @@ class ScannersAPI(ExploreBaseEndpoint):
         Examples:
             >>> for scanner in tio.scanners.list():
             ...     pprint(scanner)
-        """
-        return self._get()["scanners"]
+        '''
+        return self._get()['scanners']
 
     def toggle_link_state(self, id: UUID, linked: bool) -> None:
-        """
+        '''
         Toggles the scanner's activated state.
 
         :devportal:`scanners: toggle-link-state <scanners-toggle-link-state>`
@@ -311,14 +311,14 @@ class ScannersAPI(ExploreBaseEndpoint):
             to deactivate a linked scanner:
 
             >>> tio.v3.vm.scanners.toggle_link_state(1, False)
-        """
+        '''
         self._put(
-            f"{id}/link",
-            json={"link": int(linked)},
+            f'{id}/link',
+            json={'link': int(linked)},
         )
 
     def get_permissions(self, id: UUID) -> Dict:
-        """
+        '''
         Returns the permission list for a given scanner.
 
         Args:
@@ -330,16 +330,16 @@ class ScannersAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> tio.v3.vm.scanners.get_permissions(1)
-        """
-        # return self._api.permissions.list("scanner", self._check("id", id,
+        '''
+        # return self._api.permissions.list('scanner', self._check('id', id,
         # int))
         raise NotImplementedError(
-            "This method will be updated once Permissions API is \
-                migrated to v3"
+            'This method will be updated once Permissions API is \
+                migrated to v3'
         )
 
     def edit_permissions(self, id: UUID, *acls) -> None:
-        """
+        '''
         Modifies the permissions list for the given scanner.
 
         Args:
@@ -354,12 +354,12 @@ class ScannersAPI(ExploreBaseEndpoint):
             >>> tio.v3.vm.scanners.edit_permissions(1,
             ...     {'type': 'default, 'permissions': 16},
             ...     {'type': 'user', 'id': 2, 'permissions': 16})
-        """
-        # self._api.permissions.change("scanner",
-        #   self._check("id", id, int),
+        '''
+        # self._api.permissions.change('scanner',
+        #   self._check('id', id, int),
         #   *acls
         # )
         raise NotImplementedError(
-            "This method will be updated once Permissions API is migrated \
-                to v3"
+            'This method will be updated once Permissions API is migrated \
+                to v3'
         )

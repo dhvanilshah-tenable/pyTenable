@@ -5,12 +5,12 @@ from marshmallow import Schema, fields, post_dump
 
 
 class ScannerEditSchema(Schema):
-    """
+    '''
     Schema for edit functions in scanners.py
 
     Args:
 
-    """
+    '''
 
     force_plugin_update = fields.Bool()
     force_ui_update = fields.Bool()

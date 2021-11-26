@@ -421,7 +421,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         :doc:`Tenable.io v3 APIs`.
         '''
         return Version3API(self)
-    
+
     @property
     def workbenches(self):
         '''
