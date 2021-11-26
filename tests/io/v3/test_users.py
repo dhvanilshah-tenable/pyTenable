@@ -8,7 +8,6 @@ from responses import matchers
 USERS_BASE_URL = r'https://cloud.tenable.com/v3/users'
 USERS_API_ID = r'([0-9a-fA-F\-]+)'
 
-
 @responses.activate
 def test_details(api):
     responses.add(responses.GET,
