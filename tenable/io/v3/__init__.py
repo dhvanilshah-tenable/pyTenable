@@ -20,6 +20,8 @@ from tenable.base.endpoint import APIEndpoint
 
 from .vm.api import VulnerabilityManagement
 from tenable.io.v3.users import UsersAPI
+from tenable.io.v3.assets import AssetsAPI
+
 
 class Version3API(APIEndpoint):  # noqa: PLR0904
     '''

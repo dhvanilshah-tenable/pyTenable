@@ -18,6 +18,9 @@ from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
 from tenable.io.v3.base.iterators.search_iterator import SearchIterator
 from tenable.io.v3.base.schema.uw.filters import FilterSchema
 from tenable.io.v3.base.schema.uw.search import SearchSchema
+from .asset_schema import (AssignTagsAssetSchema, ImportAssetSchema,
+                           MoveAssetSchema)
+
 from tenable.io.v3.base.schema.uw.utils import generate_sort_data
 
 
@@ -27,14 +30,12 @@ class AssetIterator(SearchIterator):
     '''
     pass
 
-from .asset_schema import (AssignTagsAssetSchema, ImportAssetSchema,
-                           MoveAssetSchema)
-
 
 class AssetsAPI(UWBaseEndpoint):
-    """
+    '''
     This will contain all methods related to Assets
-    """
+    '''
+
     _path = 'api/v3/assets'
     _conv_json = True
 
@@ -66,9 +67,6 @@ class AssetsAPI(UWBaseEndpoint):
             _resource='assets',
             _payload=payload
         )
-
-    _path = "api/v3/assets"
-    _conv_json = True
 
     def list(self) -> List:
         """
