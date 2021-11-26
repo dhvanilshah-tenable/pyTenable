@@ -43,13 +43,13 @@ class TargetGroupsAPI(UWBaseEndpoint):
                 The resource record of the newly created target group.
 
         Examples:
-            >>> tg = tio.target_groups.create('Example', ['192.168.0.0/24'])
+            >>> tg = tio.v3.vm.target_groups.create('Example', ['192.168.0.0/24'])
         """
         schema = TargetGroupsSchema()
         if not members:
             members = []
         members = ",".join(members)
-        payload = schema.load({"name": name, "members": members, **kw})
+        payload = schema.dump(schema.load({"name": name, "members": members, **kw}))
         return self._post(json=payload)
 
     def delete(self, id: int) -> None:
@@ -66,9 +66,9 @@ class TargetGroupsAPI(UWBaseEndpoint):
                 The target group was successfully deleted.
 
         Examples:
-            >>> tio.target_groups.delete(1)
+            >>> tio.v3.vm.target_groups.delete(1)
         """
-        self._delete(id)
+        self._delete(f'{id}')
 
     def details(self, id: int) -> Dict:
         """
@@ -84,9 +84,9 @@ class TargetGroupsAPI(UWBaseEndpoint):
                 The resource record for the target group.
 
         Examples:
-            >>> tg = tio.target_groups.details(1)
+            >>> tg = tio.v3.vm.target_groups.details(1)
         """
-        return self._get(id)
+        return self._get(f'{id}')
 
     def edit(self, id: int, **kw) -> Dict:
         """
@@ -114,7 +114,7 @@ class TargetGroupsAPI(UWBaseEndpoint):
                 The modified target group resource record.
 
         Examples:
-            >>> tio.target_groups.edit(1, name='Updated TG Name')
+            >>> tio.v3.vm.target_groups.edit(1, name='Updated TG Name')
         """
         # We need to get the current asset group and then merge in the modified
         # data.  We will store the information in the same variable as the
@@ -123,7 +123,7 @@ class TargetGroupsAPI(UWBaseEndpoint):
         payload = schema.load(kw)
         craw = schema.dump(self.details(id))
         payload = dict_merge(craw, payload)
-        return self._put(id, json=payload)
+        return self._put(f'{id}', json=payload)
 
     def list(self) -> List:
         """
@@ -136,7 +136,7 @@ class TargetGroupsAPI(UWBaseEndpoint):
                 Listing of target group resource records.
 
         Examples:
-            >>> for tg in tio.target_groups.list():
+            >>> for tg in tio.v3.vm.target_groups.list():
             ...     pprint(tg)
         """
-        return self._get()['target_groups']
+        raise NotImplementedError('This method will be updated once Permissions API is migrated to v3')

@@ -3,18 +3,28 @@ Testing the exports endpoints
 """
 import responses
 
-
 RE_BASE = 'https://cloud.tenable.com/target-groups'
 TARGET_GROUP = {
-    "acls": [
-        {
-            "id": 4,
-            "type": "default",
-            "permissions": 3
-        }
-    ],
-    "name": "name",
-    "members": "member1, member2"
+    "acls": [{
+        "permissions": 16,
+        "owner": 1,
+        "display_name": "user2@example.com",
+        "name": "user2@example.com",
+        "id": 2,
+        "type": "user"
+    }],
+    "owner": {
+        "id": 2,
+        "name": "user2@example.com",
+    },
+    "default_group": 0,
+    "members": "192.0.2.53, 192.0.2.54, 192.0.2.55",
+    "name": "RHEL_Hosts",
+    "shared": 0,
+    "user_permissions": 16,
+    "last_modification_date": 1543622674,
+    "creation_date": 1543622674,
+    "id": 18
 }
 
 
@@ -98,39 +108,7 @@ def test_details(api):
 @responses.activate
 def test_list(api):
     response = {
-        'target_groups': [
-            {
-                'acls': [
-                    {
-                        'permissions': 0,
-                        'owner': 'NULL',
-                        'display_name': 'NULL',
-                        'name': 'NULL',
-                        'id': 'NULL',
-                        'type': 'default'
-                    },
-                    {
-                        'permissions': 128,
-                        'owner': 1,
-                        'display_name': 'user2@example.com',
-                        'name': 'user2@example.com',
-                        'id': 2,
-                        'type': 'user'
-                    }
-                ],
-                'default_group': 0,
-                'type': 'user',
-                'members': '192.0.2.53, 192.0.2.54, 192.0.2.55, 192.0.2.56, 192.0.2.57',
-                'name': 'Centos_Hosts',
-                'owner': 'user2@example.com',
-                'shared': 0,
-                'user_permissions': 128,
-                'last_modification_date': 1543622642,
-                'creation_date': 1543622642,
-                'owner_id': 2,
-                'id': 17
-            }
-        ]
+        'target_groups': [TARGET_GROUP]
     }
     responses.add(responses.GET, RE_BASE, json=response)
     target_groups = api.v3.vm.target_groups.list()
