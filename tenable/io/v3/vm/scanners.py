@@ -1,4 +1,6 @@
 '''
+.. _scanners-reference-label:
+
 Scanners
 ========
 
@@ -31,7 +33,7 @@ class ScannersAPI(ExploreBaseEndpoint):
         The linking key for the Tenable.io instance.
 
         Returns:
-            str:
+            :obj:`str`:
                 The linking key
 
         Examples:
@@ -51,7 +53,7 @@ class ScannersAPI(ExploreBaseEndpoint):
         of scanners that the current user is allowed to use.
 
         Returns:
-            List:
+            :obj:`list`:
                 List of scanner documents.
 
         Examples:
@@ -108,7 +110,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                 `pause`, and `resume`.
 
         Returns:
-            None:
+            :obj:`None`:
                 The action was sent to the scan successfully.
 
         Examples:
@@ -135,7 +137,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                 The unique identifier for the scanner to delete.
 
         Returns:
-            None:
+            :obj:`None`:
                 The scanner was successfully deleted.
 
         Examples:
@@ -154,7 +156,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                 The unique identifier for the scanner
 
         Returns:
-            Dict:
+            :obj:`dict`:
                 The scanner resource record.
 
         Examples:
@@ -186,7 +188,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                 how often to check into Tenable.io.
 
         Returns:
-            None:
+            :obj:`None`:
                 The operation was requested successfully.
 
         Examples:
@@ -209,7 +211,7 @@ class ScannersAPI(ExploreBaseEndpoint):
             id: (uuid): The unique identifier for the scanner.
 
         Returns:
-            List:
+            :obj:`list`:
                 List of aws target resource records.
 
         Examples:
@@ -228,7 +230,7 @@ class ScannersAPI(ExploreBaseEndpoint):
             id: (uuid): The unique identifier for the scanner.
 
         Returns:
-            str:
+            :obj:`str`:
                 The scanner key
 
         Examples:
@@ -246,7 +248,7 @@ class ScannersAPI(ExploreBaseEndpoint):
             id: (uuid): The unique identifier for the scanner.
 
         Returns:
-            List:
+            :obj:`list`:
                 List of scan resource records associated to the scanner.
 
         Examples:
@@ -262,7 +264,7 @@ class ScannersAPI(ExploreBaseEndpoint):
         :devportal:`scanners: search <scanners-search>`
 
         Returns:
-            List:
+            :obj:`list`:
                 Iterator Class object
                 TODO Implementation of base iterator class
                 ExploreSearchIterator needs to be updated at v3/base/iterator
@@ -281,7 +283,7 @@ class ScannersAPI(ExploreBaseEndpoint):
         :devportal:`scanners: list <scanners-list>`
 
         Returns:
-            List:
+            :obj:`list`:
                 List of scanner resource records.
 
         Examples:
@@ -304,7 +306,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                 the link, whereas setting to `True` will enable the link.
 
         Returns:
-            None:
+            :obj:`None`:
                 The status change was successful.
 
         Examples:
@@ -325,7 +327,7 @@ class ScannersAPI(ExploreBaseEndpoint):
             id: (uuid): The unique identifier for the scanner.
 
         Returns:
-            Dict:
+            :obj:`dict`:
                 The permissions resource for the scanner
 
         Examples:
@@ -347,7 +349,7 @@ class ScannersAPI(ExploreBaseEndpoint):
             *acls (dict): The permissions record(s) for the scanner.
 
         Returns:
-            None:
+            :obj:`None`:
                 The permissions have been updated successfully.
 
         Examples:
