@@ -1,17 +1,17 @@
-import copy
-
-from marshmallow import Schema, fields, post_dump, validate
+'''
+Scanners API Endpoint Schemas
+'''
+from marshmallow import Schema, fields, post_dump
 
 
 class ScannerEditSchema(Schema):
-    """
+    '''
     Schema for edit functions in scanners.py
 
     Args:
 
-    """
+    '''
 
-    id = fields.Int(required=True)
     force_plugin_update = fields.Bool()
     force_ui_update = fields.Bool()
     finish_update = fields.Bool()
@@ -20,16 +20,20 @@ class ScannerEditSchema(Schema):
 
     @post_dump
     def post_serialization(self, data, **kwargs):  # noqa PLR0201 PLW0613
-        data_dict = copy.deepcopy(data)
-
-        for key, value in data.items():
-            if isinstance(value, bool):
-                if value:
-                    data_dict[key] = 1
-                else:
-                    data_dict.pop(key)
-        data_dict.pop("id")
-        return data_dict
+        data = dict(
+            filter(
+                lambda item: item[1] not in fields.Bool.falsy,
+                data.items()
+            )
+        )
+        data.update(
+            map(
+                lambda item: (
+                    item[0], 1) if item[1] in fields.Bool.truthy else item,
+                data.items(),
+            )
+        )
+        return data
 
 
 class TargetGroupsSchema(Schema):

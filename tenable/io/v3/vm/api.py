@@ -1,3 +1,6 @@
+'''
+API's under Vulnerability Management
+'''
 from restfly.endpoint import APIEndpoint
 
 from .scanners import ScannersAPI
