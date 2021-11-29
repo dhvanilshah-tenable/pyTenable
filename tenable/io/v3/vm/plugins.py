@@ -103,7 +103,7 @@ class PluginsAPI(ExploreBaseEndpoint):
         :devportal:`plugins: families <plugins-families>`
 
         Returns:
-            List:
+            :obj:`list`:
                 List of plugin family resource records.
 
         Examples:
@@ -123,7 +123,7 @@ class PluginsAPI(ExploreBaseEndpoint):
                 The plugin family unique identifier.
 
         Returns:
-            Dict:
+            :obj:`dict`:
                 Returns a dictionary stating the id, name, and plugins that are
                 housed within the plugin family.
 
@@ -142,7 +142,7 @@ class PluginsAPI(ExploreBaseEndpoint):
             plugin_id (int): The plugin id for the requested plugin.
 
         Returns:
-            Dict:
+            :obj:`dict`:
                 A dictionary stating the id, name, family, and any other
                 relevant attributes associated to the plugin.
 
