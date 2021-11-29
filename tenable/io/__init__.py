@@ -419,7 +419,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def v3(self):
         '''
         The interface object for the
-        Tenable.io :ref:`v3-reference-label` APIs 
+        :doc:`Tenable.io v3 APIs <v3/index>`.
         '''
         return Version3API(self)
 

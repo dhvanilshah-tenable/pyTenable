@@ -1,6 +1,4 @@
 '''
-.. _v3-reference-label:
-
 Version3API
 ===========
 
@@ -43,6 +41,6 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     def vm(self):
         '''
         The interface object for the
-        :ref:`vm-reference-label`  v3 API's
+        :doc:`Vulnerability Management <vm/index>`
         '''
         return VulnerabilityManagement(self._api)

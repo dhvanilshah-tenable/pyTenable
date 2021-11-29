@@ -1,6 +1,4 @@
 '''
-.. _vm-reference-label:
-
 Vulnerability Management
 ========================
 
@@ -35,6 +33,6 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
     def scanners(self):
         '''
         The interface object for the
-        :ref:`scanners-reference-label` 
+        :doc:`Scanners API <scanners>`
         '''
         return ScannersAPI(self._api)

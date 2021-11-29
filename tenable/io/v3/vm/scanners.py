@@ -1,6 +1,4 @@
 '''
-.. _scanners-reference-label:
-
 Scanners
 ========
 
