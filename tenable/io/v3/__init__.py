@@ -17,9 +17,9 @@ Version3API APIs.
     vm
 '''
 from tenable.base.endpoint import APIEndpoint
-
-from .vm.api import VulnerabilityManagement
 from tenable.io.v3.users import UsersAPI
+from tenable.io.v3.vm.api import VulnerabilityManagement
+
 
 class Version3API(APIEndpoint):  # noqa: PLR0904
     '''
