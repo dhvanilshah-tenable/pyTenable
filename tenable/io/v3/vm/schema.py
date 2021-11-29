@@ -32,14 +32,7 @@ class ScannerEditSchema(Schema):
         return data_dict
 
 
-class ACLSchema(Schema):
-    type = fields.Str(validate=validate.OneOf(["default", "user", "group"]))
-    id = fields.Int()
-    permissions = fields.Int()
-
-
 class TargetGroupsSchema(Schema):
-    id = fields.Int()
     name = fields.Str()
     members = fields.Str()
-    acls = fields.List(fields.Nested(ACLSchema))
+    acls = fields.List(fields.Dict)

@@ -1,4 +1,4 @@
-"""
+'''
 Target Groups
 =============
 
@@ -10,7 +10,7 @@ Methods available on ``tio.target_groups``:
 .. rst-class:: hide-signature
 .. autoclass:: TargetGroupsAPI
     :members:
-"""
+'''
 from typing import List, Dict
 
 from tenable.io.v3.base.endpoints.export import UWBaseEndpoint
@@ -19,11 +19,11 @@ from tenable.utils import dict_merge
 
 
 class TargetGroupsAPI(UWBaseEndpoint):
-    _path = "target-groups"
+    _path = 'target-groups'
     _conv_json = True
 
     def create(self, name: str, members: List, **kw) -> Dict:
-        """
+        '''
         Create a target-group.
 
         :devportal:`target-groups: create <target-groups-create>`
@@ -44,16 +44,16 @@ class TargetGroupsAPI(UWBaseEndpoint):
 
         Examples:
             >>> tg = tio.v3.vm.target_groups.create('Example', ['192.168.0.0/24'])
-        """
+        '''
         schema = TargetGroupsSchema()
         if not members:
             members = []
-        members = ",".join(members)
-        payload = schema.dump(schema.load({"name": name, "members": members, **kw}))
+        members = ','.join(members)
+        payload = schema.dump(schema.load({'name': name, 'members': members, **kw}))
         return self._post(json=payload)
 
     def delete(self, id: int) -> None:
-        """
+        '''
         Delete a target group.
 
         :devportal:`target-groups: delete <target-groups-delete>`
@@ -67,11 +67,11 @@ class TargetGroupsAPI(UWBaseEndpoint):
 
         Examples:
             >>> tio.v3.vm.target_groups.delete(1)
-        """
+        '''
         self._delete(f'{id}')
 
     def details(self, id: int) -> Dict:
-        """
+        '''
         Retrieve the details of a target group.
 
         :devportal:`target-groups: details <target-groups-details>`
@@ -85,11 +85,11 @@ class TargetGroupsAPI(UWBaseEndpoint):
 
         Examples:
             >>> tg = tio.v3.vm.target_groups.details(1)
-        """
+        '''
         return self._get(f'{id}')
 
     def edit(self, id: int, **kw) -> Dict:
-        """
+        '''
         Edit an existing target group.
 
         :devportal:`target-groups: edit <target-groups-edit>`
@@ -115,18 +115,20 @@ class TargetGroupsAPI(UWBaseEndpoint):
 
         Examples:
             >>> tio.v3.vm.target_groups.edit(1, name='Updated TG Name')
-        """
+        '''
         # We need to get the current asset group and then merge in the modified
         # data.  We will store the information in the same variable as the
         # modified information was built into.
-        schema = TargetGroupsSchema(only=("name", "members", "acls"))
-        payload = schema.load(kw)
+        schema = TargetGroupsSchema()
+        if len(kw.get('members', [])) > 0 and isinstance(kw['members'], list):
+            kw['members'] = ','.join(kw['members'])
+        payload = schema.dump(schema.load(kw))
         craw = schema.dump(self.details(id))
         payload = dict_merge(craw, payload)
         return self._put(f'{id}', json=payload)
 
-    def list(self) -> List:
-        """
+    def search(self) -> List:
+        '''
         Retrieve the list of target groups configured.
 
         :devportal:`target-groups: list <target-groups-list>`
@@ -138,5 +140,5 @@ class TargetGroupsAPI(UWBaseEndpoint):
         Examples:
             >>> for tg in tio.v3.vm.target_groups.list():
             ...     pprint(tg)
-        """
+        '''
         raise NotImplementedError('This method will be updated once Permissions API is migrated to v3')

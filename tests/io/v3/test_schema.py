@@ -5,8 +5,10 @@ import pytest
 from marshmallow.exceptions import ValidationError
 from tenable.io.v3.schema import (
     UserEditSchema,
-    UsersCreateSchema
+    UsersCreateSchema,
 )
+from tenable.io.v3.vm.schema import TargetGroupsSchema
+from .test_target_groups import TARGET_GROUP
 
 
 @pytest.fixture
@@ -21,6 +23,18 @@ def users_create():
         'name': 'test',
         'email': 'test@tenable.com',
         'type': 'local'
+    }
+
+
+@pytest.fixture
+def target_group():
+    '''
+    Example target group
+    '''
+    return {
+        'name': TARGET_GROUP['name'],
+        'members': TARGET_GROUP['members'],
+        'acls': TARGET_GROUP['acls']
     }
 
 
@@ -75,3 +89,15 @@ def test_users_edit_schema(users_edit):
     with pytest.raises(ValidationError):
         users_edit['new_val'] = 'something'
         schema.load(users_edit)
+
+
+def test_target_groups_schema(target_group):
+    '''
+    Test the target groups create schema
+    '''
+    schema = TargetGroupsSchema()
+    assert target_group == schema.dump(schema.load(target_group))
+
+    with pytest.raises(ValidationError):
+        target_group['new_val'] = 'something'
+        schema.load(target_group)
