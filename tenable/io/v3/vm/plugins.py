@@ -14,7 +14,7 @@ Methods available on ``tio.plugins``:
 from datetime import date
 from typing import List, Dict
 from tenable.io.base import TIOIterator
-from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
+from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
 
 class PluginIterator(TIOIterator):
@@ -89,7 +89,7 @@ class PluginIterator(TIOIterator):
         return item
 
 
-class PluginsAPI(UWBaseEndpoint):
+class PluginsAPI(ExploreBaseEndpoint):
     """
     This will contain all methods related to plugins
     """
@@ -152,58 +152,5 @@ class PluginsAPI(UWBaseEndpoint):
         """
         return self._get(f"plugin/{plugin_id}")
 
-    def list(self, page: int = 1, size: int = 1000, last_updated: date = date(1970, 1, 1).strftime('%Y-%m-%d'),
-             num_pages: int = None) -> PluginIterator:
-        """
-        Get the listing of plugin details from Tenable.io.
-
-        :devportal:`plugins: list <io-plugins-list>`
-
-        Args:
-            size (int, optional):
-                The number of records to retrieve.  Default is 1000
-            page (int, optional):
-                The starting page to retrieve.  Default is 0.
-            last_updated (date, optional):
-                A datetime.date object stating when the threshold for the last
-                updated field can be for a plugin.
-            num_pages (int, optional):
-                The total number of pages to request before stopping the
-                iterator.
-        Returns:
-            PluginsIterator:
-                An iterator that handles the page management of the requested
-                records.
-
-        Examples:
-            Getting the listing of all plugins:
-
-            >>> for plugin in tio.plugins.list():
-            ...     pprint(plugin)
-
-            Retrieving all of the plugins updated since 2019-01-01:
-
-            >>> for plugin in tio.plugins.list(last_updated=date(2019, 1, 1)):
-            ...     pprint(plugin)
-
-            Informing the iterator to cache the plugin family data for injection
-            into each item:
-
-            >>> plugins = tio.plugins.list(last_updated=date(2019, 1, 1))
-            >>> plugins.populate_maptable = True
-            >>> for plugin in plugins:
-            ...     pprint(plugin)
-        """
-        # return PluginIterator(
-        #     self._api,
-        #     _api_version=3,
-        #     _size=size,
-        #     _page_num=page,
-        #     _query={
-        #         'last_updated': last_updated
-        #     },
-        #     _pages_total=num_pages,
-        #     _path='plugins/plugin',
-        #     _resource='plugin_details'
-        # )
+    def search(self):
         return NotImplemented("Search and Filter functionality will be updated later.")
