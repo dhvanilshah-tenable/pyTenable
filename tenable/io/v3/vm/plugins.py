@@ -93,7 +93,7 @@ class PluginsAPI(ExploreBaseEndpoint):
     """
     This will contain all methods related to plugins
     """
-    _path = "plugins"
+    _path = "api/v3/plugins"
     _conv_json = True
 
     def families(self) -> List:

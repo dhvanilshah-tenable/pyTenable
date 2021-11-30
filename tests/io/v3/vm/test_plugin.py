@@ -5,7 +5,7 @@ import re
 import responses
 import pytest
 
-BASE_URL = "https://cloud.tenable.com/plugins"
+BASE_URL = "https://cloud.tenable.com/api/v3/plugins"
 
 
 @pytest.mark.skip("API method NotImplemented in v3")
