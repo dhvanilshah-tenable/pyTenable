@@ -1,6 +1,4 @@
 '''
-.. _vm-reference-label:
-
 Vulnerability Management
 ========================
 
@@ -12,6 +10,7 @@ Methods available on ``tio.v3.vm``:
 .. rst-class:: hide-signature
 .. autoclass:: VulnerabilityManagement
     :members:
+
 .. toctree::
 
     :hidden:
@@ -26,17 +25,17 @@ from .plugins import PluginsAPI
 
 
 class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
-    """
+    '''
     This class will contain property for all resources
     under Vulnerability Management
     i.e assets, agents, scanners etc.
-    """
+    '''
 
     @property
     def scanners(self):
         '''
         The interface object for the
-        :ref:`scanners-reference-label`
+        :doc:`Scanners API <scanners>`
         '''
         return ScannersAPI(self._api)
 
