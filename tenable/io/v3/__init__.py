@@ -19,6 +19,7 @@ Version3API APIs.
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.users import UsersAPI
 from tenable.io.v3.vm.api import VulnerabilityManagement
+from tenable.io.v3.was.api import WebApplicationScanning
 
 
 class Version3API(APIEndpoint):  # noqa: PLR0904
@@ -41,3 +42,10 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
         The interface object for the Vulnerability Management API's
         '''
         return VulnerabilityManagement(self._api)
+
+    @property
+    def was(self):
+        '''
+        The interface object for the Vulnerability Management API's
+        '''
+        return WebApplicationScanning(self._api)
