@@ -7,6 +7,7 @@ from uuid import UUID
 
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.base.schema.explore.search import SearchSchema
+from tenable.io.v3.base.iterators.search_iterator import SearchIterator
 
 
 class ExploreBaseEndpoint(APIEndpoint):
@@ -89,9 +90,7 @@ class ExploreBaseEndpoint(APIEndpoint):
         if not schema_cls:
             schema_cls = SearchSchema
         if not iterator_cls:
-            # todo - commenting this temporarily
-            # iterator_cls = ExploreSearchIterator
-            pass
+            iterator_cls = SearchIterator
         schema = schema_cls()
         payload = schema.dump(schema.load(kwargs))
         if return_resp:

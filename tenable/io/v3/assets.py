@@ -21,15 +21,15 @@ from tenable.io.v3.base.schema.explore.filters import FilterSchema
 from tenable.io.v3.base.schema.explore.search import SearchSchema
 from tenable.io.v3.base.schema.explore.utils import generate_sort_data
 
+from .schema import (AssignTagsAssetSchema, ImportAssetSchema,
+                     MoveAssetSchema)
+
 
 class AssetIterator(SearchIterator):
     '''
     asset iterator
     '''
     pass
-
-from .schema import (AssignTagsAssetSchema, ImportAssetSchema,
-                           MoveAssetSchema)
 
 
 class AssetsAPI(ExploreBaseEndpoint):
@@ -39,7 +39,7 @@ class AssetsAPI(ExploreBaseEndpoint):
     _path = 'api/v3/assets'
     _conv_json = True
 
-    def search_assets(self, *filters, **kw):
+    def search_assets(self, *filters, **kw) -> AssetIterator:
         '''
         Retrieves the assets.
 
@@ -51,42 +51,28 @@ class AssetsAPI(ExploreBaseEndpoint):
                     ]
             limit -- integer = (10)
             next -- str = ('adfj3u4j34u9j48wi3j5w84jt5') -> next token
+
+        Returns:
+            Iterable:
+                The iterable that handles the pagination and potentially
+                async requests for the job.
+
         '''
 
-        filterSchema = FilterSchema()
+        filter_schema = FilterSchema()
         search_schema = SearchSchema()
-        query = filterSchema.dump(filterSchema.load(filters[0]))
+        query = filter_schema.dump(filter_schema.load(filters[0]))
         sort_data = generate_sort_data(kw, is_with_prop=False)
         kw.update({'filter': query,
                    'sort': sort_data})
         payload = search_schema.dump(search_schema.load(kw))
         return AssetIterator(
-            api=self._api,
+            api=self,
             _limit=payload['limit'],
             _path='search',
             _resource='assets',
             _payload=payload
         )
-
-    _path = 'api/v3/assets'
-    _conv_json = True
-
-    def list(self) -> List:
-        '''
-        Returns a list of assets.
-
-        :devportal:`assets: list-assets <assets-list-assets>`
-
-        Returns:
-            List:
-                List of asset records.
-
-        Examples:
-            >>> for asset in tio.v3.assets.list():
-            ...     pprint(asset)
-        '''
-        # Search is not available yet on our instance. Hence, it fails
-        return self._post('search', json={})['assets']
 
     def delete(self, uuid: UUID) -> None:
         '''
@@ -341,7 +327,6 @@ class AssetsAPI(ExploreBaseEndpoint):
         # schema = SomeSchema()
         # payload = schema.dump(schema.load(filter))
         # return self._delete(json=filter)
-
 
         raise NotImplementedError(
             'Not implemented yet as it depends on search functionality'

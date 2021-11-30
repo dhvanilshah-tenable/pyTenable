@@ -1,3 +1,7 @@
+'''
+Utils for explore schema
+'''
+
 from tenable.errors import ValidationError
 from tenable.io.v3.base.schema.explore.search import SortSchema
 from typing import Dict, List, Tuple
