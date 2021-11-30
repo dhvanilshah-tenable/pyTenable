@@ -1,15 +1,20 @@
 '''
 Version3API
 ===========
+
 The following sub-package allows for interaction with the Tenable.io
 Version3API APIs.
+
 Methods available on ``tio.v3``:
+
 .. rst-class:: hide-signature
 .. autoclass:: Version3API
     :members:
 .. toctree::
+
     :hidden:
     :glob:
+    
     users
     vm/index
 '''
