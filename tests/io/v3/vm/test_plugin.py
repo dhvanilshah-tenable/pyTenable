@@ -2,8 +2,9 @@
 test plugins
 """
 import re
-import responses
+
 import pytest
+import responses
 
 BASE_URL = "https://cloud.tenable.com/api/v3/plugins"
 
@@ -37,12 +38,17 @@ def test_family_details(api):
             },
             {
                 "id": 11591,
-                "name": "12Planet Chat Server Administration Authentication Cleartext Credential Disclosure"
+                "name": "12Planet Chat Server Administration Authentication"
+                        "Cleartext Credential Disclosure"
             }
         ]
     }
     family_id: int = 1
-    responses.add(responses.GET, re.compile(f'{BASE_URL}/families/{family_id}'), json=test_response)
+    responses.add(
+        responses.GET,
+        re.compile(f'{BASE_URL}/families/{family_id}'),
+        json=test_response
+    )
     family_details_response = api.v3.vm.plugins.family_details(family_id)
     assert isinstance(family_details_response, dict)
 
@@ -53,7 +59,10 @@ def test_family_details_with_status_code(api):
     Test Plugins family_details API with response status
     """
     family_id: int = 0
-    responses.add(responses.GET, re.compile(f'{BASE_URL}/families/{family_id}'))
+    responses.add(
+        responses.GET,
+        re.compile(f'{BASE_URL}/families/{family_id}')
+    )
     family_details_response = api.v3.vm.plugins.family_details(family_id)
     assert family_details_response.status_code == 200
 
@@ -71,7 +80,8 @@ def test_plugin_details(api):
             },
             {
                 "attribute_name": "plugin_name",
-                "attribute_value": "04WebServer Multiple Vulnerabilities (XSS, DoS, more)"
+                "attribute_value": "04WebServer Multiple "
+                                   "Vulnerabilities (XSS, DoS, more)"
             }
         ],
         "family_name": "Web Servers",
@@ -79,7 +89,11 @@ def test_plugin_details(api):
         "name": "04WebServer Multiple Vulnerabilities (XSS, DoS, more)"
     }
     plugin_id: int = 15713
-    responses.add(responses.GET, re.compile(f'{BASE_URL}/plugin/{plugin_id}'), json=test_reponse)
+    responses.add(
+        responses.GET,
+        re.compile(f'{BASE_URL}/plugin/{plugin_id}'),
+        json=test_reponse
+    )
     plugin_detail_response = api.v3.vm.plugins.plugin_details(plugin_id)
     assert isinstance(plugin_detail_response, dict)
 
