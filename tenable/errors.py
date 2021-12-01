@@ -8,7 +8,8 @@
 '''
 from typing import Optional
 
-from restfly.errors import APIError, RestflyException
+from restfly.errors import (APIError, NotFoundError,  # noqa:  F401
+                            RestflyException)
 
 
 class AuthenticationWarning(Warning):  # noqa: PLW0622
