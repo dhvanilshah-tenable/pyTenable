@@ -11,9 +11,10 @@ Methods available on ``tio.v3.assets``:
 .. autoclass:: AssetsAPI
     :members:
 '''
-from typing_extensions import Literal
 from typing import Dict, List, Tuple, Union
 from uuid import UUID
+
+from typing_extensions import Literal
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.search_iterator import SearchIterator
@@ -21,8 +22,7 @@ from tenable.io.v3.base.schema.explore.filters import FilterSchema
 from tenable.io.v3.base.schema.explore.search import SearchSchema
 from tenable.io.v3.base.schema.explore.utils import generate_sort_data
 
-from .schema import (AssignTagsAssetSchema, ImportAssetSchema,
-                     MoveAssetSchema)
+from .schema import AssignTagsAssetSchema, ImportAssetSchema, MoveAssetSchema
 
 
 class AssetIterator(SearchIterator):
@@ -44,13 +44,15 @@ class AssetsAPI(ExploreBaseEndpoint):
         Retrieves the assets.
 
         Requires -
-            fields -- list of string = ['field1', 'field2'] -> fields is not supported by the search_assets api
-            filter -- tuple ('field_name', 'operator', 'value') -- ('and', ('test', 'oper', '1'), ('test', 'oper', '2'))
-            sort -- 'sort': [
+            fields (list) -- list of string = ['field1', 'field2']
+                    -> fields is not supported by the search_assets api
+            filter (tuple) -- tuple ('field_name', 'operator', 'value')
+                    -- ('and', ('test', 'oper', '1'), ('test', 'oper', '2'))
+            sort List(tuple) -- 'sort': [
                         {'last_observed': 'desc'}
                     ]
-            limit -- integer = (10)
-            next -- str = ('adfj3u4j34u9j48wi3j5w84jt5') -> next token
+            limit (int) -- integer = (10)
+            next (str) -- ('adfj3u4j34u9j48wi3j5w84jt5') -> next token
 
         Returns:
             Iterable:
@@ -78,7 +80,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         '''
         Deletes the asset.
 
-        :devportal:`workbenches: asset-delete <workbenches-asset-delete>`
+        :devportal:`assets: asset-delete <asset-delete>`
 
         Args:
             asset_uuid (str): The unique identifier for the asset.
@@ -88,7 +90,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> asset_id = '00000000-0000-0000-0000-000000000000'
-            >>> tio.v3.workbenches.asset_delete(asset_id)
+            >>> tio.v3.delete(asset_id)
         '''
         return self._delete(uuid)
 
@@ -113,7 +115,8 @@ class AssetsAPI(ExploreBaseEndpoint):
         return self._get(f'{uuid}')
 
     def assign_tags(
-        self, action: Literal['add', 'remove'], assets: List[UUID], tags: List[UUID]
+        self, action: Literal['add', 'remove'],
+            assets: List[UUID], tags: List[UUID]
     ) -> Dict:
         # pylint: disable=no-self-use
         '''
@@ -123,14 +126,15 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         Args:
             action:
-                Specifies whether to add or remove tags. Valid values: add, remove.
+                Specifies whether to add or remove tags.
+                 Valid values: add, remove.
             assets:
                 An array of asset UUIDs.
             tags:
                 An array of tag value UUIDs.
 
         Returns:
-            Dict:
+            Obj:Dict:
                 The job Resource record.
 
         Examples:
@@ -143,6 +147,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         payload = schema.dump(
             schema.load({'action': action, 'assets': assets, 'tags': tags})
         )
+        print(payload)
         # return self._api.post('tags/assets/assignments', json=payload).json()
         raise NotImplementedError('Not implemented yet as it depends on tags')
 
@@ -172,7 +177,8 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         :devportal:`assets: import <assets-import>`
 
-        Imports a list of asset definition dictionaries.  Each asset record must
+        Imports a list of asset definition dictionaries.
+        Each asset record must
         contain at least one of the following attributes: ``fqdn``, ``ipv4``,
         ``netbios_name``, ``mac_address``.  Each record may also contain
         additional properties.
@@ -216,7 +222,8 @@ class AssetsAPI(ExploreBaseEndpoint):
         # asset resources that are being defined, however a simple type check
         # should suffice for now.
         schema = ImportAssetSchema()
-        payload = schema.dump(schema.load({'assets': assets, 'source': source}))
+        payload = schema.dump(schema.load({'assets': assets,
+                                           'source': source}))
         return self._post('import', json=payload)['asset_import_job_uuid']
 
     def list_import_jobs(self) -> List:
@@ -255,7 +262,9 @@ class AssetsAPI(ExploreBaseEndpoint):
         '''
         return self._get(f'import/jobs/{uuid}')
 
-    def move_assets(self, source: UUID, destination: UUID, targets: List[str]) -> int:
+    def move_assets(
+            self, source: UUID, destination: UUID, targets: List[str]
+    ) -> int:
         '''
         Moves assets from the specified network to another network.
 
@@ -273,20 +282,24 @@ class AssetsAPI(ExploreBaseEndpoint):
                 Returns the number of moved assets.
 
         Examples:
-            >>> asset = tio.v3.assets.move_assets('00000000-0000-0000-0000-000000000000',
+            >>> asset = tio.v3.assets.move_assets(
+            '00000000-0000-0000-0000-000000000000',
             ...         '10000000-0000-0000-0000-000000000001', ['127.0.0.1'])
             >>> pprint(asset)
         '''
         schema = MoveAssetSchema()
         payload = schema.dump(
             schema.load(
-                {'source': source, 'destination': destination, 'targets': targets}
+                {'source': source,
+                 'destination': destination, 'targets': targets}
             )
         )
 
         return self._patch(json=payload)['response']['data']['asset_count']
 
-    def bulk_delete(self, *filters: Tuple[str], filter_type: str = None) -> Dict:
+    def bulk_delete(
+            self, *filters: Tuple[str], filter_type: str = None
+    ) -> Dict:
         '''
         Deletes the specified assets.
 
@@ -318,7 +331,8 @@ class AssetsAPI(ExploreBaseEndpoint):
         # filter_type = self._check('filter_type', filter_type, str,
         #     choices=['and', 'or'], default='and', case='lower')
         # parsed = self._parse_filters(
-        #     filters, self._filters.workbench_asset_filters(), rtype='assets')['asset']
+        #     filters, self._filters.workbench_asset_filters(),
+        #     rtype='assets')['asset']
 
         # payload['query'] = {filter_type: parsed}
 
