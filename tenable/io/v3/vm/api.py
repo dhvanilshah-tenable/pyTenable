@@ -2,7 +2,8 @@
 Vulnerability Management
 ========================
 
-The following API's are available for interaction under Vulnerability Management platform.
+The following API's are available for interaction under
+Vulnerability Management platform.
 
 Methods available on ``tio.v3.vm``:
 
@@ -15,10 +16,12 @@ Methods available on ``tio.v3.vm``:
     :hidden:
     :glob:
 
+    agent_config
     scanners
 '''
 from restfly.endpoint import APIEndpoint
 
+from .agent_config import AgentConfigAPI
 from .scanners import ScannersAPI
 
 
@@ -28,6 +31,14 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
     under Vulnerability Management
     i.e assets, agents, scanners etc.
     '''
+
+    @property
+    def agent_config(self):
+        '''
+        The interface object for the
+        :doc:`Agent Config APIs <agent_config>`.
+        '''
+        return AgentConfigAPI(self._api)
 
     @property
     def scanners(self):
