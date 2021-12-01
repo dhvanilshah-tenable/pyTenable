@@ -2,9 +2,10 @@
 Utils for explore schema
 '''
 
-from tenable.errors import ValidationError
-from tenable.io.v3.base.schema.explore.search import SortSchema
 from typing import Dict, List, Tuple
+
+from tenable.errors import RequestValidationError
+from tenable.io.v3.base.schema.explore.search import SortSchema
 
 
 def generate_sort_data(kw: Dict, is_with_prop: bool = True) -> List[Dict]:
@@ -21,11 +22,12 @@ def generate_sort_data(kw: Dict, is_with_prop: bool = True) -> List[Dict]:
                 if is_with_prop:
                     sort_data.append(schema.dump(data_validate))
                 else:
-                    sort_data.append({
-                        property: order
-                    })
+                    sort_data.append({property: order})
             else:
-                raise ValidationError('Sort', '[("field_name_1", "asc"), ("field_name_2", "desc")]')
+                raise RequestValidationError(
+                    'Sort', '[("field_name_1", "asc"),'
+                            ' ("field_name_2", "desc")]'
+                )
     else:
         sort_data = [{}]
 

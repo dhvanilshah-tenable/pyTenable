@@ -7,7 +7,8 @@
 .. autoclass:: TioExportsTimeout
 '''
 from typing import Optional
-from restfly.errors import *
+
+from restfly.errors import APIError, RestflyException
 
 
 class AuthenticationWarning(Warning):  # noqa: PLW0622
@@ -36,9 +37,10 @@ class FileDownloadError(RestflyException):
         self.resource = str(resource)
         self.resource_id = str(resource_id)
         self.filename = str(filename)
-        self.msg = (f'resource {resource}:{resource_id} '
-                    f'requested file {filename} and has failed.'
-                    )
+        self.msg = (
+            f'resource {resource}:{resource_id} '
+            f'requested file {filename} and has failed.'
+        )
 
 
 class TioExportsError(RestflyException):
@@ -102,7 +104,10 @@ class PasswordComplexityError(APIError):
     '''
 
 
-class ValidationError(Exception):
+class RequestValidationError(Exception):
     def __init__(self, type, example):
-        message = f'{type}: Validation failed. Please provide the valid data. Example: {example}'
+        message = (
+            f'{type}: Validation failed. Please provide'
+            f' the valid data. Example: {example}'
+        )
         super().__init__(message)
