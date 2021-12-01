@@ -8,8 +8,7 @@
 '''
 from typing import Optional
 
-from restfly.errors import (APIError, NotFoundError,  # noqa:  F401
-                            RestflyException)
+from restfly.errors import *  # noqa:  F403
 
 
 class AuthenticationWarning(Warning):  # noqa: PLW0622
@@ -19,7 +18,7 @@ class AuthenticationWarning(Warning):  # noqa: PLW0622
     '''
 
 
-class FileDownloadError(RestflyException):
+class FileDownloadError(RestflyException):  # noqa:  F405
     '''
     FileDownloadError is thrown when a file fails to download.
 
@@ -44,7 +43,7 @@ class FileDownloadError(RestflyException):
         )
 
 
-class TioExportsError(RestflyException):
+class TioExportsError(RestflyException):  # noqa:  F405
     '''
     When the exports APIs throw an error when processing an export, pyTenable
     will throw this error in turn to relay that context to the user.
@@ -69,7 +68,7 @@ class TioExportsTimeout(TioExportsError):
         super().__init__(export, uuid, msg)
 
 
-class ImpersonationError(APIError):
+class ImpersonationError(APIError):  # noqa:  F405
     '''
     An ImpersonationError exists when there is an issue with user
     impersonation.
@@ -87,7 +86,7 @@ class ImpersonationError(APIError):
     '''
 
 
-class PasswordComplexityError(APIError):
+class PasswordComplexityError(APIError):  # noqa:  F405
     '''
     PasswordComplexityError is thrown when attempting to change a password and
     the password complexity is insufficient.
