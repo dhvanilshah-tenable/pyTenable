@@ -85,7 +85,7 @@ SCANNERS_LIST = [
         'timestamp': 1635431655,
         'type': 'local',
         'user_permissions': 64,
-        'id': '2bd8dddb-397f-4ef7-9866-f9e4b8fa4d7d',
+        'id': SCANNER_ID,
         'supports_remote_logs': False,
         'supports_webapp': True,
     },
@@ -97,7 +97,7 @@ def test_scanner_details(api):
     responses.add(
         responses.GET,
         f'{SCANNER_BASE_URL}/{SCANNER_ID}',
-        json=SCANNERS_LIST[0],
+        json=SCANNERS_LIST[1],
     )
     status = api.v3.vm.scanners.details(SCANNER_ID)
     assert isinstance(status, dict)
