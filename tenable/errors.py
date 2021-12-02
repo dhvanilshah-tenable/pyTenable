@@ -100,3 +100,10 @@ class PasswordComplexityError(APIError):
             infrastructure.  In the case of Non-Tenable.io products, is simply
             an empty string.
     '''
+
+class ValidationError(Exception):
+    '''
+    '''
+    def __init__(self, type, example):
+        message = f'{type}: Validation failed. Please provide the valid data. Example: {example}'
+        super().__init__(message)

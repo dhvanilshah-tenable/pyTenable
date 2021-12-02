@@ -79,7 +79,7 @@ from .v3 import Version3API
 from .workbenches import WorkbenchesAPI
 
 
-class TenableIO(APIPlatform):  # noqa: PLR0904
+class TenableIO(APIPlatform):  # noqa: R0904
     '''
     The Tenable.io object is the primary interaction point for users to
     interface with Tenable.io via the pyTenable library.  All of the API
@@ -415,6 +415,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         '''
         return UsersAPI(self)
 
+    # pylint: disable=invalid-name
     @property
     def v3(self):
         '''

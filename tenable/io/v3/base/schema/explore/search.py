@@ -13,7 +13,7 @@ class SortSchema(Schema):
     Schema for the sorting sub-object
     '''
     property = marshm_fields.Str()
-    order = marshm_fields.Str(validates=v.OneOf(['asc', 'desc']))
+    order = marshm_fields.Str(validate=v.OneOf(['asc', 'desc']))
 
 
 class SearchSchema(Schema):
@@ -24,4 +24,4 @@ class SearchSchema(Schema):
     filter = marshm_fields.Nested(FilterSchema)
     limit = marshm_fields.Int()
     next = marshm_fields.Int()
-    sort = marshm_fields.List(marshm_fields.Nested(SortSchema))
+    sort = marshm_fields.List(marshm_fields.Dict())
