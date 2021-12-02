@@ -23,7 +23,7 @@ class AgentConfigAPI(ExploreBaseEndpoint):
     # _path: str = 'api/v3/agents'
     _conv_json: bool = True
 
-    def edit(self, auto_unlink: int, software_update: bool,
+    def edit(self, auto_unlink: int = None, software_update: bool = None,
              agent_id: int = 1) -> Dict:
         '''
         Edits the agent configuration.
@@ -61,14 +61,13 @@ class AgentConfigAPI(ExploreBaseEndpoint):
             >>> tio.v3.vm.agent_config.edit(software_update=True)
         '''
         # Lets build the dictionary that we will present to the API...
-        payload = {
-            'software_update': software_update,
-            'auto_unlink': {}
-        }
-        if 0 < auto_unlink < 366:
+        payload = {'auto_unlink': {}}
+        if software_update in [True, False]:
+            payload['software_update'] = software_update
+        if auto_unlink and 0 < auto_unlink < 366:
             payload['auto_unlink']['enabled'] = True
             payload['auto_unlink']['expiration'] = auto_unlink
-        else:
+        elif auto_unlink in [False, 0]:
             payload['auto_unlink']['enabled'] = False
         return self._put(f'scanners/{agent_id}/agents/config', json=payload)
         # return self._put(f'{agent_id}/config', json=payload)
