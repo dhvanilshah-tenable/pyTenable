@@ -15,16 +15,18 @@ Methods available on ``tio.v3``:
     :hidden:
     :glob:
 
+    assets
     users
     vm/index
     was/index
 '''
 from tenable.base.endpoint import APIEndpoint
-
-from .vm.api import VulnerabilityManagement
-from .was.api import WebAppScanning
-from .findings import FindingsAPI
 from tenable.io.v3.users import UsersAPI
+from tenable.io.v3.vm.api import VulnerabilityManagement
+from tenable.io.v3.was.api import WebAppScanning
+from tenable.io.v3.findings import FindingsAPI
+from tenable.io.assets import AssetsAPI
+
 
 class Version3API(APIEndpoint):  # noqa: PLR0904
     '''
@@ -40,6 +42,14 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
         '''
         return FindingsAPI(self._api)
     
+    @property
+    def assets(self):
+        """
+        The interface object for the Assets APIs
+        :doc:`Tenable.io.v3.assets Assets APIs <assets>`.
+        """
+        return AssetsAPI(self._api)
+
     @property
     def users(self):
         '''

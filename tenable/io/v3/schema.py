@@ -1,7 +1,6 @@
 '''
 V3 API Endpoints Schemas
 '''
-from marshmallow import Schema, fields
 from marshmallow import Schema, ValidationError, fields
 from marshmallow import validate as v
 from marshmallow.decorators import post_dump, pre_load
@@ -77,6 +76,7 @@ class UsersCreateSchema(Schema):
     '''
     Validate Create Users API Schema
     '''
+
     username = fields.Str(required=True)
     password = fields.Str(required=True)
     name = fields.Str()
@@ -89,6 +89,7 @@ class UserEditSchema(Schema):
     '''
     Validate edit users API Schema
     '''
+
     permissions = fields.Int()
     name = fields.Str()
     email = fields.Email()
