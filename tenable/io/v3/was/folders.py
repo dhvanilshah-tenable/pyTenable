@@ -11,69 +11,71 @@ Methods available on ``tio.v3.was.folders``:
 .. autoclass:: FoldersAPI
     :members:
 '''
-from typing import List
+import uuid
+from typing import Dict, List
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
 
 class FoldersAPI(ExploreBaseEndpoint):
-    _path = 'was/v3/folders'
+    _path = 'api/v3/folders'
     _conv_json = True
 
-    def create(self, name: str) -> int:
+    def create(self, name: str) -> Dict:
         '''
         Create a folder.
 
         :devportal:`folders: create <folders-create>`
 
         Args:
-            name (str):
+            name:
                 The name of the new folder.
 
         Returns:
-            :obj:`int`:
-                The new folder id.
+            :obj:`dict`:
+                The resource record of the newly created folder.
 
         Examples:
             >>> folder = tio.v3.was.folders.create('New Folder Name')
         '''
-        return self._post(json={'name': name})['id']
+        return self._post('webapp', json={'name': name})
 
-    def delete(self, id: int) -> None:
+    def delete(self, id: uuid.UUID) -> None:
         '''
         Delete a folder.
 
         :devportal:`folders: delete <folders-delete>`
 
         Args:
-            id (int): The unique identifier for the folder.
+            id: The unique identifier for the folder.
 
         Returns:
             :obj:`None`
 
         Examples:
-            >>> tio.v3.was.folders.delete(1)
+            >>> tio.v3.was.folders.delete('91843ecb-ecb8-48a3-b623-d4682c28c')
         '''
-        self._delete('{}'.format(id))
+        self._delete('{}/webapp'.format(id))
 
-    def edit(self, id: int, name: str) -> None:
+    def edit(self, id: uuid.UUID, name: str) -> Dict:
         '''
         Edit a folder.
 
         :devportal:`folders: edit <folders-edit>`
 
         Args:
-            id (int): The unique identifier for the folder.
-            name (str): The new name for the folder.
+            id: The unique identifier for the folder.
+            name: The new name for the folder.
 
         Returns:
-            :obj:`None`:
-                The folder was successfully renamed.
+            :obj:`dict`:
+                The resource record of the updated folder.
 
         Examples:
-            >>> tio.v3.was.folders.edit(1, 'Updated Folder Name')
+            >>> tio.v3.was.folders.edit('91843ecb-ecb8-48a3-b623-d4682c2594',
+            ...     'Updated Folder Name')
         '''
-        self._put('{}'.format(id), json={'name': name})
+        return self._put('{}/webapp'.format(id), json={'name': name})
 
     def list(self) -> List:
         '''
@@ -89,4 +91,4 @@ class FoldersAPI(ExploreBaseEndpoint):
             >>> for folder in tio.v3.was.folders.list():
             ...     pprint(folder)
         '''
-        return self._get('folders')['folders']
+        return self._get('webapp')

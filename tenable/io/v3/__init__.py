@@ -17,6 +17,7 @@ Methods available on ``tio.v3``:
 
     users
     vm/index
+    was/index
 '''
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.users import UsersAPI
@@ -49,6 +50,7 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     @property
     def was(self):
         '''
-        The interface object for the Vulnerability Management API's
+        The interface object for the
+         :doc:`Web Application Scanning <was/index>`
         '''
         return WebApplicationScanning(self._api)

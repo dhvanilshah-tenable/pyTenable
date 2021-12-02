@@ -1,5 +1,22 @@
 '''
-API's under Web Application Scanning
+Web Application Scanning
+========================
+
+The following API's are available for interaction under Web Application
+Scanning
+
+Methods available on ``tio.v3.was``:
+
+
+.. rst-class:: hide-signature
+.. autoclass:: WebApplicationScanning
+    :members:
+
+.. toctree::
+    :hidden:
+    :glob:
+
+    folders
 '''
 from restfly.endpoint import APIEndpoint
 
@@ -14,4 +31,8 @@ class WebApplicationScanning(APIEndpoint):  # noqa: PLR0904
 
     @property
     def folders(self):
+        '''
+        The interface object for the
+        :doc:`Folders API <folders>`
+        '''
         return FoldersAPI(self._api)
