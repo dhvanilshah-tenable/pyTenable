@@ -80,7 +80,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         '''
         Deletes the asset.
 
-        :devportal:`workbenches: asset-delete <workbenches-asset-delete>`
+        :devportal:`assets: asset-delete <asset-delete>`
 
         Args:
             asset_uuid (str): The unique identifier for the asset.
@@ -90,7 +90,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> asset_id = '00000000-0000-0000-0000-000000000000'
-            >>> tio.v3.workbenches.asset_delete(asset_id)
+            >>> tio.v3.delete(asset_id)
         '''
         return self._delete(uuid)
 
