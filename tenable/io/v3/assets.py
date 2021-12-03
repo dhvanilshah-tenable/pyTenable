@@ -43,22 +43,25 @@ class AssetsAPI(ExploreBaseEndpoint):
         '''
         Retrieves the assets.
 
-        Requires -
-            fields (list): ['field1', 'field2']
-                    -> fields is not supported by the search_assets api
-            filter (tuple): ('field_name', 'operator', 'value')
-                    -- ('and', ('test', 'oper', '1'), ('test', 'oper', '2'))
-            sort List(tuple): 'sort': [
-                        {'last_observed': 'desc'}
-                    ]
-            limit (int): (10)
-            next (str): ('adfj3u4j34u9j48wi3j5w84jt5') -> next token
+        Args:
+            fields (list): ['field1', 'field2'] Only provided fields expected
+                            from the server in response.
+            filter (tuple): ('field_name', 'operator', 'value') &&
+                     ('and', ('test', 'oper', '1'), ('test', 'oper', '2'))
+                     Based on filter conditions we get the data from server.
+            sort List(tuple): [{'last_observed': 'desc'}] Will sort the
+                            response data from server in the given manner
+            limit (int): 10 limits the number of records to fetch from server
+                        in each call
+            next (str): 'adfj3u4j34u9j48wi3j5w84jt5' contains the pagination
+                        token for next set of data to be fetched from server
+                        based on the provided filters, sorts, limits,
+                        etc.. with the token itself.
 
         Returns:
             Iterable:
                 The iterable that handles the pagination and potentially
                 async requests for the job.
-
         '''
 
         filter_schema = FilterSchema()
