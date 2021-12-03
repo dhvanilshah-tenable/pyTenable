@@ -8,7 +8,7 @@ This class is a iterator for search API call
 '''
 from typing import Any, Dict, Tuple
 
-from tenable.base.iterator import APIResultIterator
+from tenable.io.v3.base.iterators.iterator import APIResultIterator
 
 
 class SearchIterator(APIResultIterator):
@@ -58,7 +58,7 @@ class SearchIterator(APIResultIterator):
         else:
             payload["next"] = self._next_token
 
-        resp = self._api._post(path, json=payload)
+        resp = self._api.post(path, json=payload).json()
         return resp, self._resource
 
     def _get_page(self) -> None:

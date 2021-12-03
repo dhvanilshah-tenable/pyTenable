@@ -8,10 +8,11 @@ from tenable.errors import RequestValidationError
 from tenable.io.v3.base.schema.explore.search import SortSchema
 
 
-def generate_sort_data(kw: Dict, is_with_prop: bool = True) -> List[Dict]:
+def generate_sort_data(
+        data: List, is_sort_with_prop: bool = True
+) -> List[Dict]:
     schema = SortSchema()
     sort_data = []
-    data = kw.get('sort')
     if isinstance(data, List):
         for tup in data:
             if isinstance(tup, Tuple) and len(tup) == 2:
@@ -19,7 +20,7 @@ def generate_sort_data(kw: Dict, is_with_prop: bool = True) -> List[Dict]:
                 order = tup[1]
                 data_validate = dict(property=property, order=order)
                 data_validate = schema.load(data_validate)
-                if is_with_prop:
+                if is_sort_with_prop:
                     sort_data.append(schema.dump(data_validate))
                 else:
                     sort_data.append({property: order})
@@ -29,6 +30,6 @@ def generate_sort_data(kw: Dict, is_with_prop: bool = True) -> List[Dict]:
                             ' ("field_name_2", "desc")]'
                 )
     else:
-        sort_data = [{}]
+        sort_data = None
 
     return sort_data

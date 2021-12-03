@@ -18,9 +18,6 @@ from typing_extensions import Literal
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.search_iterator import SearchIterator
-from tenable.io.v3.base.schema.explore.filters import FilterSchema
-from tenable.io.v3.base.schema.explore.search import SearchSchema
-from tenable.io.v3.base.schema.explore.utils import generate_sort_data
 
 from .schema import AssignTagsAssetSchema, ImportAssetSchema, MoveAssetSchema
 
@@ -39,17 +36,18 @@ class AssetsAPI(ExploreBaseEndpoint):
     _path = 'api/v3/assets'
     _conv_json = True
 
-    def search_assets(self, *filters, **kw) -> AssetSearchIterator:
+    def search_assets(self, **kw) -> Union[AssetSearchIterator, Dict]:
         '''
         Retrieves the assets.
 
         Args:
             fields (list): ['field1', 'field2'] Only provided fields expected
                             from the server in response.
-            filter (tuple): ('field_name', 'operator', 'value') &&
-                     ('and', ('test', 'oper', '1'), ('test', 'oper', '2'))
+            filter (tuple, Dict): ('field_name', 'operator', 'value') &&
+                     ('and', ('test', 'oper', '1'), ('test', 'oper', '2')) &&
+                 {'property': 'filter', 'operator': 'oper', 'value': 'value'}
                      Based on filter conditions we get the data from server.
-            sort List(tuple): [{'last_observed': 'desc'}] Will sort the
+            sort list(tuple): [{'last_observed': 'desc'}] Will sort the
                             response data from server in the given manner
             limit (int): 10 limits the number of records to fetch from server
                         in each call
@@ -57,26 +55,27 @@ class AssetsAPI(ExploreBaseEndpoint):
                         token for next set of data to be fetched from server
                         based on the provided filters, sorts, limits,
                         etc.. with the token itself.
+            return_resp (bool):
+                If set to true, will override the default behavior to return
+                an iterable and will instead return the results for the
+                specific page of data.
 
         Returns:
+            Returns:
             Iterable:
                 The iterable that handles the pagination and potentially
                 async requests for the job.
+            requests.Response:
+                If ``return_json`` was set to ``True``, then a response
+                object is instead returned instead of an iterable.
         '''
 
-        filter_schema = FilterSchema()
-        search_schema = SearchSchema()
-        query = filter_schema.dump(filter_schema.load(filters[0]))
-        sort_data = generate_sort_data(kw, is_with_prop=False)
-        kw.update({'filter': query,
-                   'sort': sort_data})
-        payload = search_schema.dump(search_schema.load(kw))
-        return AssetSearchIterator(
-            api=self,
-            _limit=payload['limit'],
-            _path='search',
-            _resource='assets',
-            _payload=payload
+        return self.search(
+            resource='assets',
+            iterator_cls=AssetSearchIterator,
+            is_sort_with_prop=False,
+            api_path='api/v3/assets/search',
+            **kw
         )
 
     def delete(self, uuid: UUID) -> None:
