@@ -1,25 +1,28 @@
 '''
-Version 3 Base Classes
+Version 3 Classes
 ======================
 This class is a iterator for search API call
 
-.. autoclass:: APIResultsIterator
+.. autoclass:: SearchIterator
     :members:
 '''
-from restfly.iterator import APIIterator
-from typing import Dict, Tuple, Any
+from typing import Any, Dict, Tuple
+
+from tenable.base.iterator import APIResultIterator
 
 
-class SearchIterator(APIIterator):
+class SearchIterator(APIResultIterator):
     '''
-    The API iterator provides a scalable way to work through result sets of any
+    The Search iterator provides a scalable way to work through result sets
+    of any
     size.  The iterator will walk through each page of data, returning one
     record at a time.  If it reaches the end of a page of records, then it will
     request the next page of information and then continue to return records
     from the next page (and the next, and the next) until the counter reaches
     the total number of records that the API has reported.
 
-    Note that this Iterator is used as a base model for all of the iterators,
+    Note that this Iterator is used as a base model for all of the search
+    iterators,
     and while the mechanics of each iterator may vary, they should all behave
     to the user in a similar manner.
 
@@ -84,7 +87,7 @@ class SearchIterator(APIIterator):
         '''
         Ask for the next record
         '''
-        # If there are no more agent records to return, then we should raise
+        # If there are no more records to return, then we should raise
         # a StopIteration exception.
         if self.count >= self.total:
             raise StopIteration()

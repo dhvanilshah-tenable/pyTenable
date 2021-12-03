@@ -25,9 +25,9 @@ from tenable.io.v3.base.schema.explore.utils import generate_sort_data
 from .schema import AssignTagsAssetSchema, ImportAssetSchema, MoveAssetSchema
 
 
-class AssetIterator(SearchIterator):
+class AssetSearchIterator(SearchIterator):
     '''
-    asset iterator
+    asset search iterator
     '''
     pass
 
@@ -39,20 +39,20 @@ class AssetsAPI(ExploreBaseEndpoint):
     _path = 'api/v3/assets'
     _conv_json = True
 
-    def search_assets(self, *filters, **kw) -> AssetIterator:
+    def search_assets(self, *filters, **kw) -> AssetSearchIterator:
         '''
         Retrieves the assets.
 
         Requires -
-            fields (list) -- list of string = ['field1', 'field2']
+            fields (list): ['field1', 'field2']
                     -> fields is not supported by the search_assets api
-            filter (tuple) -- tuple ('field_name', 'operator', 'value')
+            filter (tuple): ('field_name', 'operator', 'value')
                     -- ('and', ('test', 'oper', '1'), ('test', 'oper', '2'))
-            sort List(tuple) -- 'sort': [
+            sort List(tuple): 'sort': [
                         {'last_observed': 'desc'}
                     ]
-            limit (int) -- integer = (10)
-            next (str) -- ('adfj3u4j34u9j48wi3j5w84jt5') -> next token
+            limit (int): (10)
+            next (str): ('adfj3u4j34u9j48wi3j5w84jt5') -> next token
 
         Returns:
             Iterable:
@@ -68,7 +68,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         kw.update({'filter': query,
                    'sort': sort_data})
         payload = search_schema.dump(search_schema.load(kw))
-        return AssetIterator(
+        return AssetSearchIterator(
             api=self,
             _limit=payload['limit'],
             _path='search',
@@ -83,7 +83,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         :devportal:`assets: asset-delete <asset-delete>`
 
         Args:
-            asset_uuid (str): The unique identifier for the asset.
+            uuid (str): The unique identifier for the asset.
 
         Returns:
             None:
@@ -94,7 +94,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         '''
         return self._delete(uuid)
 
-    def details(self, uuid: UUID) -> Dict:  # pylint: disable=arguments-renamed
+    def details(self, uuid: UUID) -> Dict:
         '''
         Retrieves the details about a specific asset.
 
@@ -118,7 +118,6 @@ class AssetsAPI(ExploreBaseEndpoint):
         self, action: Literal['add', 'remove'],
             assets: List[UUID], tags: List[UUID]
     ) -> Dict:
-        # pylint: disable=no-self-use
         '''
         Add/remove tags for asset(s).
 
