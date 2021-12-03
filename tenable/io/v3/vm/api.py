@@ -2,7 +2,8 @@
 Vulnerability Management
 ========================
 
-The following API's are available for interaction under Vulnerability Management platform.
+The following API's are available for interaction under Vulnerability
+Management platform.
 
 Methods available on ``tio.v3.vm``:
 
@@ -16,10 +17,12 @@ Methods available on ``tio.v3.vm``:
     :glob:
 
     scanners
+    folders
 '''
 from restfly.endpoint import APIEndpoint
 
-from .scanners import ScannersAPI
+from tenable.io.v3.vm.folders import FoldersAPI
+from tenable.io.v3.vm.scanners import ScannersAPI
 
 
 class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
@@ -28,6 +31,14 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
     under Vulnerability Management
     i.e assets, agents, scanners etc.
     '''
+
+    @property
+    def folders(self):
+        '''
+        The interface object for the
+        :doc:`Folders API <folders>`
+        '''
+        return FoldersAPI(self._api)
 
     @property
     def scanners(self):
