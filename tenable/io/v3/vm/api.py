@@ -20,7 +20,7 @@ Methods available on ``tio.v3.vm``:
 from restfly.endpoint import APIEndpoint
 
 from .scanners import ScannersAPI
-
+from .vulnerability import VulnerabilityAPI
 
 class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
     '''
@@ -36,3 +36,12 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
         :doc:`Scanners API <scanners>`
         '''
         return ScannersAPI(self._api)
+
+    @property
+    def vulnerability(self):
+        '''
+        The interface object for the
+        :doc:`Vulenrability API <vulnerability>`
+        '''
+        pass
+        return VulnerabilityAPI(self._api)

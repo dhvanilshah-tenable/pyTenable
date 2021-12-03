@@ -4,7 +4,7 @@ Web Application Scanning
 
 The following API's are available for interaction under Web Application Scanning platform.
 
-Methods available on ``tio.v3.vm``:
+Methods available on ``tio.v3.was``:
 
 
 .. rst-class:: hide-signature

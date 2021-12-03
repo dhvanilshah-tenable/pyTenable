@@ -24,7 +24,7 @@ from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.users import UsersAPI
 from tenable.io.v3.vm.api import VulnerabilityManagement
 from tenable.io.v3.was.api import WebAppScanning
-from tenable.io.v3.findings import FindingsAPI
+
 from tenable.io.assets import AssetsAPI
 
 

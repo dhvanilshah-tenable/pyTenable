@@ -23,6 +23,8 @@ class FilterSchema(Schema):
         Handles schema validation and data transform based on the data
         presented.
         '''
+        if data in [None, {}, ()]:
+            return None
         if (  # noqa: PLR1705
             isinstance(data, dict) and ('and' in data or 'or' in data)
         ) or (isinstance(data, tuple) and data[0] in ['and', 'or']):
