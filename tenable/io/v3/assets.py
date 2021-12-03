@@ -41,20 +41,46 @@ class AssetsAPI(ExploreBaseEndpoint):
         Retrieves the assets.
 
         Args:
-            fields (list): ['field1', 'field2'] Only provided fields expected
-                            from the server in response.
-            filter (tuple, Dict): ('field_name', 'operator', 'value') &&
-                     ('and', ('test', 'oper', '1'), ('test', 'oper', '2')) &&
-                 {'property': 'filter', 'operator': 'oper', 'value': 'value'}
-                     Based on filter conditions we get the data from server.
-            sort list(tuple): [{'last_observed': 'desc'}] Will sort the
-                            response data from server in the given manner
-            limit (int): 10 limits the number of records to fetch from server
-                        in each call
-            next (str): 'adfj3u4j34u9j48wi3j5w84jt5' contains the pagination
-                        token for next set of data to be fetched from server
-                        based on the provided filters, sorts, limits,
-                        etc.. with the token itself.
+            fields (list): 
+                The list of field names to return from the Tenable API.
+
+                Example: 
+                    - ``['field1', 'field2']``
+            filter (tuple, Dict): 
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+                
+                Examples:
+                    >>> ('or', ('and', ('test', 'oper', '1'),
+                                   ('test', 'oper', '2')
+                            ),
+                    'and', ('test', 'oper', 3)
+                   )
+                    >>> {'or': [
+                            {'and': [
+                                {'value': '1', 'operator': 'oper', 'property': '1'},
+                                {'value': '2', 'operator': 'oper', 'property': '2'}
+                                ]
+                            }],
+                            'and': [
+                                {'value': '3', 'operator': 'oper', 'property': 3}
+                                ]
+                            }
+
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                the :py:meth:`tio.v3.vm.filters.asset_filters()` endpoint to get more details.
+            sort list(tuple):
+                A list of dictionaries describing how to sort the data
+                that is to be returned.
+
+                Examples:
+                    - ``[{'last_observed': 'desc'}]``
+            limit (int): 
+                Number of objects to be returned in each request. Default is 1000.
+            next (str):
+                The pagination token to use when requesting the next page of
+                results.  This token is presented in the previous response.
             return_resp (bool):
                 If set to true, will override the default behavior to return
                 an iterable and will instead return the results for the
@@ -62,12 +88,12 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         Returns:
             Returns:
-            Iterable:
-                The iterable that handles the pagination and potentially
-                async requests for the job.
-            requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                Iterable:
+                    The iterable that handles the pagination and potentially
+                    async requests for the job.
+                requests.Response:
+                    If ``return_json`` was set to ``True``, then a response
+                    object is instead returned instead of an iterable.
         '''
 
         return self.search(

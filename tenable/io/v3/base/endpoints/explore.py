@@ -52,21 +52,48 @@ class ExploreBaseEndpoint(APIEndpoint):
             resource (str):
                 The json key to fetch the data from response
             api_path (str):
-                API path for search endpoints
+                API path for search endpoint
             is_sort_with_prop (bool):
                 If set to True sort structure will be in form of
                 {'property':'field_name','order': 'asc'} else
                 {'field_name': 'asc'}
             fields (list):
                 The list of field names to return.
+
+                Example: 
+                    - ``['field1', 'field2']``
             sort (list(tuple)):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
+
+                Examples:
+                    - ``[{'last_observed': 'desc'}]``
             filter (tuple, Dict):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
+                
+                Examples:
+                    >>> ('or', ('and', ('test', 'oper', '1'),
+                                   ('test', 'oper', '2')
+                            ),
+                    'and', ('test', 'oper', 3)
+                   )
+                    >>> {'or': [
+                            {'and': [
+                                {'value': '1', 'operator': 'oper', 'property': '1'},
+                                {'value': '2', 'operator': 'oper', 'property': '2'}
+                                ]
+                            }],
+                            'and': [
+                                {'value': '3', 'operator': 'oper', 'property': 3}
+                                ]
+                            }
+
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                the :py:meth:`tio.v3.vm.filters.asset_filters()` endpoint to get more details.
             limit (int):
-                How many objects should be returned in each request.
+                How many objects should be returned in each request. Default is 1000.
             next (str):
                 The pagination token to use when requesting the next page of
                 results.  This token is presented in the previous response.
