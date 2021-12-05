@@ -20,8 +20,10 @@ class SearchSchema(Schema):
     '''
     Schema supporting the search request
     '''
-    fields = marshm_fields.List(marshm_fields.Str(), allow_none=True)
-    filter = marshm_fields.Nested(FilterSchema, allow_none=True)
-    limit = marshm_fields.Int()
+    fields = marshm_fields.List(marshm_fields.Str(), allow_none=True,
+                                default=None)
+    filter = marshm_fields.Nested(FilterSchema, allow_none=True, default=None)
+    limit = marshm_fields.Int(default=1000)
     next = marshm_fields.Int(allow_none=True)
-    sort = marshm_fields.List(marshm_fields.Dict(), allow_none=True)
+    sort = marshm_fields.List(marshm_fields.Dict(), allow_none=True,
+                              default=None)

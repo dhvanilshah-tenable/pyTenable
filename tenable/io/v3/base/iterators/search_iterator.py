@@ -6,7 +6,7 @@ This class is a iterator for search API call
 .. autoclass:: SearchIterator
     :members:
 '''
-from typing import Any, Dict, Tuple
+from typing import Any, Dict
 
 from tenable.io.v3.base.iterators.iterator import APIResultIterator
 
@@ -47,7 +47,7 @@ class SearchIterator(APIResultIterator):
     _pages_total = None
     _pages_requested = 0
 
-    def _get_data(self) -> Tuple[Dict, str]:
+    def _get_data(self) -> Dict:
         '''
         Request the next page of data
         '''
@@ -59,7 +59,7 @@ class SearchIterator(APIResultIterator):
             payload["next"] = self._next_token
 
         resp = self._api.post(path, json=payload).json()
-        return resp, self._resource
+        return resp
 
     def _get_page(self) -> None:
         '''
@@ -69,10 +69,10 @@ class SearchIterator(APIResultIterator):
         if self._pages_requested > 0 and not self._next_token:
             self.page = []
         else:
-            resp, key = self._get_data()
+            resp = self._get_data()
             self.page_count = 0
             self._pages_requested += 1
-            self.page = resp[key]
+            self.page = resp[self._resource]
             pagination = resp.get('pagination')
             self.total = pagination.get('total')
             self._next_token = pagination.get('next')

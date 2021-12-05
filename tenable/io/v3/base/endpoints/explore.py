@@ -2,7 +2,7 @@
 Base Explore Endpoint Class
 '''
 import time
-from typing import Dict, List, Optional, Tuple, Type, Union
+from typing import Optional, Union
 from uuid import UUID
 
 from marshmallow import EXCLUDE
@@ -25,7 +25,7 @@ class ExploreBaseEndpoint(APIEndpoint):
                 The unique identifier for the records to be retrieved.
 
         Returns:
-            Dict:
+            dict:
                 The requested object
 
         Example:
@@ -37,12 +37,9 @@ class ExploreBaseEndpoint(APIEndpoint):
     def search(
             self,
             resource: str, api_path: str, is_sort_with_prop: bool = True,
-            fields: Optional[List[str]] = None,
-            sort: Optional[List[Dict]] = None,
-            filter: Optional[Union[Dict, Tuple]] = None, limit: int = 1000,
-            next: Optional[str] = None, return_resp: bool = False,
-            iterator_cls=None,
-            schema_cls: Optional[Type[SearchSchema]] = SearchSchema,
+            return_resp: bool = False,
+            iterator_cls: Optional[SearchIterator] = SearchIterator,
+            schema_cls: Optional[SearchSchema] = SearchSchema,
             **kwargs
     ):
         '''
@@ -59,19 +56,17 @@ class ExploreBaseEndpoint(APIEndpoint):
                 {'field_name': 'asc'}
             fields (list):
                 The list of field names to return.
-
-                Example: 
+                Example:
                     - ``['field1', 'field2']``
             sort (list(tuple)):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
-
                 Examples:
                     - ``[{'last_observed': 'desc'}]``
-            filter (tuple, Dict):
+            filter (tuple, dict):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
-                
+
                 Examples:
                     >>> ('or', ('and', ('test', 'oper', '1'),
                                    ('test', 'oper', '2')
@@ -79,21 +74,23 @@ class ExploreBaseEndpoint(APIEndpoint):
                     'and', ('test', 'oper', 3)
                    )
                     >>> {'or': [
-                            {'and': [
-                                {'value': '1', 'operator': 'oper', 'property': '1'},
-                                {'value': '2', 'operator': 'oper', 'property': '2'}
-                                ]
-                            }],
-                            'and': [
-                                {'value': '3', 'operator': 'oper', 'property': 3}
-                                ]
-                            }
+                    {'and': [
+                        {'value': '1', 'operator': 'oper', 'property': '1'},
+                        {'value': '2', 'operator': 'oper', 'property': '2'}
+                        ]
+                    }],
+                    'and': [
+                        {'value': '3', 'operator': 'oper', 'property': 3}
+                        ]
+                    }
 
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.asset_filters()` endpoint to get more details.
+                the :py:meth:`tio.v3.vm.filters.asset_filters()`
+                endpoint to get more details.
             limit (int):
-                How many objects should be returned in each request. Default is 1000.
+                How many objects should be returned in each request.
+                 Default is 1000.
             next (str):
                 The pagination token to use when requesting the next page of
                 results.  This token is presented in the previous response.
@@ -120,16 +117,10 @@ class ExploreBaseEndpoint(APIEndpoint):
 
             >>>
         '''
+        sort = kwargs.get('sort')
         sort = generate_sort_data(sort, is_sort_with_prop)
-        kwargs['fields'] = fields
         kwargs['sort'] = sort
-        kwargs['filter'] = filter
-        kwargs['limit'] = limit
-        kwargs['next'] = next
-        if not schema_cls:
-            schema_cls = SearchSchema
-        if not iterator_cls:
-            iterator_cls = SearchIterator
+
         schema = schema_cls(unknown=EXCLUDE)
         payload = schema.dump(schema.load(kwargs))
         if return_resp:
