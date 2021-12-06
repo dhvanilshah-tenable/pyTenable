@@ -36,7 +36,9 @@ class ExploreBaseEndpoint(APIEndpoint):
 
     def search(
             self,
-            resource: str, api_path: str, is_sort_with_prop: bool = True,
+            resource: str,
+            api_path: str,
+            is_sort_with_prop: bool = True,
             return_resp: bool = False,
             iterator_cls: Optional[SearchIterator] = SearchIterator,
             schema_cls: Optional[SearchSchema] = SearchSchema,
@@ -98,6 +100,8 @@ class ExploreBaseEndpoint(APIEndpoint):
                 If set to true, will override the default behavior to return
                 an iterable and will instead return the results for the
                 specific page of data.
+            return_csv (bool):
+                If set to true, It wil return the CSV Iteratble
             iterator_cls:
                 If specified, will override the default iterator class that
                 will be used for instantiating the iterator.
@@ -113,23 +117,24 @@ class ExploreBaseEndpoint(APIEndpoint):
                 If ``return_json`` was set to ``True``, then a response
                 object is instead returned instead of an iterable.
 
-        Examples:
-
-            >>>
         '''
         sort = kwargs.get('sort')
+        next_token = kwargs.get('next')
         sort = generate_sort_data(sort, is_sort_with_prop)
         kwargs['sort'] = sort
-
-        schema = schema_cls(unknown=EXCLUDE)
-        payload = schema.dump(schema.load(kwargs))
+        if not next_token:
+            schema = schema_cls(unknown=EXCLUDE)
+            payload = schema.dump(schema.load(kwargs))
+        else:
+            payload = {'next': next_token}
         if return_resp:
             return self._api.post(api_path, json=payload).json()
         return iterator_cls(
             self._api,
             _path=api_path,
             _resource=resource,
-            _payload=payload
+            _payload=payload,
+            _next_token=next_token
         )
 
     def search_results(self, search_id: str, wait_for_results: bool = True):

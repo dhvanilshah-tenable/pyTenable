@@ -17,6 +17,7 @@ from uuid import UUID
 from typing_extensions import Literal
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.base.iterators.csv_iterator import CSVIterator
 from tenable.io.v3.base.iterators.search_iterator import SearchIterator
 
 from .schema import AssignTagsAssetSchema, ImportAssetSchema, MoveAssetSchema
@@ -24,9 +25,15 @@ from .schema import AssignTagsAssetSchema, ImportAssetSchema, MoveAssetSchema
 
 class AssetSearchIterator(SearchIterator):
     '''
-    asset search iterator
+    Asset search iterator
     '''
     pass
+
+
+class AssetCSVIterator(CSVIterator):
+    '''
+    Asset csv iterator
+    '''
 
 
 class AssetsAPI(ExploreBaseEndpoint):
@@ -41,15 +48,15 @@ class AssetsAPI(ExploreBaseEndpoint):
         Retrieves the assets.
 
         Args:
-            fields (list): 
+            fields (list):
                 The list of field names to return from the Tenable API.
 
-                Example: 
+                Example:
                     - ``['field1', 'field2']``
-            filter (tuple, Dict): 
+            filter (tuple, Dict):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
-                
+
                 Examples:
                     >>> ('or', ('and', ('test', 'oper', '1'),
                                    ('test', 'oper', '2')
@@ -57,27 +64,29 @@ class AssetsAPI(ExploreBaseEndpoint):
                     'and', ('test', 'oper', 3)
                    )
                     >>> {'or': [
-                            {'and': [
-                                {'value': '1', 'operator': 'oper', 'property': '1'},
-                                {'value': '2', 'operator': 'oper', 'property': '2'}
-                                ]
-                            }],
-                            'and': [
-                                {'value': '3', 'operator': 'oper', 'property': 3}
-                                ]
-                            }
+                    {'and': [
+                        {'value': '1', 'operator': 'oper', 'property': '1'},
+                        {'value': '2', 'operator': 'oper', 'property': '2'}
+                        ]
+                    }],
+                    'and': [
+                        {'value': '3', 'operator': 'oper', 'property': 3}
+                        ]
+                    }
 
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.asset_filters()` endpoint to get more details.
+                the :py:meth:`tio.v3.vm.filters.asset_filters()`
+                endpoint to get more details.
             sort list(tuple):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
 
                 Examples:
                     - ``[{'last_observed': 'desc'}]``
-            limit (int): 
-                Number of objects to be returned in each request. Default is 1000.
+            limit (int):
+                Number of objects to be returned in each request.
+                Default is 1000.
             next (str):
                 The pagination token to use when requesting the next page of
                 results.  This token is presented in the previous response.
@@ -85,6 +94,10 @@ class AssetsAPI(ExploreBaseEndpoint):
                 If set to true, will override the default behavior to return
                 an iterable and will instead return the results for the
                 specific page of data.
+            return_csv (bool):
+                If set to true, It wil return the CSV Iterable. Returns all
+                data in text/csv format on each next call with row headers
+                on each page.
 
         Returns:
             Returns:
@@ -94,13 +107,20 @@ class AssetsAPI(ExploreBaseEndpoint):
                 requests.Response:
                     If ``return_json`` was set to ``True``, then a response
                     object is instead returned instead of an iterable.
-        '''
 
+        Examples:
+            >>> tio.v3.assets.search_assets(filter=('netbios_name', 'eq',
+            >>>  'SCCM'), fields=["name", "netbios_name", "last_login"],
+            >>>    limit=2, sort=[('last_observed', 'asc')])
+        '''
+        search_api_path = 'api/v3/assets/search'
+        return_csv = kw.get('return_csv')
         return self.search(
             resource='assets',
-            iterator_cls=AssetSearchIterator,
+            iterator_cls=AssetCSVIterator if return_csv else
+            AssetSearchIterator,
             is_sort_with_prop=False,
-            api_path='api/v3/assets/search',
+            api_path=search_api_path,
             **kw
         )
 
@@ -169,7 +189,7 @@ class AssetsAPI(ExploreBaseEndpoint):
             ...     'add', ['00000000-0000-0000-0000-000000000000'],
             ...     ['00000000-0000-0000-0000-000000000000'])
         '''
-        # pylint: disable=unused-variable
+
         schema = AssignTagsAssetSchema()
         payload = schema.dump(
             schema.load({'action': action, 'assets': assets, 'tags': tags})
