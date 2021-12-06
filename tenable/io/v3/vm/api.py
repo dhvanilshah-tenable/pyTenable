@@ -22,6 +22,7 @@ Methods available on ``tio.v3.vm``:
 '''
 from restfly.endpoint import APIEndpoint
 
+from .agent_groups import AgentGroupsAPI
 from .plugins import PluginsAPI
 from .scanners import ScannersAPI
 
@@ -32,6 +33,14 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
     under Vulnerability Management
     i.e assets, agents, scanners etc.
     '''
+
+    @property
+    def agent_groups(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Agent Groups APIs <agent_groups>`.
+        '''
+        return AgentGroupsAPI(self)
 
     @property
     def scanners(self):
