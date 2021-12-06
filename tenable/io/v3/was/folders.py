@@ -3,7 +3,7 @@ Folders
 ========
 
 The following methods allow for interaction into the Tenable.io
-:devportal:`folders <folders>` API.
+:devportal:`Web Application Scanning v3 folders <was-v2-folders>` API.
 
 Methods available on ``tio.v3.was.folders``:
 
@@ -18,7 +18,7 @@ from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
 
 class FoldersAPI(ExploreBaseEndpoint):
-    _path = 'api/v3/folders'
+    _path = 'api/v3/was/folders'
     _conv_json = True
 
     def create(self, name: str) -> Dict:
@@ -38,7 +38,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         Examples:
             >>> folder = tio.v3.was.folders.create('New Folder Name')
         '''
-        return self._post('webapp', json={'name': name})
+        return self._post(json={'name': name})
 
     def delete(self, id: uuid.UUID) -> None:
         '''
@@ -55,7 +55,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         Examples:
             >>> tio.v3.was.folders.delete('91843ecb-ecb8-48a3-b623-d4682c28c')
         '''
-        self._delete('{}/webapp'.format(id))
+        self._delete(f'{id}')
 
     def edit(self, id: uuid.UUID, name: str) -> Dict:
         '''
@@ -75,7 +75,7 @@ class FoldersAPI(ExploreBaseEndpoint):
             >>> tio.v3.was.folders.edit('91843ecb-ecb8-48a3-b623-d4682c2594',
             ...     'Updated Folder Name')
         '''
-        return self._put('{}/webapp'.format(id), json={'name': name})
+        return self._put(f'{id}', json={'name': name})
 
     def list(self) -> List:
         '''
@@ -91,4 +91,4 @@ class FoldersAPI(ExploreBaseEndpoint):
             >>> for folder in tio.v3.was.folders.list():
             ...     pprint(folder)
         '''
-        return self._get('webapp')
+        return self._get()

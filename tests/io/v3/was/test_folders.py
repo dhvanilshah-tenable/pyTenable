@@ -1,6 +1,6 @@
 import responses
 
-WAS_FOLDERS_BASE_URL = 'https://cloud.tenable.com/api/v3/folders'
+WAS_FOLDERS_BASE_URL = 'https://cloud.tenable.com/api/v3/was/folders'
 SAMPLE_FOLDER_ID = '178fe279-4e37-49ee-a5dc-8a447dd7043a'
 SAMPLE_FOLDER = {
     'folder_id': SAMPLE_FOLDER_ID,
@@ -12,7 +12,7 @@ SAMPLE_FOLDER = {
 def test_create(api):
     responses.add(
         responses.POST,
-        f'{WAS_FOLDERS_BASE_URL}/webapp',
+        WAS_FOLDERS_BASE_URL,
         json=SAMPLE_FOLDER
     )
     folder = api.v3.was.folders.create(SAMPLE_FOLDER['name'])
@@ -24,7 +24,7 @@ def test_create(api):
 def test_delete(api):
     responses.add(
         responses.DELETE,
-        f'{WAS_FOLDERS_BASE_URL}/{SAMPLE_FOLDER_ID}/webapp'
+        f'{WAS_FOLDERS_BASE_URL}/{SAMPLE_FOLDER_ID}'
     )
     resp = api.v3.was.folders.delete(SAMPLE_FOLDER_ID)
     assert resp is None
@@ -37,7 +37,7 @@ def test_edit(api):
     payload['name'] = new_name
     responses.add(
         responses.PUT,
-        f'{WAS_FOLDERS_BASE_URL}/{SAMPLE_FOLDER_ID}/webapp',
+        f'{WAS_FOLDERS_BASE_URL}/{SAMPLE_FOLDER_ID}',
         json=SAMPLE_FOLDER,
     )
     resp = api.v3.was.folders.edit(SAMPLE_FOLDER_ID, new_name)
@@ -48,7 +48,7 @@ def test_edit(api):
 def test_list(api):
     responses.add(
         responses.GET,
-        f'{WAS_FOLDERS_BASE_URL}/webapp',
+        WAS_FOLDERS_BASE_URL,
         json=[SAMPLE_FOLDER],
     )
     resp = api.v3.was.folders.list()
