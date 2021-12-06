@@ -2,7 +2,8 @@
 Vulnerability Management
 ========================
 
-The following API's are available for interaction under Vulnerability Management platform.
+The following API's are available for interaction under
+Vulnerability Management platform.
 
 Methods available on ``tio.v3.vm``:
 
@@ -16,11 +17,13 @@ Methods available on ``tio.v3.vm``:
     :glob:
 
     scanners
+    vulnerability
 '''
 from restfly.endpoint import APIEndpoint
 
 from .scanners import ScannersAPI
 from .vulnerability import VulnerabilityAPI
+
 
 class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
     '''
