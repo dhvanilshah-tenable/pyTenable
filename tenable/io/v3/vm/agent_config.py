@@ -5,7 +5,7 @@ Agent Config
 The following methods allow for interaction into the Tenable.io
 :devportal:`agent config <agent-config>` API endpoints.
 
-Methods available on ``tio.agent_config``:
+Methods available on ``tio.v3.vm.agent_config``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AgentConfigAPI
@@ -13,17 +13,17 @@ Methods available on ``tio.agent_config``:
 '''
 from typing import Dict
 
-from ..base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
 
 class AgentConfigAPI(ExploreBaseEndpoint):
     '''
     This will contain all methods related to agent config
     '''
-    # _path: str = 'api/v3/agents'
+    _path: str = 'api/v3/agents'
     _conv_json: bool = True
 
-    def edit(self, auto_unlink: int = None, software_update: bool = None,
+    def edit(self, auto_unlink: int, software_update: bool,
              agent_id: int = 1) -> Dict:
         '''
         Edits the agent configuration.
@@ -69,17 +69,16 @@ class AgentConfigAPI(ExploreBaseEndpoint):
             payload['auto_unlink']['expiration'] = auto_unlink
         elif auto_unlink in [False, 0]:
             payload['auto_unlink']['enabled'] = False
-        return self._put(f'scanners/{agent_id}/agents/config', json=payload)
-        # return self._put(f'{agent_id}/config', json=payload)
+        return self._put(f'{agent_id}/config', json=payload)
 
-    def details(self, agent_id: int = 1) -> Dict:
+    def details(self, agent_id: int) -> Dict:
         '''
         Returns the current agent configuration.
 
         :devportal:`agent-config: details <agent-config-edit>`
 
         Args:
-            agent_id (int, optional): The scanner ID.
+            agent_id (int): The scanner ID.
 
         Returns:
             :obj:`Dict`:
@@ -89,5 +88,4 @@ class AgentConfigAPI(ExploreBaseEndpoint):
             >>> details = tio.v3.vm.agent_config.details()
             >>> pprint(details)
         '''
-        return self._get(f'scanners/{agent_id}/agents/config')
-        # return self._get(f'{agent_id}/config')
+        return self._get(f'{agent_id}/config')

@@ -5,7 +5,7 @@ import re
 
 import responses
 
-BASE_URL = 'https://cloud.tenable.com'
+BASE_URL = 'https://cloud.tenable.com/api/v3/agents'
 
 
 @responses.activate
@@ -20,7 +20,7 @@ def test_agent_config_details(api):
     agent_id: int = 1
     responses.add(
         responses.GET,
-        re.compile(f'{BASE_URL}/scanners/{agent_id}/agents/config'),
+        re.compile(f'{BASE_URL}/{agent_id}/config'),
         json=test_response
     )
     res = api.v3.vm.agent_config.details(agent_id=agent_id)
@@ -43,7 +43,7 @@ def test_agent_config_edit(api):
     }
     responses.add(
         responses.PUT,
-        re.compile(f'{BASE_URL}/scanners/{agent_id}/agents/config'),
+        re.compile(f'{BASE_URL}/{agent_id}/config'),
         match=[responses.matchers.json_params_matcher(payload)],
         json=test_response
     )
