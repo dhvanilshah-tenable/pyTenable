@@ -17,13 +17,15 @@ Methods available on ``tio.v3.vm``:
     :hidden:
     :glob:
 
+    files
     plugins
     scanners
 '''
 from restfly.endpoint import APIEndpoint
 
-from .plugins import PluginsAPI
-from .scanners import ScannersAPI
+from tenable.io.v3.vm.files import FileAPI
+from tenable.io.v3.vm.plugins import PluginsAPI
+from tenable.io.v3.vm.scanners import ScannersAPI
 
 
 class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
@@ -34,12 +36,12 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
     '''
 
     @property
-    def scanners(self):
+    def files(self):
         '''
         The interface object for the
         :doc:`Scanners API <scanners>`
         '''
-        return ScannersAPI(self._api)
+        return FileAPI(self._api)
 
     @property
     def plugins(self):
@@ -48,3 +50,11 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
         :ref:`Plugins API <plugins>`
         '''
         return PluginsAPI(self._api)
+
+    @property
+    def scanners(self):
+        '''
+        The interface object for the
+        :doc:`Scanners API <scanners>`
+        '''
+        return ScannersAPI(self._api)
