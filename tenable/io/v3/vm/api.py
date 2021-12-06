@@ -13,15 +13,18 @@ Methods available on ``tio.v3.vm``:
     :members:
 
 .. toctree::
+
     :hidden:
     :glob:
 
     agent_config
+    plugins
     scanners
 '''
 from restfly.endpoint import APIEndpoint
 
 from .agent_config import AgentConfigAPI
+from .plugins import PluginsAPI
 from .scanners import ScannersAPI
 
 
@@ -47,3 +50,11 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
         :doc:`Scanners API <scanners>`
         '''
         return ScannersAPI(self._api)
+
+    @property
+    def plugins(self):
+        '''
+        The interface object for the
+        :ref:`Plugins API <plugins>`
+        '''
+        return PluginsAPI(self._api)
