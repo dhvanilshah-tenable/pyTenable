@@ -29,6 +29,6 @@ def generate_sort_data(kw: Dict, is_with_prop: bool = True) -> List[Dict]:
                             ' ("field_name_2", "desc")]'
                 )
     else:
-        sort_data = None
+        sort_data = []
 
     return sort_data
