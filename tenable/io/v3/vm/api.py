@@ -39,7 +39,7 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
     def files(self):
         '''
         The interface object for the
-        :doc:`Scanners API <scanners>`
+        :doc:`Files API <files>`
         '''
         return FileAPI(self._api)
 

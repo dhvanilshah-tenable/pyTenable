@@ -50,4 +50,4 @@ class FileAPI(APIEndpoint):
             kw['data'] = {'no_enc': int(encrypted)}
         kw['files'] = {'Filedata': fobj}
 
-        return self._post(f'upload', **kw)['fileuploaded']
+        return self._post('upload', **kw)['fileuploaded']
