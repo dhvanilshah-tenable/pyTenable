@@ -27,7 +27,6 @@ from tenable.io.v3.vm.api import VulnerabilityManagement
 from tenable.io.v3.was.api import WebApplicationScanning
 
 
-
 class Version3API(APIEndpoint):  # noqa: PLR0904
     '''
     This will contain property for all resources/app under io
