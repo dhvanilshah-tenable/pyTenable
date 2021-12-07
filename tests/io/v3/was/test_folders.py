@@ -10,6 +10,9 @@ SAMPLE_FOLDER = {
 
 @responses.activate
 def test_create(api):
+    '''
+    Test was folders create method
+    '''
     responses.add(
         responses.POST,
         WAS_FOLDERS_BASE_URL,
@@ -22,6 +25,9 @@ def test_create(api):
 
 @responses.activate
 def test_delete(api):
+    '''
+    Test was folders delete method
+    '''
     responses.add(
         responses.DELETE,
         f'{WAS_FOLDERS_BASE_URL}/{SAMPLE_FOLDER_ID}'
@@ -32,6 +38,9 @@ def test_delete(api):
 
 @responses.activate
 def test_edit(api):
+    '''
+    Test was folders edit method
+    '''
     payload = SAMPLE_FOLDER
     new_name = 'updated name'
     payload['name'] = new_name
@@ -46,6 +55,9 @@ def test_edit(api):
 
 @responses.activate
 def test_list(api):
+    '''
+    Test was folders list method
+    '''
     responses.add(
         responses.GET,
         WAS_FOLDERS_BASE_URL,

@@ -25,7 +25,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         '''
         Create a folder.
 
-        :devportal:`folders: create <folders-create>`
+        :devportal:`was folders: create <was-v2-folders-create>`
 
         Args:
             name:
@@ -44,7 +44,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         '''
         Delete a folder.
 
-        :devportal:`folders: delete <folders-delete>`
+        :devportal:`was folders: delete <was-v2-folders-delete>`
 
         Args:
             id: The unique identifier for the folder.
@@ -61,7 +61,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         '''
         Edit a folder.
 
-        :devportal:`folders: edit <folders-edit>`
+        :devportal:`was folders: edit <was-v2-folders-update>`
 
         Args:
             id: The unique identifier for the folder.
@@ -81,7 +81,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         '''
         Lists the available folders.
 
-        :devportal:`folders: list <folders-list>`
+        :devportal:`was folders: list <was-v2-folders-list>`
 
         Returns:
             :obj:`list`:
