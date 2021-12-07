@@ -2,7 +2,8 @@
 Vulnerability Management
 ========================
 
-The following API's are available for interaction under Vulnerability Management platform.
+The following API's are available for interaction
+under Vulnerability Management platform.
 
 Methods available on ``tio.v3.vm``:
 
@@ -17,7 +18,8 @@ Methods available on ``tio.v3.vm``:
 
     scanners
 '''
-from restfly.endpoint import APIEndpoint
+from tenable.base.endpoint import APIEndpoint
+from tenable.io.v3.vm.credentials import CredentialsAPI
 
 from .scanners import ScannersAPI
 
@@ -36,3 +38,11 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
         :doc:`Scanners API <scanners>`
         '''
         return ScannersAPI(self._api)
+
+    @property
+    def credentials(self):
+        '''
+        The interface object for the
+        :doc:`Scanners API <scanners>`
+        '''
+        return CredentialsAPI(self._api)
