@@ -78,7 +78,7 @@ class AgentConfigAPI(ExploreBaseEndpoint):
         :devportal:`agent-config: details <agent-config-edit>`
 
         Args:
-            agent_id (int): The scanner ID.
+            agent_id (int): The Agent ID.
 
         Returns:
             :obj:`Dict`:
