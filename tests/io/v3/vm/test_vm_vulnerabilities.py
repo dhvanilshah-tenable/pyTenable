@@ -1,18 +1,50 @@
 '''
 Testing the VM Vulnerabilities endpoints actions
 '''
-import pytest
 import responses
+from responses import matchers
 
 from tenable.io.v3.vm.vulnerability import VulnerabilityIterator
 
 VUL_BASE_URL = r'https://cloud.tenable.com/api/v3/findings/vulnerabilities'
-BASE_URL = r'https://cloud.tenable.com'
+BASE_URL = r'https://cloud.tenable.com/api/v3'
 
 
-@pytest.mark.skip("Will be implemented later")
+@responses.activate
 def test_import_vulnerability(api):
-    assert False
+    '''
+    Test to validate Import Vulnerability action
+    '''
+    data = {
+        'vendor': 'tenable',
+        'product': 'tenable.sc',
+        'data_type': 'vm',
+        'source': '75c6c4c3-1626-4b57-9095-71b58ff8999e:\
+            e9b89d18-87cc-4fd5-8e6f-27a1d24fa2ac0',
+        'assets': [{
+            'network_interfaces': {
+                'ipv4': ['192.0.2.57', '192.0.2.177']
+            },
+            'hostname': 'windsmb.server.example.com',
+            'bios_uuid': '9c60da51-762a-4b9b-8504-411056c2f696',
+            'netbios_name': 'JUPITER',
+            'vulnerabilities': [{
+                'tenable_plugin_id': '97737',
+                'last_found': 1568086236,
+                'output': 'Description: The remote Windows host is \
+                    missing a security update.'
+            }]
+        }]
+    }
+
+    responses.add(
+        responses.POST,
+        f"{BASE_URL}/findings/types/host",
+        match=[matchers.json_params_matcher(data)],
+        json={"job_uuid": ""}
+    )
+    resp = api.v3.vm.vulnerability.import_vulnerability(data)
+    assert resp == {"job_uuid": ""}
 
 
 @responses.activate
@@ -53,6 +85,7 @@ def test_search(api):
     responses.add(
         responses.POST,
         f"{VUL_BASE_URL}/host/search",
+        match=[matchers.json_params_matcher(payload)],
         json=response
     )
 
