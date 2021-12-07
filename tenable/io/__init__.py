@@ -43,9 +43,12 @@ Tenable.io
     v3/index
     workbenches
 '''
-from typing import Dict, List, Optional
+from typing import Dict, Optional
+
 from requests import Response
+
 from tenable.base.platform import APIPlatform
+
 from .access_groups import AccessGroupsAPI
 from .access_groups_v2 import AccessGroupsV2API
 from .agent_config import AgentConfigAPI
@@ -55,6 +58,7 @@ from .agents import AgentsAPI
 from .assets import AssetsAPI
 from .audit_log import AuditLogAPI
 from .credentials import CredentialsAPI
+from .cs.api import ContainerSecurity
 from .editor import EditorAPI
 from .exclusions import ExclusionsAPI
 from .exports.api import ExportsAPI
@@ -66,10 +70,10 @@ from .networks import NetworksAPI
 from .permissions import PermissionsAPI
 from .plugins import PluginsAPI
 from .policies import PoliciesAPI
+from .remediation_scans import RemediationScansAPI
 from .scanner_groups import ScannerGroupsAPI
 from .scanners import ScannersAPI
 from .scans import ScansAPI
-from .remediation_scans import RemediationScansAPI
 from .server import ServerAPI
 from .session import SessionAPI
 from .tags import TagsAPI
@@ -182,6 +186,14 @@ class TenableIO(APIPlatform):  # noqa: R0904
         if not self._tzcache:
             self._tzcache = self.scans.timezones()
         return self._tzcache
+
+    @property
+    def cs(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Container Security APIs <cs/index>`.
+        '''
+        return ContainerSecurity(self)
 
     @property
     def access_groups(self):
