@@ -23,15 +23,15 @@ class AgentConfigAPI(ExploreBaseEndpoint):
     _path: str = 'api/v3/agents'
     _conv_json: bool = True
 
-    def edit(self, auto_unlink: int, software_update: bool,
-             agent_id: int = 1) -> Dict:
+    def edit(self, agent_id: int, auto_unlink: int,
+             software_update: bool) -> Dict:
         '''
         Edits the agent configuration.
 
         :devportal:`agent-config: edit <agent-config-details>`
 
         Args:
-            agent_id (int, optional): The Agent ID.
+            agent_id (int): The Agent ID.
             software_update (bool, optional):
                 If True, software updates are enabled for agents
                 (exclusions may override this).  If false, software
