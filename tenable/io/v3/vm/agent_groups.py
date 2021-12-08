@@ -68,7 +68,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
             name (str): The new name for the agent group
 
         Returns:
-            :obj:`Dict`
+            :obj:`dict`
 
         Examples:
             >>> tio.v3.vm.agent_groups.configure(1, 'New Name')
@@ -85,7 +85,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
             name (str): The name of the agent group
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The dictionary object representing the newly minted agent group
 
         Examples:
