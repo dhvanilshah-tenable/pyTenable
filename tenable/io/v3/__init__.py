@@ -24,7 +24,7 @@ from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.groups import GroupsAPI
 from tenable.io.v3.users import UsersAPI
 from tenable.io.v3.vm.api import VulnerabilityManagement
-from tenable.io.v3.was.api import WebAppScanning
+from tenable.io.v3.was.api import WebApplicationScanning
 
 
 class Version3API(APIEndpoint):  # noqa: PLR0904
@@ -61,6 +61,6 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     def was(self):
         '''
         The interface object for the
-        :doc:`Web application Scanning <was/index>`
+         :doc:`Web Application Scanning <was/index>`
         '''
-        return WebAppScanning(self._api)
+        return WebApplicationScanning(self._api)
