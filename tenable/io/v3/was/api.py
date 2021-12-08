@@ -26,7 +26,7 @@ from tenable.io.v3.was.folders import FoldersAPI
 from .vulnerability import VulnerabilityAPI
 
 
-class WebAppScanning(APIEndpoint):  # noqa: PLR0904
+class WebApplicationScanning(APIEndpoint):  # noqa: PLR0904
     '''
     This class will contain property for all resources
     under Web Application Scanning
