@@ -24,6 +24,6 @@ class SearchSchema(Schema):
                                 default=None)
     filter = marshm_fields.Nested(FilterSchema, allow_none=True, default=None)
     limit = marshm_fields.Int(default=1000)
-    next = marshm_fields.Int(allow_none=True)
+    next = marshm_fields.Str(allow_none=True)
     sort = marshm_fields.List(marshm_fields.Dict(), allow_none=True,
                               default=None)

@@ -13,7 +13,7 @@ from tenable.io.v3.base.iterators.iterator import APIResultIterator
 
 class CSVIterator(APIResultIterator):
     '''
-    The Csv iterator provides a scalable way to work through result sets
+    The CSV iterator provides a scalable way to work through result sets
     of any
     size.  The iterator will walk through each page of data, returning one
     page at a time. On each next call it will fetch the page from the server
