@@ -18,14 +18,18 @@ Methods available on ``tio.v3.vm``:
     :glob:
 
     agents
+    agent_config
+    files
     plugins
     scanners
 '''
 from restfly.endpoint import APIEndpoint
 
-from .agents import AgentsAPI
-from .plugins import PluginsAPI
-from .scanners import ScannersAPI
+from tenable.io.v3.vm.agent_config import AgentConfigAPI
+from tenable.io.v3.vm.agents import AgentsAPI
+from tenable.io.v3.vm.files import FileAPI
+from tenable.io.v3.vm.plugins import PluginsAPI
+from tenable.io.v3.vm.scanners import ScannersAPI
 
 
 class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
@@ -44,12 +48,20 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
         return AgentsAPI(self)
 
     @property
-    def scanners(self):
+    def agent_config(self):
         '''
         The interface object for the
-        :doc:`Scanners API <scanners>`
+        :doc:`Agent Config APIs <agent_config>`.
         '''
-        return ScannersAPI(self._api)
+        return AgentConfigAPI(self._api)
+
+    @property
+    def files(self):
+        '''
+        The interface object for the
+        :doc:`Files API <files>`
+        '''
+        return FileAPI(self._api)
 
     @property
     def plugins(self):
@@ -58,3 +70,11 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
         :ref:`Plugins API <plugins>`
         '''
         return PluginsAPI(self._api)
+
+    @property
+    def scanners(self):
+        '''
+        The interface object for the
+        :doc:`Scanners API <scanners>`
+        '''
+        return ScannersAPI(self._api)
