@@ -18,16 +18,16 @@ def test_upload(api):
         responses.POST,
         f"{FILE_BASE_URL}/upload",
         json={
-            "fileuploaded": "scan_targets.txt"
+            "fileuploaded": "scan_targets_test.txt"
         }
     )
 
     dummy_file_path = os.path.join(
         os.path.dirname(
             os.path.abspath(__file__)
-            ), "file_upload_test.txt"
+            ), "scan_targets_test.txt"
         )
     fobj = open(dummy_file_path)
     resp = api.v3.vm.files.upload(fobj, True)
 
-    assert resp == "scan_targets.txt"
+    assert resp == "scan_targets_test.txt"

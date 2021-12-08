@@ -38,7 +38,7 @@ class FileAPI(APIEndpoint):
                 The fileuploaded attribute
 
         Examples:
-            >>> with open('file.txt') as fobj:
+            >>> with open('scan_targets.txt') as fobj:
             ...     file_id = tio.v3.vm.files.upload(fobj)
         '''
 
