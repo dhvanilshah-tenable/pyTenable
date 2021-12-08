@@ -21,7 +21,7 @@ from tenable.utils import dict_clean, dict_merge
 
 
 class CredentialsAPI(ExploreBaseEndpoint):
-    _path = 'credentials'
+    _path = 'api/v3/credentials'
     _conv_json = True
 
     def _permissions_constructor(
@@ -103,7 +103,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
         ))
         payload = create_schema.dump(create_schema.load(create_data))
 
-        return self._post(json=payload)['uuid']
+        return self._post(json=payload)['id']
 
     def edit(self, cred_uuid: str, cred_name: Optional[str] = None,
              description: Optional[str] = None,
@@ -149,25 +149,25 @@ class CredentialsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> cred_uuid = '00000000-0000-0000-0000-000000000000'
-            >>> tio.credentials.edit(cred_uuid,
+            >>> tio.v3.vm.credentials.edit(cred_uuid,
             ...     password='sekretsquirrel',
             ...     escalation_password='sudopassword')
         '''
         current = self.details(cred_uuid)
 
         if not cred_name:
-            cred_name = current['name']
+            cred_name = current.get('name')
         if not description:
-            description = current['description']
+            description = current.get('description')
         if not ad_hoc:
-            ad_hoc = current['ad_hoc']
+            ad_hoc = current.get('ad_hoc')
 
         permissions_data = permissions
         if permissions and isinstance(permissions, list):
             permissions_data = self._permissions_constructor(permissions)
 
-        settings = dict_merge(current['settings'], settings)
-        edit_schema = CredentialsEditSchema(context={'current': current})
+        settings = dict_merge(current.get('settings'), settings)
+        edit_schema = CredentialsEditSchema()
         payload = dict_clean(dict(
             name=cred_name,
             description=description,
