@@ -55,7 +55,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         Examples:
             >>> tio.v3.vm.folders.delete(1)
         '''
-        self._delete('folders/{}'.format(id))
+        self._delete(f'{id}')
 
     def edit(self, id: int, name: str) -> None:
         '''
@@ -74,7 +74,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         Examples:
             >>> tio.v3.vm.folders.edit(1, 'Updated Folder Name')
         '''
-        self._put('folders/{}'.format(id), json={'name': name})
+        self._put(f'{id}', json={'name': name})
 
     def list(self) -> List:
         '''
@@ -90,4 +90,4 @@ class FoldersAPI(ExploreBaseEndpoint):
             >>> for folder in tio.v3.vm.folders.list():
             ...     pprint(folder)
         '''
-        return self._get('folders')['folders']
+        return self._get()['folders']
