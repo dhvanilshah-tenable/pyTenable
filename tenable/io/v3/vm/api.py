@@ -36,13 +36,6 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
     '''
 
     @property
-    def scanners(self):
-        '''
-        The interface object for the
-        :doc:`Scanners API <scanners>`
-        '''
-        return ScannersAPI(self._api)
-
     def plugins(self):
         '''
         The interface object for the
@@ -51,10 +44,18 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
         return PluginsAPI(self._api)
 
     @property
+    def scanners(self):
+        '''
+        The interface object for the
+        :doc:`Scanners API <scanners>`
+        '''
+        return ScannersAPI(self._api)
+
+    @property
     def vulnerability(self):
         '''
         The interface object for the
-        :doc:`Vulenrability API <vulnerability>`
+        :doc:`Vulnerability API <vulnerability>`
         '''
         pass
         return VulnerabilityAPI(self._api)
