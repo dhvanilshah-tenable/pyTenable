@@ -17,12 +17,14 @@ Methods available on ``tio.v3.vm``:
     :hidden:
     :glob:
 
+    agent_config
     plugins
     scanners
     vulnerability
 '''
 from restfly.endpoint import APIEndpoint
 
+from .agent_config import AgentConfigAPI
 from .plugins import PluginsAPI
 from .scanners import ScannersAPI
 from .vulnerability import VulnerabilityAPI
@@ -34,6 +36,14 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
     under Vulnerability Management
     i.e assets, agents, scanners etc.
     '''
+
+    @property
+    def agent_config(self):
+        '''
+        The interface object for the
+        :doc:`Agent Config APIs <agent_config>`.
+        '''
+        return AgentConfigAPI(self._api)
 
     @property
     def plugins(self):
