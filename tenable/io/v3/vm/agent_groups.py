@@ -12,6 +12,7 @@ Methods available on ``tio.v3.vm.agent_groups``:
     :members:
 '''
 from typing import Dict, Union
+from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
@@ -20,15 +21,15 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
     _path: str = f'api/v3/agent-groups'
     _conv_json: bool = True
 
-    def add_agent(self, group_id: int, *agent_ids: int) -> Union[None, Dict]:
+    def add_agent(self, group_id: UUID, *agent_ids: UUID) -> Union[None, Dict]:
         '''
         Adds an agent or multiple agents to the agent group specified.
 
         :devportal:`agent-groups: add-agent <agent-groups-add-agent>`
 
         Args:
-            group_id (int): The id of the group
-            agent_ids (int): The id of the agent
+            group_id (UUID): The unique identifier of the group
+            agent_ids (UUID): The unique identifier of the agent
 
         Returns:
             :obj:`dict` or :obj:`None`:
@@ -39,11 +40,19 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         Examples:
             Adding a singular agent:
 
-            >>> tio.v3.vm.agent_groups.add_agent(1, 1)
+            >>> tio.v3.vm.agent_groups.add_agent(
+            >>>    'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+            >>>    '1bd703af-b2aa-4a82-ad8d-b883381a873f'
+            >>> )
 
             Adding multiple agents:
 
-            >>> tio.v3.vm.agent_groups.add_agent(1, 1, 2, 3)
+            >>> tio.v3.vm.agent_groups.add_agent(
+            >>>    'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+            >>>    '1drge3af-b2aa-4a81-ad8d-b883381a873f',
+            >>>    '1bgfdgaf-b2aa-4a82-ad8d-b834581a873f',
+            >>>    'bsbsbbdf-b2aa-4a83-ad8d-b867581a873f'
+            >>> )
         '''
 
         if len(agent_ids) <= 1:
@@ -57,21 +66,24 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
                 json={'items': [i for i in agent_ids]}
             )
 
-    def configure(self, group_id: int, name: str) -> Dict:
+    def configure(self, group_id: UUID, name: str) -> Dict:
         '''
         Renames an existing agent group.
 
         :devportal:`agent-groups: configure <agent-groups-configure>`
 
         Args:
-            group_id (int): The id of the group
+            group_id (UUID): The unique identifier of the group
             name (str): The new name for the agent group
 
         Returns:
             :obj:`dict`
 
         Examples:
-            >>> tio.v3.vm.agent_groups.configure(1, 'New Name')
+            >>> tio.v3.vm.agent_groups.configure(
+            >>>    'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+            >>>    'New Name'
+            >>> )
         '''
         return self._put(f'{group_id}', json={'name': name})
 
@@ -91,26 +103,28 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         Examples:
             >>> group = tio.v3.vm.agent_groups.create('New Agent Group')
         '''
-        return self._post(f'', json={'name': name})
+        return self._post(json={'name': name})
 
-    def delete(self, group_id: int) -> None:
+    def delete(self, group_id: UUID) -> None:
         '''
         Delete an agent group.
 
         :devportal:`agent-groups: delete <agent-groups-delete>`
 
         Args:
-            group_id (int): The id of the agent group to delete
+            group_id (UUID): The unique identifier of the agent group
 
         Returns:
             :obj:`None`
 
         Examples:
-            >>> tio.v3.vm.agent_groups.delete(1)
+            >>> tio.v3.vm.agent_groups.delete(
+            >>>     'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85'
+            >>> )
         '''
         self._delete(f'{group_id}')
 
-    def delete_agent(self, group_id: int, *agent_ids: int)\
+    def delete_agent(self, group_id: UUID, *agent_ids: UUID) \
             -> Union[None, Dict]:
         '''
         Delete one or many agents from an agent group.
@@ -118,8 +132,9 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         :devportal:`agent-groups: delete-agent <agent-groups-delete-agent>`
 
         Args:
-            group_id (int): The id of the agent group to remove the agent from
-            *agent_ids (int): The id of the agent to be removed
+            group_id (UUID): The unique identifier of the agent group to
+                             remove the agent from
+            *agent_ids (UUID): The unique identifier of the agent to be removed
 
         Returns:
             :obj:`dict` or :obj:`None`:
@@ -130,11 +145,19 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         Examples:
             Delete a singular agent from an agent group:
 
-            >>> tio.v3.vm.agent_groups.delete_agent(1, 1)
+            >>> tio.v3.vm.agent_groups.delete_agent(
+            >>>     'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+            >>>     'bytsbg56-fe2f-4ba9-98b7-vrt23tert453'
+            >>> )
 
             Delete multiple agents from an agent group:
 
-            >>> tio.v3.vm.agent_groups.delete_agent(1, 1, 2, 3)
+            >>> tio.v3.vm.agent_groups.delete_agent(
+            >>>     'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+            >>>     'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
+            >>>     'ythtbf56-fe2f-4ba9-98b7-hfghr345353f',
+            >>>     'dfgdfd43-fe2f-4ba9-98b7-bdf43fgghf34'
+            >>> )
         '''
         if len(agent_ids) <= 1:
             # if only a singular agent_id was passed, then we will want to
@@ -155,7 +178,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         NotImplemented('Search and Filter functionality '
                        'will be updated later.')
 
-    def task_status(self, group_id: int, task_uuid: str) -> Dict:
+    def task_status(self, group_id: UUID, task_id: UUID) -> Dict:
         '''
         Retrieves the current status of a bulk task.
 
@@ -163,16 +186,21 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         <bulk-task-agent-group-status>`
 
         Args:
-            group_id (int): The id of the group
-            task_uuid (str): The id of the task
+            group_id (UUID): The unique identifier of the group
+            task_id (UUID): The unique identifier of the task
 
         Returns:
             :obj:`dict`:
                 Task resource
 
         Examples:
-            >>> item = tio.v3.vm.agent_groups.add_agent(1, 21, 22, 23)
-            >>> task = tio.v3.vm.agent_groups.task_status(item['task_uuid'])
+            >>> item = tio.v3.vm.agent_groups.add_agnet(
+            >>>      'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+            >>>      'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
+            >>>      'ythtbf56-fe2f-4ba9-98b7-hfghr345353f',
+            >>>      'dfgdfd43-fe2f-4ba9-98b7-bdf43fgghf34'
+            >>> )
+            >>> task = tio.v3.vm.agent_groups.task_status(item['task_id'])
             >>> pprint(task)
         '''
-        return self._get(f'{group_id}/agents/_bulk/{task_uuid}')
+        return self._get(f'{group_id}/agents/_bulk/{task_id}')

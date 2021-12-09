@@ -2,6 +2,7 @@
 test plugins
 '''
 import re
+from uuid import UUID
 
 import pytest
 import responses
@@ -12,8 +13,8 @@ BASE_URL = 'https://cloud.tenable.com/api/v3/agent-groups'
 @responses.activate
 def test_add_agent_with_single_agent_id(api):
     '''Test case for add_agent method with sigle agent id'''
-    group_id: int = 470009
-    agent_id: int = 5
+    group_id: UUID = 'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85'
+    agent_id: UUID = '1bd703af-b2aa-4a82-ad8d-b883381a873f'
     responses.add(
         responses.PUT,
         re.compile(f'{BASE_URL}/{group_id}/agents/{agent_id}')
@@ -25,11 +26,19 @@ def test_add_agent_with_single_agent_id(api):
 @responses.activate
 def test_add_agent_with_multiple_agent_id(api):
     '''Test case for add_agent method with multiple agent id'''
-    group_id: int = 470009
-    payload = {'items': [i for i in (1, 2, 3, 4)]}
+    group_id: UUID = 'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85'
+    payload = {
+        'items': [
+            i for i in (
+                'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+                'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
+                'ythtbf56-fe2f-4ba9-98b7-hfghr345353f'
+            )
+        ]
+    }
     test_response = {
         'task_id': '07a665f4-6e09-444b-b9ce-ed5ccf5c193b',
-        'container_uuid': 'cfdabb09-6aef-481d-b28f-aecb1c38f297',
+        'container_id': 'cfdabb09-6aef-481d-b28f-aecb1c38f297',
         'status': 'NEW',
         'message': 'Beginning bulk addToGroup operation'
     }
@@ -39,29 +48,38 @@ def test_add_agent_with_multiple_agent_id(api):
         match=[responses.matchers.json_params_matcher(payload)],
         json=test_response
     )
-    res = api.v3.vm.agent_groups.add_agent(group_id, 1, 2, 3, 4)
+    res = api.v3.vm.agent_groups.add_agent(
+        group_id,
+        'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+        'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
+        'ythtbf56-fe2f-4ba9-98b7-hfghr345353f'
+    )
     assert isinstance(res, dict)
 
 
 @responses.activate
 def test_configure(api):
     '''Test case for configure method'''
-    group_id: int = 470009
+    group_id: UUID = 'e069b272-ed76-487a-8cf9-1c32836698b7'
     name: str = "test name 2"
     payload = {'name': name}
     test_response = {
-        "owner_id": "2e3a71fc-2442-4024-9fee-085cc61750cb",
-        "created": 1595001140400,
-        "modified": 1595001217809,
-        "container_id": "d6c3e937-4467-4171-92d8-debf5ef3c917",
-        "uuid": "e069b272-ed76-487a-8cf9-1c32836698b7",
-        "name": name,
-        "agents_count": 0,
-        "default_permissions": 16,
-        "shared": 1,
-        "user_permissions": 128,
-        "created_in_seconds": 1595001140,
-        "modified_in_seconds": 1595001217
+        "agent_groups": [
+            {
+                "owner_id": "2e3a71fc-2442-4024-9fee-085cc61750cb",
+                "created": 1595001140400,
+                "modified": 1595001217809,
+                "container_id": "d6c3e937-4467-4171-92d8-debf5ef3c917",
+                "id": "e069b272-ed76-487a-8cf9-1c32836698b7",
+                "name": name,
+                "agents_count": 0,
+                "default_permissions": 16,
+                "shared": 1,
+                "user_permissions": 128,
+                "created_in_seconds": 1595001140,
+                "modified_in_seconds": 1595001217
+            }
+        ]
     }
     responses.add(
         responses.PUT,
@@ -71,7 +89,7 @@ def test_configure(api):
     )
     res = api.v3.vm.agent_groups.configure(group_id, name)
     assert isinstance(res, dict)
-    assert res['name'] == name
+    assert res['agent_groups'][0]['name'] == name
 
 
 @responses.activate
@@ -79,18 +97,22 @@ def test_create(api):
     '''Test case for create method'''
     name: str = 'test'
     test_response: dict = {
-        "id": "ef62870e-fe2f-4ba9-98b7-43d3a53ffe85",
-        "name": name,
-        "creation_date": 1635756224,
-        "last_modification_date": 1635756224,
-        "timestamp": 1635756224,
-        "shared": 1,
-        "owner": {
-            "name": "system",
-            "id": "3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e"
-        },
-        "user_permissions": 128,
-        "agents_count": 0
+        "agent_groups": [
+            {
+                "id": "ef62870e-fe2f-4ba9-98b7-43d3a53ffe85",
+                "name": name,
+                "creation_date": 1635756224,
+                "last_modification_date": 1635756224,
+                "timestamp": 1635756224,
+                "shared": 1,
+                "owner": {
+                    "name": "system",
+                    "id": "3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e"
+                },
+                "user_permissions": 128,
+                "agents_count": 0
+            }
+        ]
     }
     responses.add(
         responses.POST,
@@ -100,13 +122,13 @@ def test_create(api):
     )
     res = api.v3.vm.agent_groups.create(name)
     assert isinstance(res, dict)
-    assert res['name'] == name
+    assert res['agent_groups'][0]['name'] == name
 
 
 @responses.activate
 def test_delete(api):
     '''Test case for delete method'''
-    group_id: int = 1
+    group_id: UUID = 'e069b272-ed76-487a-8cf9-1c32836698b7'
     responses.add(
         responses.DELETE,
         re.compile(f'{BASE_URL}/{group_id}'),
@@ -119,8 +141,8 @@ def test_delete(api):
 @responses.activate
 def test_delete_agent_with_single_agent_id(api):
     '''Test case for delete_agent method'''
-    group_id: int = 470009
-    agent_id: int = 1
+    group_id: UUID = 'e069b272-ed76-487a-8cf9-1c32836698b7'
+    agent_id: UUID = 'vsdf43df-ed76-487a-8cf9-65fgg453grhr'
     responses.add(
         responses.DELETE,
         re.compile(f'{BASE_URL}/{group_id}/agents/{agent_id}')
@@ -132,12 +154,19 @@ def test_delete_agent_with_single_agent_id(api):
 @responses.activate
 def test_delete_agent_with_multiple_agent_id(api):
     '''Test case for delete_agent method'''
-    group_id: int = 470009
-    agent_ids: tuple = (1, 2, 3, 4)
-    payload = {'items': [i for i in agent_ids]}
+    group_id: UUID = 'fs252fdg-4b7c-4d2b-99a1-dvsdsv4242vf'
+    payload = {
+        'items': [
+            i for i in (
+                'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+                'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
+                'ythtbf56-fe2f-4ba9-98b7-hfghr345353f'
+            )
+        ]
+    }
     test_repsonse = {
         'task_id': 'c26d637e-8533-411b-920c-5f49faeb270d',
-        'container_uuid': 'cfdabb09-6aef-481d-b28f-aecb1c38f297',
+        'container_id': 'cfdabb09-6aef-481d-b28f-aecb1c38f297',
         'status': 'NEW',
         'message': 'Beginning bulk removeFromGroup operation'
     }
@@ -147,18 +176,23 @@ def test_delete_agent_with_multiple_agent_id(api):
         match=[responses.matchers.json_params_matcher(payload)],
         json=test_repsonse
     )
-    res = api.v3.vm.agent_groups.delete_agent(group_id, 1, 2, 3, 4)
+    res = api.v3.vm.agent_groups.delete_agent(
+        group_id,
+        'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+        'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
+        'ythtbf56-fe2f-4ba9-98b7-hfghr345353f'
+    )
     assert isinstance(res, dict)
 
 
 @responses.activate
 def test_task_status(api):
     '''Test case for task_status method'''
-    group_id: int = 470009
-    task_id: str = '02683e5e-4b7c-4d2b-99a1-cde1ea0940d9'
+    group_id: UUID = 'fs252fdg-4b7c-4d2b-99a1-dvsdsv4242vf'
+    task_id: UUID = '02683e5e-4b7c-4d2b-99a1-cde1ea0940d9'
     test_response = {
         'task_id': '02683e5e-4b7c-4d2b-99a1-cde1ea0940d9',
-        'container_uuid': 'cfdabb09-6aef-481d-b28f-aecb1c38f297',
+        'container_id': 'cfdabb09-6aef-481d-b28f-aecb1c38f297',
         'status': 'COMPLETED',
         'message': 'Finished bulk addToGroup operation.',
         'start_time': 1638807034721,
