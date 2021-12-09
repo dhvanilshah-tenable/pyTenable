@@ -46,8 +46,7 @@ def test_edit(api):
     '''
     responses.add(
         responses.PUT,
-        f'{VM_FOLDERS_BASE_URL}/{SAMPLE_FOLDER_ID}',
-        json=SAMPLE_FOLDER,
+        f'{VM_FOLDERS_BASE_URL}/{SAMPLE_FOLDER_ID}'
     )
     resp = api.v3.vm.folders.edit(SAMPLE_FOLDER_ID, "edit test")
     assert resp is None

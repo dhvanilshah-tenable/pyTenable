@@ -5,7 +5,7 @@ Folders
 The following methods allow for interaction into the Tenable.io
 :devportal:`folders <folders>` API endpoints.
 
-Methods available on ``tio.folders``:
+Methods available on ``tio.v3.vm.folders``:
 
 .. rst-class:: hide-signature
 .. autoclass:: FoldersAPI
