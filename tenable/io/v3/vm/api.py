@@ -40,20 +40,20 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
     '''
 
     @property
-    def agent_groups(self):
-        '''
-        The interface object for the
-        :doc:`Tenable.io Agent Groups APIs <agent_groups>`.
-        '''
-        return AgentGroupsAPI(self)
-
-    @property
     def agent_config(self):
         '''
         The interface object for the
         :doc:`Agent Config APIs <agent_config>`.
         '''
         return AgentConfigAPI(self._api)
+
+    @property
+    def agent_groups(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Agent Groups APIs <agent_groups>`.
+        '''
+        return AgentGroupsAPI(self)
 
     @property
     def files(self):
