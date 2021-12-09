@@ -77,7 +77,7 @@ class CredentialsPermissionsSchema(Schema):
         elif isinstance(data, tuple) and len(data) == 3:
             return self.permissions_tuple_expansion(data)
         else:
-            return ValidationError('Invalid Permissions defination')
+            return ValidationError('Invalid Permissions definition')
 
     def permissions_tuple_expansion(self, data: tuple) -> Dict:
         '''

@@ -16,6 +16,7 @@ Methods available on ``tio.v3.vm``:
     :hidden:
     :glob:
 
+    credentials
     scanners
 '''
 from tenable.base.endpoint import APIEndpoint
@@ -32,17 +33,17 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
     '''
 
     @property
+    def credentials(self):
+        '''
+        The interface object for the
+        :doc:`Credentials API <credentials>`
+        '''
+        return CredentialsAPI(self._api)
+
+    @property
     def scanners(self):
         '''
         The interface object for the
         :doc:`Scanners API <scanners>`
         '''
         return ScannersAPI(self._api)
-
-    @property
-    def credentials(self):
-        '''
-        The interface object for the
-        :doc:`Scanners API <scanners>`
-        '''
-        return CredentialsAPI(self._api)

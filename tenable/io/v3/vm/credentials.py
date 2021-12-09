@@ -5,13 +5,14 @@ Credentials
 The following methods allow for interaction into the Tenable.io
 :devportal:`credentials <credentials>` API endpoints.
 
-Methods available on ``tio.credentials``:
+Methods available on ``tio.v3.vm.credentials``:
 
 .. rst-class:: hide-signature
 .. autoclass:: CredentialsAPI
     :members:
 '''
 from typing import BinaryIO, Dict, List, Optional, Tuple, Union
+from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.vm.schema import (CredentialsCreateSchema,
@@ -27,7 +28,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
     def _permissions_constructor(
             self, permissions: List[Union[Tuple, Dict]]) -> List[Dict]:
         '''
-        Validates and/or transforms thew permissions items into the desired
+        Validates and/or transforms the permissions items into the desired
         format.  If a dict it will validate.  If a tuple, will convert.
         '''
         permissions_data = list()
@@ -89,9 +90,8 @@ class CredentialsAPI(ExploreBaseEndpoint):
             ...     bin_directory='/usr/bin',
             ...     custom_password_prompt='')
         '''
-        permissions_data = permissions
         if permissions and isinstance(permissions, list):
-            permissions_data = self._permissions_constructor(permissions)
+            permissions = self._permissions_constructor(permissions)
 
         create_schema = CredentialsCreateSchema()
         create_data = dict_clean(dict(
@@ -99,13 +99,13 @@ class CredentialsAPI(ExploreBaseEndpoint):
             description=description,
             type=cred_type,
             settings=settings,
-            permissions=permissions_data
+            permissions=permissions
         ))
         payload = create_schema.dump(create_schema.load(create_data))
 
         return self._post(json=payload)['id']
 
-    def edit(self, cred_uuid: str, cred_name: Optional[str] = None,
+    def edit(self, cred_id: UUID, cred_name: Optional[str] = None,
              description: Optional[str] = None,
              permissions: Optional[List] = None,
              ad_hoc: Optional[bool] = None,
@@ -117,7 +117,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
         :devportal:`credentials: create <credentials-create>`
 
         Args:
-            cred_uuid (str):
+            cred_id (UUID):
                 Credentials uuid
             ad_hoc (bool, optional):
                 Determines whether the credential is managed (``False``) or an
@@ -148,12 +148,12 @@ class CredentialsAPI(ExploreBaseEndpoint):
                 The status of the update process.
 
         Examples:
-            >>> cred_uuid = '00000000-0000-0000-0000-000000000000'
-            >>> tio.v3.vm.credentials.edit(cred_uuid,
+            >>> cred_id = '00000000-0000-0000-0000-000000000000'
+            >>> tio.v3.vm.credentials.edit(cred_id,
             ...     password='sekretsquirrel',
             ...     escalation_password='sudopassword')
         '''
-        current = self.details(cred_uuid)
+        current = self.details(cred_id)
 
         if not cred_name:
             cred_name = current.get('name')
@@ -162,9 +162,8 @@ class CredentialsAPI(ExploreBaseEndpoint):
         if not ad_hoc:
             ad_hoc = current.get('ad_hoc')
 
-        permissions_data = permissions
         if permissions and isinstance(permissions, list):
-            permissions_data = self._permissions_constructor(permissions)
+            permissions = self._permissions_constructor(permissions)
 
         settings = dict_merge(current.get('settings'), settings)
         edit_schema = CredentialsEditSchema()
@@ -172,47 +171,47 @@ class CredentialsAPI(ExploreBaseEndpoint):
             name=cred_name,
             description=description,
             ad_hoc=ad_hoc,
-            permissions=permissions_data,
+            permissions=permissions,
             settings=settings
         ))
         payload = edit_schema.dump(edit_schema.load(payload))
-        return self._put(cred_uuid, json=payload)['updated']
+        return self._put(cred_id, json=payload)['updated']
 
-    def details(self, id: str) -> Dict:
+    def details(self, id: UUID) -> Dict:
         '''
         Retrieves the details of the specified credential.
 
         :devportal:`credentials: details <credentials-details>`
 
         Args:
-            id (str): The UUID of the credential to retrieve.
+            id (UUID): The UUID of the credential to retrieve.
 
         Returns:
             :obj:`Dict`:
                 The resource record for the credential.
 
         Examples:
-            >>> cred_uuid = '00000000-0000-0000-0000-000000000000'
-            >>> cred = tio.v3.vm.credentials.details(cred_uuid)
+            >>> cred_id = '00000000-0000-0000-0000-000000000000'
+            >>> cred = tio.v3.vm.credentials.details(cred_id)
         '''
         return self._get(id)
 
-    def delete(self, id: str) -> bool:
+    def delete(self, id: UUID) -> bool:
         '''
         Deletes the specified credential.
 
         :devportal:`credentials: delete <credentials-delete>`
 
         Args:
-            id (str): The UUID of the credential to retrieve.
+            id (UUID): The UUID of the credential to retrieve.
 
         Returns:
             :obj:`bool`:
                 The status of the action.
 
         Examples:
-            >>> cred_uuid = '00000000-0000-0000-0000-000000000000'
-            >>> cred = tio.v3.vm.credentials.delete(cred_uuid)
+            >>> cred_id = '00000000-0000-0000-0000-000000000000'
+            >>> cred = tio.v3.vm.credentials.delete(cred_id)
         '''
         return self._delete(id)['deleted']
 
@@ -239,7 +238,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
         :devportal:`credentials: upload <file-upload>`
 
         Args:
-            fobj (BinaryIO):
+            fobj (FileObject):
                 The file object intended to be uploaded into Tenable.io.
 
         Returns:

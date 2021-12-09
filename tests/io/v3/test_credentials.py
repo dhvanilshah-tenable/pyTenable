@@ -76,8 +76,7 @@ DETAILS_RESPONSE = {
     "settings": {
         "domain": "",
         "username": "user@example.com",
-        "auth_method": "Password",
-        "password": "********"
+        "auth_method": "Password"
     },
     "permissions": [
         {
