@@ -41,18 +41,18 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
             Adding a singular agent:
 
             >>> tio.v3.vm.agent_groups.add_agent(
-            >>>    'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
-            >>>    '1bd703af-b2aa-4a82-ad8d-b883381a873f'
-            >>> )
+            ...    'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+            ...    '1bd703af-b2aa-4a82-ad8d-b883381a873f'
+            ... )
 
             Adding multiple agents:
 
             >>> tio.v3.vm.agent_groups.add_agent(
-            >>>    'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
-            >>>    '1drge3af-b2aa-4a81-ad8d-b883381a873f',
-            >>>    '1bgfdgaf-b2aa-4a82-ad8d-b834581a873f',
-            >>>    'bsbsbbdf-b2aa-4a83-ad8d-b867581a873f'
-            >>> )
+            ...    'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+            ...    '1drge3af-b2aa-4a81-ad8d-b883381a873f',
+            ...    '1bgfdgaf-b2aa-4a82-ad8d-b834581a873f',
+            ...    'bsbsbbdf-b2aa-4a83-ad8d-b867581a873f'
+            ... )
         '''
 
         if len(agent_ids) <= 1:
@@ -81,9 +81,9 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> tio.v3.vm.agent_groups.configure(
-            >>>    'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
-            >>>    'New Name'
-            >>> )
+            ...    'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+            ...    'New Name'
+            ... )
         '''
         return self._put(f'{group_id}', json={'name': name})
 
@@ -119,8 +119,8 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> tio.v3.vm.agent_groups.delete(
-            >>>     'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85'
-            >>> )
+            ...     'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85'
+            ... )
         '''
         self._delete(f'{group_id}')
 
@@ -146,18 +146,18 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
             Delete a singular agent from an agent group:
 
             >>> tio.v3.vm.agent_groups.delete_agent(
-            >>>     'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
-            >>>     'bytsbg56-fe2f-4ba9-98b7-vrt23tert453'
-            >>> )
+            ...     'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+            ...     'bytsbg56-fe2f-4ba9-98b7-vrt23tert453'
+            ... )
 
             Delete multiple agents from an agent group:
 
             >>> tio.v3.vm.agent_groups.delete_agent(
-            >>>     'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
-            >>>     'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
-            >>>     'ythtbf56-fe2f-4ba9-98b7-hfghr345353f',
-            >>>     'dfgdfd43-fe2f-4ba9-98b7-bdf43fgghf34'
-            >>> )
+            ...     'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+            ...     'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
+            ...     'ythtbf56-fe2f-4ba9-98b7-hfghr345353f',
+            ...     'dfgdfd43-fe2f-4ba9-98b7-bdf43fgghf34'
+            ... )
         '''
         if len(agent_ids) <= 1:
             # if only a singular agent_id was passed, then we will want to
@@ -195,11 +195,11 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> item = tio.v3.vm.agent_groups.add_agnet(
-            >>>      'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
-            >>>      'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
-            >>>      'ythtbf56-fe2f-4ba9-98b7-hfghr345353f',
-            >>>      'dfgdfd43-fe2f-4ba9-98b7-bdf43fgghf34'
-            >>> )
+            ...      'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+            ...      'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
+            ...      'ythtbf56-fe2f-4ba9-98b7-hfghr345353f',
+            ...      'dfgdfd43-fe2f-4ba9-98b7-bdf43fgghf34'
+            ... )
             >>> task = tio.v3.vm.agent_groups.task_status(item['task_id'])
             >>> pprint(task)
         '''
