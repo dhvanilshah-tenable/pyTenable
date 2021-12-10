@@ -17,10 +17,10 @@ from uuid import UUID
 from typing_extensions import Literal
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.base.iterators.csv_iterator import CSVIterator
-from tenable.io.v3.base.iterators.search_iterator import SearchIterator
-
-from .schema import AssignTagsAssetSchema, ImportAssetSchema, MoveAssetSchema
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
+from tenable.io.v3.schema import (AssignTagsAssetSchema, ImportAssetSchema,
+                                  MoveAssetSchema)
 
 
 class AssetSearchIterator(SearchIterator):
@@ -30,10 +30,11 @@ class AssetSearchIterator(SearchIterator):
     pass
 
 
-class AssetCSVIterator(CSVIterator):
+class AssetCSVIterator(CSVChunkIterator):
     '''
     Asset csv iterator
     '''
+    pass
 
 
 class AssetsAPI(ExploreBaseEndpoint):
@@ -78,12 +79,14 @@ class AssetsAPI(ExploreBaseEndpoint):
                 time, it's highly recommended that you look at the output of
                 the :py:meth:`tio.v3.vm.filters.asset_filters()`
                 endpoint to get more details.
-            sort list(tuple):
+            sort list(tuple, Dict):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
 
                 Examples:
-                    - ``[{'last_observed': 'desc'}]``
+                    - ``[("field_name_1", "asc"),
+                             ("field_name_2", "desc")]``
+                    - ``[{'property': 'last_observed', 'order': 'desc'}]``
             limit (int):
                 Number of objects to be returned in each request.
                 Default is 1000.
@@ -114,7 +117,7 @@ class AssetsAPI(ExploreBaseEndpoint):
             >>>    limit=2, sort=[('last_observed', 'asc')])
         '''
         search_api_path = 'api/v3/assets/search'
-        return_csv = kw.get('return_csv')
+        return_csv = kw.pop('return_csv')
         return self.search(
             resource='assets',
             iterator_cls=AssetCSVIterator if return_csv else
@@ -163,7 +166,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         return self._get(f'{uuid}')
 
     def assign_tags(
-        self, action: Literal['add', 'remove'],
+            self, action: Literal['add', 'remove'],
             assets: List[UUID], tags: List[UUID]
     ) -> Dict:
         '''

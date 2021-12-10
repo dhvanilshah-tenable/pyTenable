@@ -4,7 +4,7 @@ Testing the CSV iterators
 
 import responses
 
-from tenable.io.v3.base.iterators.search_iterator import SearchIterator
+from tenable.io.v3.base.iterators.explore_iterator import SearchIterator
 
 USERS_BASE_URL = r'https://cloud.tenable.com/api/v3/assets/search'
 

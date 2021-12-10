@@ -4,7 +4,7 @@ Testing the CSV iterators
 
 import responses
 
-from tenable.io.v3.base.iterators.csv_iterator import CSVIterator
+from tenable.io.v3.base.iterators.explore_iterator import CSVChunkIterator
 
 USERS_BASE_URL = r'https://cloud.tenable.com/api/v3/assets/search'
 
@@ -61,7 +61,7 @@ def test_csv_iterator(api):
         headers=CSV_HEADERS
     )
 
-    csv_iterator = CSVIterator(
+    csv_iterator = CSVChunkIterator(
         api=api,
         _path='api/v3/assets/search',
         _payload={}

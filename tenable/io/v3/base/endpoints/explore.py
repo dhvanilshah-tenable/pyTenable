@@ -5,12 +5,12 @@ import time
 from typing import Optional, Union
 from uuid import UUID
 
-from marshmallow import EXCLUDE
+from requests import Response
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.io.v3.base.iterators.search_iterator import SearchIterator
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 from tenable.io.v3.base.schema.explore.search import SearchSchema
-from tenable.io.v3.base.schema.explore.utils import generate_sort_data
 
 
 class ExploreBaseEndpoint(APIEndpoint):
@@ -36,14 +36,16 @@ class ExploreBaseEndpoint(APIEndpoint):
 
     def search(
             self,
+            *,
             resource: str,
             api_path: str,
             is_sort_with_prop: bool = True,
             return_resp: bool = False,
-            iterator_cls: Optional[SearchIterator] = SearchIterator,
+            iterator_cls: Optional[Union[SearchIterator, CSVChunkIterator]] =
+            SearchIterator,
             schema_cls: Optional[SearchSchema] = SearchSchema,
             **kwargs
-    ):
+    ) -> Union[Response, SearchIterator, CSVChunkIterator]:
         '''
         Initiate a search
 
@@ -118,23 +120,17 @@ class ExploreBaseEndpoint(APIEndpoint):
                 object is instead returned instead of an iterable.
 
         '''
-        sort = kwargs.get('sort')
-        next_token = kwargs.get('next')
-        sort = generate_sort_data(sort, is_sort_with_prop)
-        kwargs['sort'] = sort
-        if not next_token:
-            schema = schema_cls(unknown=EXCLUDE)
-            payload = schema.dump(schema.load(kwargs))
-        else:
-            payload = {'next': next_token}
+        schema = schema_cls(
+            context={'is_sort_with_prop': is_sort_with_prop})
+        payload = schema.dump(schema.load(kwargs))
+
         if return_resp:
-            return self._api.post(api_path, json=payload).json()
+            return self._api.post(api_path, json=payload)
         return iterator_cls(
             self._api,
             _path=api_path,
             _resource=resource,
-            _payload=payload,
-            _next_token=next_token
+            _payload=payload
         )
 
     def search_results(self, search_id: str, wait_for_results: bool = True):

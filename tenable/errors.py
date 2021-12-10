@@ -102,12 +102,3 @@ class PasswordComplexityError(APIError):  # noqa:  F405
             infrastructure.  In the case of Non-Tenable.io products, is simply
             an empty string.
     '''
-
-
-class RequestValidationError(Exception):
-    def __init__(self, type, example):
-        message = (
-            f'{type}: Validation failed. Please provide'
-            f' the valid data. Example: {example}'
-        )
-        super().__init__(message)

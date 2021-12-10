@@ -3,7 +3,7 @@ Testing the search endpoint
 '''
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.base.iterators.search_iterator import SearchIterator
+from tenable.io.v3.base.iterators.explore_iterator import SearchIterator
 
 REQUESTDATA = dict(
     fields=['test1', 'test2'],

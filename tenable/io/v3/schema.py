@@ -1,9 +1,9 @@
 '''
 V3 API Endpoints Schemas
 '''
-from marshmallow import Schema, ValidationError, fields
+from marshmallow import INCLUDE, Schema, ValidationError, fields
 from marshmallow import validate as v
-from marshmallow.decorators import post_dump, pre_load
+from marshmallow.decorators import post_dump, validates_schema
 
 
 class AssignTagsAssetSchema(Schema):
@@ -16,40 +16,28 @@ class AssignTagsAssetSchema(Schema):
     action = fields.String(validate=v.OneOf(['add', 'remove']))
 
 
+class AssetSchema(Schema):
+    class Meta:
+        unknown = INCLUDE
+
+    @validates_schema
+    def validate_required_attributes_exist(self, data, **kwargs):
+        if not (data.get('fqdn')
+                or data.get('ipv4')
+                or data.get('netbios_name')
+                or data.get('mac_address')):
+            raise ValidationError('Each asset object requires a value for at '
+                                  'least one of the following properties: '
+                                  'fqdn, ipv4, netbios_name, mac_address.'
+                                  )
+
+
 class ImportAssetSchema(Schema):
-    '''
-    Import Asset API Schema
-    '''
-
-    assets = fields.List(fields.Dict(), validate=v.Length(min=1))
-    source = fields.String()
-
-    @pre_load
-    def transform_assets(
-        self, data, **kwargs
-    ):
-        '''
-        Transform a Tuple of Assets into a List of Assets
-        and validate each Asset.
-        '''
-        data['assets'] = list(data.get('assets', []))
-
-        if len(data['assets']) < 1:
-            raise ValidationError('Provide at least one asset')
-
-        for asset in data['assets']:
-            if not (
-                asset.get('fqdn')
-                or asset.get('ipv4')
-                or asset.get('netbios_name')
-                or asset.get('mac_address')
-            ):
-                raise ValidationError(
-                    'Each asset object requires a value for at least one '
-                    'of the following properties: '
-                    'fqdn, ipv4, netbios_name, mac_address.'
-                )
-        return data
+    assets = fields.List(fields.Nested(AssetSchema),
+                         validate=v.Length(min=1),
+                         required=True
+                         )
+    source = fields.Str(required=True)
 
 
 class MoveAssetSchema(Schema):

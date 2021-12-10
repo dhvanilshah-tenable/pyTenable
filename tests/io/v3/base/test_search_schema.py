@@ -4,7 +4,6 @@ Tests for search and filter schema
 import pytest
 from marshmallow.exceptions import ValidationError
 
-from tenable.io.v3.base.schema.explore import utils
 from tenable.io.v3.base.schema.explore.filters import FilterSchema
 from tenable.io.v3.base.schema.explore.search import SearchSchema, SortSchema
 
@@ -12,10 +11,10 @@ search_data = dict(
     fields=['bios_name', 'name'],
     filter=('bios_name', 'eq', 'SCCM'),
     limit=10,
-    sort=[dict(property='bios_name', order='asc')],
+    sort=[('name', 'asc'), ('bios_name', 'desc')],
     next='sdf000dfssdSDFSDFSFE00dfsdffaf'
 )
-sort_data = [('name', 'asc'), ('bios_name', 'desc')]
+sort_data = [('bios_name', 'desc'), ('name', 'asc')]
 sort_data_schema = dict(property='bios_name', order='asc')
 
 
@@ -30,10 +29,13 @@ def test_search_schema():
         'filter': {'value': 'SCCM',
                    'property': 'bios_name',
                    'operator': 'eq'},
-        'sort': [{'property': 'bios_name', 'order': 'asc'}]
+        'sort': [{'property': 'name', 'order': 'asc'},
+                 {'property': 'bios_name', 'order': 'desc'}]
     }
 
-    schema = SearchSchema()
+    schema = SearchSchema(context={
+        'is_sort_with_prop': True
+    })
     assert test_resp == schema.dump(schema.load(search_data))
 
     with pytest.raises(ValidationError):
@@ -41,17 +43,11 @@ def test_search_schema():
         schema.load(search_data)
 
 
-def test_sort_schema_generate():
-    test_resp = [{'property': 'name', 'order': 'asc'},
-                 {'property': 'bios_name', 'order': 'desc'}]
-    sort_d = utils.generate_sort_data(sort_data)
-
-    assert test_resp == sort_d
-
-
 def test_sort_schema():
     test_resp = {'property': 'bios_name', 'order': 'asc'}
-    schema = SortSchema()
+    schema = SortSchema(context={
+        'is_sort_with_prop': True
+    })
     data = schema.dump(schema.load(sort_data_schema))
     assert test_resp == data
 
