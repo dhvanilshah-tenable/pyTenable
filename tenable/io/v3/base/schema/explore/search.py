@@ -1,7 +1,7 @@
 '''
 Base Explore Search Schema
 '''
-from marshmallow import Schema, ValidationError, fields, post_dump, pre_load
+from marshmallow import Schema, fields, post_dump, pre_load
 from marshmallow import validate as v
 
 from tenable.io.v3.base.schema.explore.filters import FilterSchema
@@ -20,14 +20,7 @@ class SortSchema(Schema):
             property = data[0]
             order = data[1]
             return dict(property=property, order=order)
-        elif isinstance(data, dict):
-            return data
-        else:
-            raise ValidationError(
-                'Sort: Validation failed. Please provide the valid data.'
-                ' Example[("field_name_1", "asc"),'
-                ' ("field_name_2", "desc")]'
-            )
+        return data
 
     @post_dump(pass_many=True)
     def transform_request_data(self, data, **kwargs):

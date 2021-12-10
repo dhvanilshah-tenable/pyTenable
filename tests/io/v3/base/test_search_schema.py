@@ -11,10 +11,9 @@ search_data = dict(
     fields=['bios_name', 'name'],
     filter=('bios_name', 'eq', 'SCCM'),
     limit=10,
-    sort=[('name', 'asc'), ('bios_name', 'desc')],
+    sort=[('name', 'asc'), {'property': 'bios_name', 'order': 'desc'}],
     next='sdf000dfssdSDFSDFSFE00dfsdffaf'
 )
-sort_data = [('bios_name', 'desc'), ('name', 'asc')]
 sort_data_schema = dict(property='bios_name', order='asc')
 
 
@@ -29,8 +28,8 @@ def test_search_schema():
         'filter': {'value': 'SCCM',
                    'property': 'bios_name',
                    'operator': 'eq'},
-        'sort': [{'property': 'name', 'order': 'asc'},
-                 {'property': 'bios_name', 'order': 'desc'}]
+        'sort': [{'order': 'asc', 'property': 'name'},
+                 {'order': 'desc', 'property': 'bios_name'}]
     }
 
     schema = SearchSchema(context={
