@@ -10,6 +10,9 @@ SAMPLE_FOLDER = {
     'name': 'my scans',
     'id': SAMPLE_FOLDER_ID
 }
+SAMPLE_FOLDER_CREATE = {
+    'id': SAMPLE_FOLDER_ID
+}
 
 
 @responses.activate
@@ -20,7 +23,7 @@ def test_create(api):
     responses.add(
         responses.POST,
         VM_FOLDERS_BASE_URL,
-        json=SAMPLE_FOLDER
+        json=SAMPLE_FOLDER_CREATE
     )
     resp = api.v3.vm.folders.create(SAMPLE_FOLDER['name'])
     assert resp == SAMPLE_FOLDER_ID
