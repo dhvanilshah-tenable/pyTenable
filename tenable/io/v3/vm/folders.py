@@ -28,7 +28,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         :devportal:`folders: create <folders-create>`
 
         Args:
-            name:
+            name (str):
                 The name of the new folder.
 
         Returns:
@@ -47,7 +47,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         :devportal:`folders: delete <folders-delete>`
 
         Args:
-            id: The unique identifier for the folder.
+            id (int): The unique identifier for the folder.
 
         Returns:
             :obj:`None`
@@ -64,8 +64,8 @@ class FoldersAPI(ExploreBaseEndpoint):
         :devportal:`folders: edit <folders-edit>`
 
         Args:
-            id: The unique identifier for the folder.
-            name: The new name for the folder.
+            id (int): The unique identifier for the folder.
+            name (str): The new name for the folder.
 
         Returns:
             :obj:`None`:
