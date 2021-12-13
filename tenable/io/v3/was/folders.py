@@ -77,18 +77,21 @@ class FoldersAPI(ExploreBaseEndpoint):
         '''
         return self._put(f'{id}', json={'name': name})
 
-    def list(self) -> List:
+    def search(self, **kwargs) -> List:
         '''
-        Lists the available folders.
+        Search endpoint introduced in v3.
 
-        :devportal:`was folders: list <was-v2-folders-list>`
+        :devportal:`folders: search <was-folders-search>`
 
         Returns:
             :obj:`list`:
-                List of folder resource records.
-
+                Iterator Class object
+                TODO Implementation of base iterator class
+                ExploreSearchIterator needs to be updated at v3/base/iterator
         Examples:
-            >>> for folder in tio.v3.was.folders.list():
-            ...     pprint(folder)
+            TODO
         '''
-        return self._get()
+        raise NotImplementedError(
+            'This method will be updated once ExploreSearchIterator is \
+                implemented for v3'
+        )

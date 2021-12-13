@@ -54,14 +54,8 @@ def test_edit(api):
 
 
 @responses.activate
-def test_list(api):
+def test_search(api):
     '''
-    Test was folders list method
+    Test was folders search method
     '''
-    responses.add(
-        responses.GET,
-        WAS_FOLDERS_BASE_URL,
-        json=[SAMPLE_FOLDER],
-    )
-    resp = api.v3.was.folders.list()
-    assert resp == [SAMPLE_FOLDER]
+    pass
