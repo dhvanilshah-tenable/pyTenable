@@ -26,6 +26,7 @@ from restfly.endpoint import APIEndpoint
 
 from tenable.io.v3.vm.agent_config import AgentConfigAPI
 from tenable.io.v3.vm.files import FileAPI
+from tenable.io.v3.vm.permissions import PermissionsAPI
 from tenable.io.v3.vm.plugins import PluginsAPI
 from tenable.io.v3.vm.scanners import ScannersAPI
 
@@ -52,6 +53,14 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
         :doc:`Files API <files>`
         '''
         return FileAPI(self._api)
+
+    @property
+    def permissions(self):
+        '''
+        The interface object for the
+        :ref:`Permissions API <permissions>`
+        '''
+        return PermissionsAPI(self._api)
 
     @property
     def plugins(self):
