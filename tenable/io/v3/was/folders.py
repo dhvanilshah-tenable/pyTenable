@@ -78,19 +78,6 @@ class FoldersAPI(ExploreBaseEndpoint):
         return self._put(f'{id}', json={'name': name})
 
     def search(self, **kwargs) -> List:
-        '''
-        Search endpoint introduced in v3.
-
-        :devportal:`folders: search <was-folders-search>`
-
-        Returns:
-            :obj:`list`:
-                Iterator Class object
-                TODO Implementation of base iterator class
-                ExploreSearchIterator needs to be updated at v3/base/iterator
-        Examples:
-            TODO
-        '''
         raise NotImplementedError(
             'This method will be updated once ExploreSearchIterator is \
                 implemented for v3'
