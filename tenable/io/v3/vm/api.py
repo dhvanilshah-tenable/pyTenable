@@ -27,6 +27,7 @@ from restfly.endpoint import APIEndpoint
 from tenable.io.v3.vm.agent_config import AgentConfigAPI
 from tenable.io.v3.vm.files import FileAPI
 from tenable.io.v3.vm.plugins import PluginsAPI
+from tenable.io.v3.vm.scanner_groups.api import ScannerGroupsAPI
 from tenable.io.v3.vm.scanners import ScannersAPI
 
 
@@ -68,3 +69,11 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
         :doc:`Scanners API <scanners>`
         '''
         return ScannersAPI(self._api)
+
+    @property
+    def scanner_groups(self):
+        '''
+        The interface object for the
+        :doc:`Scanner groups API <scanners>`
+        '''
+        return ScannerGroupsAPI(self._api)
