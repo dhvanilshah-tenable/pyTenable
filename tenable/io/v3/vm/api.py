@@ -13,12 +13,12 @@ Methods available on ``tio.v3.vm``:
     :members:
 
 .. toctree::
-
     :hidden:
     :glob:
 
     agent_config
     files
+    permissions
     plugins
     scanners
 '''
