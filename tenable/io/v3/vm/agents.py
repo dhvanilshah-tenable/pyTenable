@@ -12,6 +12,7 @@ Methods available on ``tio.v3.vm.agents``:
     :members:
 '''
 from typing import Dict, Union
+from uuid import UUID
 
 from tenable.io.base import TIOIterator
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
@@ -44,47 +45,50 @@ class AgentsAPI(ExploreBaseEndpoint):
     _path: str = 'api/v3/agents'
     _conv_json: bool = True
 
-    def details(self, agent_id: int) -> Dict:
+    def details(self, agent_id: UUID) -> Dict:
         '''
         Retrieves the details of an agent.
 
         :devportal:`agents: get <agents-get>`
 
         Args:
-            agent_id (int):
-                The identifier of the agent.
+            agent_id (UUID): The unique identifier of the agent.
 
         Returns:
             :obj:`dict`:
                 The agent dictionary record.
 
         Examples:
-            >>> agent = tio.v3.vm.agents.details(1)
+            >>> agent = tio.v3.vm.agents.details(
+            ...     '00000000-0000-0000-0000-000000000000'
+            ... )
             >>> pprint(agent)
         '''
         return self._get(f'{agent_id}')
 
-    def list_agents_from_group(self, agent_group_id: int) -> Dict:
+    def list_agents_from_group(self, agent_group_id: UUID) -> Dict:
         '''
         Retrive the list of agents for the specified agent group.
 
         :devportal:`agent: get <agent-group-list-agents>`
 
         Args:
-            agent_group_id (int) : The id of the agent group
+            agent_group_id (UUID): The unique identifier of the agent.
 
         Returns:
             :obj:`dict`:
                 The agent groups dictionary of all the agents.
 
         Examples:
-            >>> agent_from_group = tio.v3.vm.agents.list_agents_from_groups(1)
+            >>> agent = tio.v3.vm.agents.list_agents_from_groups(
+            ...     '00000000-0000-0000-0000-000000000000'
+            ... )
             >>> print(agent_from_group)
         '''
         self._path: str = self._path.replace('agents', 'agent-groups')
         return self._get(f'{agent_group_id}/agents/')
 
-    def task_status(self, task_uuid: str) -> Dict:
+    def task_status(self, task_uuid: UUID) -> Dict:
         '''
         Retrieves the current status of the task requested.
 
@@ -92,15 +96,19 @@ class AgentsAPI(ExploreBaseEndpoint):
         <bulk-task-agent-status>`
 
         Args:
-            task_uuid (str): The id of the agent
+            task_uuid (UUID): The unique identifier of the agent.
 
         Returns:
             :obj:`dict`:
                 Task resource
 
         Examples:
-            >>> item = tio..v3.vm.agents.unlink(21, 22, 23)
-            >>> task = tio.v3.vm.agent.task_status(item['task_uuid'])
+            >>> item = tio.v3.vm.agents.unlink(
+            ...     '00000000-0000-0000-0000-000000000000',
+            ...     '00000000-0000-0000-0000-000000000001',
+            ...     '00000000-0000-0000-0000-000000000002'
+            ... )
+            >>> task = tio.v3.vm.agent.task_status(item['task_id'])
             >>> pprint(task)
         '''
         return self._get(f'_bulk/{task_uuid}')
@@ -108,15 +116,14 @@ class AgentsAPI(ExploreBaseEndpoint):
     def search(self):
         NotImplemented('This method will be implemented later.')
 
-    def unlink(self, *agent_ids: int) -> Union[Dict, None]:
+    def unlink(self, *agent_ids: UUID) -> Union[Dict, None]:
         '''
         Unlink one or multiple agents from the Tenable.io instance.
 
         :devportal:`agents: delete <agents-delete>`
 
         Args:
-            *agent_ids (int):
-                The ID of the agent to delete
+            *agent_ids (UUID): The unique identifier of the agent to delete
 
         Returns:
             :obj:`dict` or :obj:`None`:
@@ -127,11 +134,17 @@ class AgentsAPI(ExploreBaseEndpoint):
         Examples:
             Unlink a singular agent:
 
-            >>> tio.v3.vm.agents.unlink(1)
+            >>> tio.v3.vm.agents.unlink(
+            ...     '00000000-0000-0000-0000-000000000000'
+            ... )
 
             Unlink many agents:
 
-            >>> tio.v3.vm.agents.unlink(1, 2, 3)
+            >>> tio.v3.vm.agents.unlink(
+            ...     '00000000-0000-0000-0000-000000000000',
+            ...     '00000000-0000-0000-0000-000000000001',
+            ...     '00000000-0000-0000-0000-000000000002'
+            ... )
         '''
 
         if len(agent_ids) <= 1:
