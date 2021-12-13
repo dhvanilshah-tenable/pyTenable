@@ -12,7 +12,9 @@ BASE_URL = 'https://cloud.tenable.com/api/v3/agents'
 
 @responses.activate
 def test_details(api):
-    '''Test case for agents details method'''
+    '''
+    Test case for agents details method
+    '''
     test_response = {
         'id': 'd59d1f5b-f775-4061-9e36-fae22ab7518f2596d192e3cf57f8',
         'name': 'DESKTOP-PSNDJQ6',
@@ -44,7 +46,9 @@ def test_details(api):
 
 @responses.activate
 def test_list_agents_from_group(api):
-    '''Test case for agents list_agents_from_group method'''
+    '''
+    Test case for agents list_agents_from_group method
+    '''
     test_response = {
         'agents': [
             {
@@ -99,7 +103,9 @@ def test_list_agents_from_group(api):
 
 @responses.activate
 def test_task_status(api):
-    '''Test case for agents task_status method'''
+    '''
+    Test case for agents task_status method
+    '''
     test_response = {
         'task_id': '61a1320b-51e4-4244-9b34-694247384e8d',
         'container_id': 'cfdabb09-6aef-481d-b28f-aecb1c38f297',
@@ -122,13 +128,17 @@ def test_task_status(api):
 
 @pytest.mark.skip('This test case implemented later')
 def test_search(api):
-    '''Test case for agents search method'''
+    '''
+    Test case for agents search method
+    '''
     pass
 
 
 @responses.activate
 def test_unlink_with_singuler_agent(api):
-    '''Test case for agents unlink method'''
+    '''
+    Test case for agents unlink method
+    '''
     agent_id: UUID = '61a1320b-51e4-4244-9b34-694247384e8d'
     responses.add(
         responses.DELETE,
@@ -140,7 +150,9 @@ def test_unlink_with_singuler_agent(api):
 
 @responses.activate
 def test_unlink_with_multiple_agents(api):
-    '''Test case for agents unlink method'''
+    '''
+    Test case for agents unlink method
+    '''
     test_response = {
         'task_id': '61a1320b-51e4-4244-9b34-694247384e8d',
         'container_id': 'cfdabb09-6aef-481d-b28f-aecb1c38f297',
