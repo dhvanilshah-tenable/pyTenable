@@ -18,7 +18,7 @@ from restfly.utils import dict_clean
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.schema.explore.filters import FilterSchema
 from tenable.io.v3.base.schema.explore.search import SearchSchema
-from tenable.io.v3.schema import UserEditSchema, UsersCreateSchema
+from tenable.io.v3.users.schema import UserEditSchema, UsersCreateSchema
 from tenable.utils import dict_merge
 
 
