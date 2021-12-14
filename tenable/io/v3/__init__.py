@@ -22,12 +22,11 @@ Methods available on ``tio.v3``:
     was/index
 '''
 from tenable.base.endpoint import APIEndpoint
+from tenable.io.v3.assets.assets import AssetsAPI
 from tenable.io.v3.groups import GroupsAPI
 from tenable.io.v3.users import UsersAPI
 from tenable.io.v3.vm.api import VulnerabilityManagement
 from tenable.io.v3.was.api import WebApplicationScanning
-
-from .assets import AssetsAPI
 
 
 class Version3API(APIEndpoint):  # noqa: PLR0904

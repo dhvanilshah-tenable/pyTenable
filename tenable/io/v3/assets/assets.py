@@ -16,11 +16,11 @@ from uuid import UUID
 
 from typing_extensions import Literal
 
+from tenable.io.v3.assets.schema import (AssignTagsAssetSchema,
+                                         ImportAssetSchema, MoveAssetSchema)
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
-from tenable.io.v3.schema import (AssignTagsAssetSchema, ImportAssetSchema,
-                                  MoveAssetSchema)
 
 
 class AssetSearchIterator(SearchIterator):
