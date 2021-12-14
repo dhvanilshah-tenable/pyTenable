@@ -18,8 +18,7 @@ Methods available on ``tio.v3.was``:
 
     folders
 '''
-from restfly.endpoint import APIEndpoint
-
+from tenable.io.v3.base.endpoints.explore import APIEndpoint
 from tenable.io.v3.was.folders.api import FoldersAPI
 
 
