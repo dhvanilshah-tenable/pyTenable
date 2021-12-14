@@ -1,5 +1,5 @@
 '''
-users
+Users
 =====
 
 The following methods allow for interaction into the Tenable.io
@@ -294,8 +294,8 @@ class UsersAPI(ExploreBaseEndpoint):
         '''
         Retrieves the users.
 
-        Requires -
-            fields -- list of string = ['field1', 'field2']
+        Args:
+            fields (list): ['field1', 'field2']
             filter -- tuple
                 ('field_name', 'operator', 'value') --
                 ('and', ('test', 'oper', '1'),

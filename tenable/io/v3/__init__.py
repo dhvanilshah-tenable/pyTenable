@@ -1,5 +1,5 @@
 '''
-Version3API
+Version3 API
 ===========
 
 The following sub-package allows for interaction with the Tenable.io
@@ -11,7 +11,6 @@ Methods available on ``tio.v3``:
 .. autoclass:: Version3API
     :members:
 .. toctree::
-
     :hidden:
     :glob:
 
