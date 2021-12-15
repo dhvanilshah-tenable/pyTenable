@@ -11,7 +11,7 @@ Methods available on ``tio.v3.vm.permissions``:
 .. autoclass:: PermissionsAPI
     :members:
 '''
-from typing import List
+from typing import Dict, List
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.vm.permissions.schema import PermissionSchema
@@ -26,7 +26,7 @@ class PermissionsAPI(ExploreBaseEndpoint):
     _conv_json = True
     _schema = PermissionSchema()
 
-    def change(self, otype: str, id: int, *acls: List) -> None:
+    def change(self, otype: str, id: int, *acls: Dict) -> None:
         '''
         Modify the permission of a specific object.
 
