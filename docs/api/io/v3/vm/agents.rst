@@ -1,1 +1,1 @@
-.. automodule:: tenable.io.v3.vm.agents
+.. automodule:: tenable.io.v3.vm.agents.api
