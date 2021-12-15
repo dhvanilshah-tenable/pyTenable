@@ -59,6 +59,10 @@ def test_filter_tuple_without_condition():
 
     assert test_resp == data
 
+    with pytest.raises(ValidationError):
+        search_data['new_val'] = 'something'
+        schema.load(search_data)
+
 
 def test_filter_dict():
     tup_data = {'property': 'filter', 'operator': 'oper', 'value': 'value'}
@@ -90,3 +94,31 @@ def test_filter_tuple_with_condition():
     data = schema.dump(schema.load(tup_data))
 
     assert test_resp == data
+
+    with pytest.raises(ValidationError):
+        data = 'something'
+        schema.load(data)
+
+    with pytest.raises(ValidationError):
+        data = ('greater', ('and', ('test', 'eq', '1'),
+                            ('test', 'eq', '2')
+                            ),
+                'invalid', ('test', 'eq', 3)
+                )
+        schema.load(data)
+
+    with pytest.raises(ValidationError):
+        data = ('and', ('and', ('test', 'eq', '1'),
+                        ('test', 'eq', '1')
+                        ),
+                'and', ('test', 'eq', '1')
+                )
+        schema.load(data)
+
+    with pytest.raises(ValidationError):
+        data = ('None', ('and', ('test', 'eq', '1'),
+                         ('test', 'eq', '1')
+                         ),
+                'and', ('test', 'eq', '1')
+                )
+        schema.load(data)

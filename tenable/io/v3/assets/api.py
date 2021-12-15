@@ -44,7 +44,7 @@ class AssetsAPI(ExploreBaseEndpoint):
     _path = 'api/v3/assets'
     _conv_json = True
 
-    def search_assets(self, **kw) -> Union[AssetSearchIterator, Dict]:
+    def search(self, **kw) -> Union[AssetSearchIterator, Dict]:
         '''
         Retrieves the assets.
 
@@ -118,7 +118,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         '''
         search_api_path = 'api/v3/assets/search'
         return_csv = kw.pop('return_csv')
-        return self.search(
+        return super().search(
             resource='assets',
             iterator_cls=AssetCSVIterator if return_csv else
             AssetSearchIterator,
