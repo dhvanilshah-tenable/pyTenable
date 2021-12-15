@@ -19,7 +19,7 @@ from tenable.io.v3.vm.agent_groups.schema import AgentGroupsBaseSchema
 
 
 class AgentGroupsAPI(ExploreBaseEndpoint):
-    _path: str = f'api/v3/agent-groups'
+    _path: str = 'api/v3/agent-groups'
     _conv_json: bool = True
 
     def add_agent(self, group_id: UUID, *agent_ids: UUID) -> Union[None, Dict]:
@@ -88,7 +88,10 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
             ...    'New Name'
             ... )
         '''
-        return self._put(f'{group_id}', json={'name': name})
+        payload: dict = {'name': name}
+        schema = AgentGroupsBaseSchema(only=['name'])
+        payload = schema.dump(schema.load(payload))
+        return self._put(f'{group_id}', json=payload)
 
     def create(self, name: str) -> Dict:
         '''

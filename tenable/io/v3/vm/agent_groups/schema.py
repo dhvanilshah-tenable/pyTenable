@@ -1,5 +1,5 @@
 '''
-Scanners API Endpoint Schemas
+Agent Groups API Endpoint Schemas
 '''
 from marshmallow import Schema, fields
 

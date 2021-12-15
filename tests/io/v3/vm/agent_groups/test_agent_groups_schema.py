@@ -1,5 +1,5 @@
 '''
-Testing the Scanner schemas
+Testing the AgentGroups schemas
 '''
 from tenable.io.v3.vm.agent_groups.schema import AgentGroupsBaseSchema
 
