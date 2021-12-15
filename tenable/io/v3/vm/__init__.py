@@ -17,12 +17,14 @@ Methods available on ``tio.v3.vm``:
     :glob:
 
     agent_config
+    credentials
     files
     plugins
     scanners
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.vm.agent_config.api import AgentConfigAPI
+from tenable.io.v3.vm.credentials.api import CredentialsAPI
 from tenable.io.v3.vm.files.api import FileAPI
 from tenable.io.v3.vm.plugins.api import PluginsAPI
 from tenable.io.v3.vm.scanners.api import ScannersAPI
@@ -42,6 +44,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Agent Config APIs <agent_config>`.
         '''
         return AgentConfigAPI(self._api)
+
+    @property
+    def credentials(self):
+        '''
+        The interface object for the
+        :doc:`Credentials APIs <credentials>`.
+        '''
+        return CredentialsAPI(self._api)
 
     @property
     def files(self):

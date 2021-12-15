@@ -11,33 +11,18 @@ Methods available on ``tio.v3.vm.credentials``:
 .. autoclass:: CredentialsAPI
     :members:
 '''
-from typing import BinaryIO, Dict, List, Optional, Tuple, Union
+from typing import BinaryIO, Dict, List, Optional
 from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.schema import (CredentialsCreateSchema,
-                                     CredentialsEditSchema,
-                                     CredentialsPermissionsSchema)
+from tenable.io.v3.vm.credentials.schema import (CredentialsCreateSchema,
+                                                 CredentialsEditSchema)
 from tenable.utils import dict_clean, dict_merge
 
 
 class CredentialsAPI(ExploreBaseEndpoint):
     _path = 'api/v3/credentials'
     _conv_json = True
-
-    def _permissions_constructor(
-            self, permissions: List[Union[Tuple, Dict]]) -> List[Dict]:
-        '''
-        Validates and/or transforms the permissions items into the desired
-        format.  If a dict it will validate.  If a tuple, will convert.
-        '''
-        permissions_data = list()
-        permission_schema = CredentialsPermissionsSchema()
-        for permission in permissions:
-            perm = permission_schema.dump(
-                permission_schema.load(permission))
-            permissions_data.append(perm)
-        return permissions_data
 
     def create(self, cred_name: str, cred_type: str,
                description: Optional[str] = None,
@@ -90,18 +75,16 @@ class CredentialsAPI(ExploreBaseEndpoint):
             ...     bin_directory='/usr/bin',
             ...     custom_password_prompt='')
         '''
-        if permissions and isinstance(permissions, list):
-            permissions = self._permissions_constructor(permissions)
 
         create_schema = CredentialsCreateSchema()
-        create_data = dict_clean(dict(
+        payload = dict_clean(dict(
             name=cred_name,
             description=description,
             type=cred_type,
             settings=settings,
             permissions=permissions
         ))
-        payload = create_schema.dump(create_schema.load(create_data))
+        payload = create_schema.dump(create_schema.load(payload))
 
         return self._post(json=payload)['id']
 
@@ -161,9 +144,6 @@ class CredentialsAPI(ExploreBaseEndpoint):
             description = current.get('description')
         if not ad_hoc:
             ad_hoc = current.get('ad_hoc')
-
-        if permissions and isinstance(permissions, list):
-            permissions = self._permissions_constructor(permissions)
 
         settings = dict_merge(current.get('settings'), settings)
         edit_schema = CredentialsEditSchema()
