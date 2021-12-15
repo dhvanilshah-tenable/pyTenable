@@ -122,3 +122,30 @@ def test_filter_tuple_with_condition():
                 'and', ('test', 'eq', '1')
                 )
         schema.load(data)
+
+    with pytest.raises(ValidationError):
+        data = ('and', ('and', ('test', 'eq', None),
+                        ('test', 'eq', '1')
+                        ),
+                'or', ('test', 'eq', '1')
+                )
+        schema.load(data)
+
+
+def test_filter_tuple_with_condition_dict():
+    data = {'or': [
+        {'and': [
+            {'value': '1', 'operator': 'oper', 'property': '1'},
+            {'value': '2', 'operator': 'oper', 'property': '2'}
+        ]
+        }],
+        'and': [
+            {'value': '3', 'operator': 'oper', 'property': '3'}
+        ]
+    }
+    test_resp = {'and': [{'operator': 'oper', 'property': '3', 'value': '3'}],
+                 'or': [{'and': [
+                     {'operator': 'oper', 'property': '1', 'value': '1'},
+                     {'operator': 'oper', 'property': '2', 'value': '2'}]}]}
+    schema = FilterSchema()
+    assert test_resp == schema.dump(schema.load(data))
