@@ -1,6 +1,6 @@
 '''
 Version3 API
-===========
+============
 
 The following sub-package allows for interaction with the Tenable.io
 Version3API APIs.

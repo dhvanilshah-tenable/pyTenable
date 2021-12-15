@@ -21,14 +21,14 @@ Methods available on ``tio.v3.vm``:
     plugins
     scanners
 '''
-from tenable.io.v3.base.endpoints.explore import APIEndpoint
+from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.vm.agent_config.api import AgentConfigAPI
 from tenable.io.v3.vm.files.api import FileAPI
 from tenable.io.v3.vm.plugins.api import PluginsAPI
 from tenable.io.v3.vm.scanners.api import ScannersAPI
 
 
-class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
+class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     '''
     This class will contain property for all resources
     under Vulnerability Management
