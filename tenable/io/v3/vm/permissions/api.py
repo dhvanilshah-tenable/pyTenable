@@ -48,6 +48,9 @@ class PermissionsAPI(ExploreBaseEndpoint):
 
         .. _permissions documentation:
             https://developer.tenable.com/docs/permissions
+
+        Examples:
+            >>> tio.v3.vm.permissions.change(otype, id, acls)
         '''
         # # Check to make sure all of the ACLs are dictionaries.
         # for item in acls:
@@ -73,6 +76,9 @@ class PermissionsAPI(ExploreBaseEndpoint):
             :obj:`list`:
                 The permission recourse record listings for the
                 specified object.
+
+        Examples:
+            >>> tio.v3.vm.permissions.list(otype, id)
         '''
         return self._get(f'{otype}/{id}')['acls']
 
