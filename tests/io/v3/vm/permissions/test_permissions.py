@@ -57,6 +57,6 @@ def test_list_permissions(api):
     assert resp == api_resp['acls']
 
 
-@pytest.mark.skip('This test will be implemented later')
 def test_search(api):
-    pass
+    with pytest.raises(NotImplementedError):
+        api.v3.vm.permissions.search()

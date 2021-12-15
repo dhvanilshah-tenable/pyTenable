@@ -1,1 +1,1 @@
-.. automodule:: tenable.io.v3.vm.permissions
+.. automodule:: tenable.io.v3.vm.permissions.api

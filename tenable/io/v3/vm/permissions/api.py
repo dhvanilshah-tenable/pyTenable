@@ -14,6 +14,7 @@ Methods available on ``tio.v3.vm.permissions``:
 from typing import List
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.vm.permissions.schema import PermissionSchema
 
 
 class PermissionsAPI(ExploreBaseEndpoint):
@@ -23,6 +24,7 @@ class PermissionsAPI(ExploreBaseEndpoint):
 
     _path = "api/v3/permissions"
     _conv_json = True
+    _schema = PermissionSchema()
 
     def change(self, otype: str, id: int, *acls: List) -> None:
         '''
@@ -52,7 +54,8 @@ class PermissionsAPI(ExploreBaseEndpoint):
         #     self._check('acl', item, dict)
 
         # Make the API call.
-        self._put(f'{otype}/{id}', json={'acls': acls})
+        payload = self._schema.dump(self._schema.load({'acls': acls}))
+        self._put(f'{otype}/{id}', json=payload)
 
     def list(self, otype: str, id: int) -> List:
         '''
@@ -81,4 +84,4 @@ class PermissionsAPI(ExploreBaseEndpoint):
 
         Returns
         '''
-        return NotImplementedError("this method will be updated later")
+        raise NotImplementedError("Search method will be implemented later")
