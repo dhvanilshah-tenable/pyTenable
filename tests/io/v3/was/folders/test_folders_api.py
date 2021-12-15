@@ -1,3 +1,4 @@
+import pytest
 import responses
 
 WAS_FOLDERS_BASE_URL = 'https://cloud.tenable.com/api/v3/was/folders'
@@ -58,4 +59,5 @@ def test_search(api):
     '''
     Test was folders search method
     '''
-    pass
+    with pytest.raises(NotImplementedError):
+        api.v3.was.folders.search()
