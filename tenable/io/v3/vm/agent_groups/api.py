@@ -15,6 +15,7 @@ from typing import Dict, Union
 from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.vm.agent_groups.schema import AgentGroupsBaseSchema
 
 
 class AgentGroupsAPI(ExploreBaseEndpoint):
@@ -54,16 +55,18 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
             ...    'bsbsbbdf-b2aa-4a83-ad8d-b867581a873f'
             ... )
         '''
-
         if len(agent_ids) <= 1:
             # if there is only 1 agent id, we will perform a singular add.
             self._put(f'{group_id}/agents/{agent_ids[0]}')
         else:
             # If there are many agent_ids, then we will want to perform a
             # bulk operation.
+            payload: dict = {'items': [i for i in agent_ids]}
+            schema = AgentGroupsBaseSchema(only=['items'])
+            payload = schema.dump(schema.load(payload))
             return self._post(
                 f'{group_id}/agents/_bulk/add',
-                json={'items': [i for i in agent_ids]}
+                json=payload
             )
 
     def configure(self, group_id: UUID, name: str) -> Dict:
@@ -103,7 +106,10 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         Examples:
             >>> group = tio.v3.vm.agent_groups.create('New Agent Group')
         '''
-        return self._post(json={'name': name})
+        payload: dict = {'name': name}
+        schema = AgentGroupsBaseSchema(only=['name'])
+        payload = schema.dump(schema.load(payload))
+        return self._post(json=payload)
 
     def delete(self, group_id: UUID) -> None:
         '''
@@ -165,18 +171,21 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         else:
             # if multiple agent ids were requested to be deleted, then we will
             # call the bulk deletion API.
+            payload: dict = {'items': [i for i in agent_ids]}
+            schema = AgentGroupsBaseSchema(only=['items'])
+            payload = schema.dump(schema.load(payload))
             return self._post(
                 f'{group_id}/agents/_bulk/remove',
-                json={'items': [i for i in agent_ids]}
+                json=payload
             )
 
     def details(self):
-        NotImplemented('This method will be updated later'
-                       'once the filter API will develop')
+        raise NotImplementedError('This method will be updated later'
+                                  'once the filter API will develop')
 
     def search(self):
-        NotImplemented('Search and Filter functionality '
-                       'will be updated later.')
+        raise NotImplementedError('Search and Filter functionality '
+                                  'will be updated later.')
 
     def task_status(self, group_id: UUID, task_id: UUID) -> Dict:
         '''

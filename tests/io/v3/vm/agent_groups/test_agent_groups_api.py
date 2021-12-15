@@ -12,9 +12,11 @@ BASE_URL = 'https://cloud.tenable.com/api/v3/agent-groups'
 
 @responses.activate
 def test_add_agent_with_single_agent_id(api):
-    '''Test case for add_agent method with sigle agent id'''
-    group_id: UUID = 'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85'
-    agent_id: UUID = '1bd703af-b2aa-4a82-ad8d-b883381a873f'
+    '''
+    Test case for add_agent method with sigle agent id
+    '''
+    group_id: UUID = '2b2db604-5d92-11ec-bf63-0242ac130002'
+    agent_id: UUID = '3f8eed68-5d95-11ec-bf63-0242ac130002'
     responses.add(
         responses.PUT,
         re.compile(f'{BASE_URL}/{group_id}/agents/{agent_id}')
@@ -25,14 +27,16 @@ def test_add_agent_with_single_agent_id(api):
 
 @responses.activate
 def test_add_agent_with_multiple_agent_id(api):
-    '''Test case for add_agent method with multiple agent id'''
-    group_id: UUID = 'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85'
+    '''
+    Test case for add_agent method with multiple agent id
+    '''
+    group_id: UUID = '2b2db604-5d92-11ec-bf63-0242ac130002'
     payload = {
         'items': [
             i for i in (
-                'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
-                'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
-                'ythtbf56-fe2f-4ba9-98b7-hfghr345353f'
+                '57b74c0a-5d95-11ec-bf63-0242ac130002',
+                '57b74e58-5d95-11ec-bf63-0242ac130002',
+                '57b74f66-5d95-11ec-bf63-0242ac130002'
             )
         ]
     }
@@ -50,16 +54,18 @@ def test_add_agent_with_multiple_agent_id(api):
     )
     res = api.v3.vm.agent_groups.add_agent(
         group_id,
-        'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
-        'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
-        'ythtbf56-fe2f-4ba9-98b7-hfghr345353f'
+        '57b74c0a-5d95-11ec-bf63-0242ac130002',
+        '57b74e58-5d95-11ec-bf63-0242ac130002',
+        '57b74f66-5d95-11ec-bf63-0242ac130002'
     )
     assert isinstance(res, dict)
 
 
 @responses.activate
 def test_configure(api):
-    '''Test case for configure method'''
+    '''
+    Test case for configure method
+    '''
     group_id: UUID = 'e069b272-ed76-487a-8cf9-1c32836698b7'
     name: str = "test name 2"
     payload = {'name': name}
@@ -94,7 +100,9 @@ def test_configure(api):
 
 @responses.activate
 def test_create(api):
-    '''Test case for create method'''
+    '''
+    Test case for create method
+    '''
     name: str = 'test'
     test_response: dict = {
         "agent_groups": [
@@ -127,7 +135,9 @@ def test_create(api):
 
 @responses.activate
 def test_delete(api):
-    '''Test case for delete method'''
+    '''
+    Test case for delete method
+    '''
     group_id: UUID = 'e069b272-ed76-487a-8cf9-1c32836698b7'
     responses.add(
         responses.DELETE,
@@ -140,9 +150,11 @@ def test_delete(api):
 
 @responses.activate
 def test_delete_agent_with_single_agent_id(api):
-    '''Test case for delete_agent method'''
-    group_id: UUID = 'e069b272-ed76-487a-8cf9-1c32836698b7'
-    agent_id: UUID = 'vsdf43df-ed76-487a-8cf9-65fgg453grhr'
+    '''
+    Test case for delete_agent method
+    '''
+    group_id: UUID = '2b2db604-5d92-11ec-bf63-0242ac130002'
+    agent_id: UUID = '3f8eed68-5d95-11ec-bf63-0242ac130002'
     responses.add(
         responses.DELETE,
         re.compile(f'{BASE_URL}/{group_id}/agents/{agent_id}')
@@ -153,14 +165,16 @@ def test_delete_agent_with_single_agent_id(api):
 
 @responses.activate
 def test_delete_agent_with_multiple_agent_id(api):
-    '''Test case for delete_agent method'''
+    '''
+    Test case for delete_agent method
+    '''
     group_id: UUID = 'fs252fdg-4b7c-4d2b-99a1-dvsdsv4242vf'
     payload = {
         'items': [
             i for i in (
-                'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
-                'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
-                'ythtbf56-fe2f-4ba9-98b7-hfghr345353f'
+                '57b74c0a-5d95-11ec-bf63-0242ac130002',
+                '57b74e58-5d95-11ec-bf63-0242ac130002',
+                '57b74f66-5d95-11ec-bf63-0242ac130002'
             )
         ]
     }
@@ -178,16 +192,18 @@ def test_delete_agent_with_multiple_agent_id(api):
     )
     res = api.v3.vm.agent_groups.delete_agent(
         group_id,
-        'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
-        'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
-        'ythtbf56-fe2f-4ba9-98b7-hfghr345353f'
+        '57b74c0a-5d95-11ec-bf63-0242ac130002',
+        '57b74e58-5d95-11ec-bf63-0242ac130002',
+        '57b74f66-5d95-11ec-bf63-0242ac130002'
     )
     assert isinstance(res, dict)
 
 
 @responses.activate
 def test_task_status(api):
-    '''Test case for task_status method'''
+    '''
+    Test case for task_status method
+    '''
     group_id: UUID = 'fs252fdg-4b7c-4d2b-99a1-dvsdsv4242vf'
     task_id: UUID = '02683e5e-4b7c-4d2b-99a1-cde1ea0940d9'
     test_response = {
@@ -208,13 +224,19 @@ def test_task_status(api):
     assert isinstance(res, dict)
 
 
-@pytest.mark.skip("API method NotImplemented in v3")
+@responses.activate
 def test_details(api):
-    '''Test case for details method'''
-    pass
+    '''
+    Test case for details method
+    '''
+    with pytest.raises(NotImplementedError):
+        api.v3.vm.agent_groups.details()
 
 
-@pytest.mark.skip("API method NotImplemented in v3")
+@responses.activate
 def test_search(api):
-    '''Test case for search method'''
-    pass
+    '''
+    Test case for search method
+    '''
+    with pytest.raises(NotImplementedError):
+        api.v3.vm.agent_groups.search()
