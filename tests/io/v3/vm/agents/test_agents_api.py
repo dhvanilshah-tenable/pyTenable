@@ -126,12 +126,13 @@ def test_task_status(api):
     assert 'task_id' in list(res.keys())
 
 
-@pytest.mark.skip('This test case implemented later')
+@responses.activate
 def test_search(api):
     '''
     Test case for agents search method
     '''
-    pass
+    with pytest.raises(NotImplementedError):
+        api.v3.vm.agents.search()
 
 
 @responses.activate
@@ -162,9 +163,9 @@ def test_unlink_with_multiple_agents(api):
     payload = {
         'items': [
             i for i in (
-                '1drge3af-b2aa-4a81-ad8d-b883381a873f',
-                '1bgfdgaf-b2aa-4a82-ad8d-b834581a873f',
-                'bsbsbbdf-b2aa-4a83-ad8d-b867581a873f'
+                '31b25934-5da2-11ec-bf63-0242ac130002',
+                '31b25b78-5da2-11ec-bf63-0242ac130002',
+                '31b25c7c-5da2-11ec-bf63-0242ac130002'
             )
         ]
     }
@@ -175,9 +176,9 @@ def test_unlink_with_multiple_agents(api):
         json=test_response
     )
     res = api.v3.vm.agents.unlink(
-        '1drge3af-b2aa-4a81-ad8d-b883381a873f',
-        '1bgfdgaf-b2aa-4a82-ad8d-b834581a873f',
-        'bsbsbbdf-b2aa-4a83-ad8d-b867581a873f'
+        '31b25934-5da2-11ec-bf63-0242ac130002',
+        '31b25b78-5da2-11ec-bf63-0242ac130002',
+        '31b25c7c-5da2-11ec-bf63-0242ac130002'
     )
     assert isinstance(res, dict)
     assert 'task_id' in list(res.keys())
