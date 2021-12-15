@@ -11,8 +11,8 @@ Methods available on ``tio.v3.was.folders``:
 .. autoclass:: FoldersAPI
     :members:
 '''
-import uuid
 from typing import Dict, List
+from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
@@ -38,14 +38,14 @@ class FoldersAPI(ExploreBaseEndpoint):
         '''
         return self._post(json={'name': name})
 
-    def delete(self, id: uuid.UUID) -> None:
+    def delete(self, id: UUID) -> None:
         '''
         Delete a folder.
 
         :devportal:`was folders: delete <was-v2-folders-delete>`
 
         Args:
-            id (uuid): The unique identifier for the folder.
+            id (UUID): The unique identifier for the folder.
 
         Returns:
             :obj:`None`
@@ -55,14 +55,14 @@ class FoldersAPI(ExploreBaseEndpoint):
         '''
         self._delete(f'{id}')
 
-    def edit(self, id: uuid.UUID, name: str) -> Dict:
+    def edit(self, id: UUID, name: str) -> Dict:
         '''
         Edit a folder.
 
         :devportal:`was folders: edit <was-v2-folders-update>`
 
         Args:
-            id (uuid): The unique identifier for the folder.
+            id (UUID): The unique identifier for the folder.
             name (str): The new name for the folder.
 
         Returns:
