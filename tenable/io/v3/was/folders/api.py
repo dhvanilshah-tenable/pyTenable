@@ -28,12 +28,10 @@ class FoldersAPI(ExploreBaseEndpoint):
         :devportal:`was folders: create <was-v2-folders-create>`
 
         Args:
-            name:
-                The name of the new folder.
+            name (str): The name of the new folder.
 
         Returns:
-            :obj:`dict`:
-                The resource record of the newly created folder.
+            :obj:`dict`: The resource record of the newly created folder.
 
         Examples:
             >>> folder = tio.v3.was.folders.create('New Folder Name')
@@ -47,7 +45,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         :devportal:`was folders: delete <was-v2-folders-delete>`
 
         Args:
-            id: The unique identifier for the folder.
+            id (uuid): The unique identifier for the folder.
 
         Returns:
             :obj:`None`
@@ -64,12 +62,11 @@ class FoldersAPI(ExploreBaseEndpoint):
         :devportal:`was folders: edit <was-v2-folders-update>`
 
         Args:
-            id: The unique identifier for the folder.
-            name: The new name for the folder.
+            id (uuid): The unique identifier for the folder.
+            name (str): The new name for the folder.
 
         Returns:
-            :obj:`dict`:
-                The resource record of the updated folder.
+            :obj:`dict`: The resource record of the updated folder.
 
         Examples:
             >>> tio.v3.was.folders.edit('91843ecb-ecb8-48a3-b623-d4682c2594',
