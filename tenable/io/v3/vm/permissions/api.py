@@ -33,11 +33,11 @@ class PermissionsAPI(ExploreBaseEndpoint):
         :devportal:`permissions: change <permissions-change>`
 
         Args:
-            otype:
+            otype (str):
                 The type of object to change.
-            id:
+            id (int):
                 The unique identifier of the object.
-            *acls:
+            *acls (dict):
                 ACL dictionaries inform Tenable.io how to handle permissions of
                 the various objects within Tenable.io.  Please refer to the
                 `permissions documentation`_ for more details.
@@ -52,11 +52,6 @@ class PermissionsAPI(ExploreBaseEndpoint):
         Examples:
             >>> tio.v3.vm.permissions.change(otype, id, acls)
         '''
-        # # Check to make sure all of the ACLs are dictionaries.
-        # for item in acls:
-        #     self._check('acl', item, dict)
-
-        # Make the API call.
         payload = self._schema.dump(self._schema.load({'acls': acls}))
         self._put(f'{otype}/{id}', json=payload)
 
@@ -82,12 +77,13 @@ class PermissionsAPI(ExploreBaseEndpoint):
         '''
         return self._get(f'{otype}/{id}')['acls']
 
-    def search(self):
+    def search(self, **kwargs):
         '''
         Search method for Permissions API
 
-        Args
+        Args:
 
-        Returns
+        Returns:
+            SearchIterator
         '''
         raise NotImplementedError("Search method will be implemented later")
