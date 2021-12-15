@@ -1,6 +1,7 @@
+import pytest
 import responses
 
-VM_FOLDERS_BASE_URL = 'https://cloud.tenable.com/api/v3/folders'
+VM_FOLDERS_BASE_URL = 'https://cloud.tenable.com/api/v3/scans/folders'
 SAMPLE_FOLDER_ID = 18
 SAMPLE_FOLDER = {
     'unread_count': 0,
@@ -56,14 +57,9 @@ def test_edit(api):
 
 
 @responses.activate
-def test_list(api):
+def test_search(api):
     '''
-    Test vm folders list method
+    Test vm folders search method
     '''
-    responses.add(
-        responses.GET,
-        VM_FOLDERS_BASE_URL,
-        json={'folders': [SAMPLE_FOLDER]},
-    )
-    resp = api.v3.vm.folders.list()
-    assert resp == [SAMPLE_FOLDER]
+    with pytest.raises(NotImplementedError):
+        api.v3.vm.folders.search()

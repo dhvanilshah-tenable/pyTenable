@@ -18,7 +18,7 @@ from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
 class FoldersAPI(ExploreBaseEndpoint):
 
-    _path = 'api/v3/folders'
+    _path = 'api/v3/scans/folders'
     _conv_json = True
 
     def create(self, name: str) -> int:
@@ -28,8 +28,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         :devportal:`folders: create <folders-create>`
 
         Args:
-            name (str):
-                The name of the new folder.
+            name (str): The name of the new folder.
 
         Returns:
             :obj:`int`:
@@ -76,18 +75,20 @@ class FoldersAPI(ExploreBaseEndpoint):
         '''
         self._put(f'{id}', json={'name': name})
 
-    def list(self) -> List:
+    def search(self, **kwargs) -> List:
         '''
-        Lists the available folders.
+        Searches from the available folders.
 
-        :devportal:`folders: list <folders-list>`
+        :devportal:`folders: search <folders-search>`
 
         Returns:
-            :obj:`list`:
-                List of folder resource records.
+            :obj:`list`: List of folder resource records.
 
         Examples:
             >>> for folder in tio.v3.vm.folders.list():
             ...     pprint(folder)
         '''
-        return self._get()['folders']
+        raise NotImplementedError(
+            'This method will be updated once ExploreSearchIterator is \
+                implemented for v3'
+        )
