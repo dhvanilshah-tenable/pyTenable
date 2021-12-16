@@ -20,7 +20,7 @@ from tenable.io.v3.vm.agent_groups.schema import AgentGroupsSchema
 
 class AgentGroupsAPI(ExploreBaseEndpoint):
     '''
-    This class contain all methods related to agent Groups
+    This class contain all methods related to Agent Groups
     '''
     _path: str = 'api/v3/agent-groups'
     _conv_json: bool = True
