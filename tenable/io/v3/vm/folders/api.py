@@ -14,12 +14,14 @@ Methods available on ``tio.v3.vm.folders``:
 from typing import List
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.vm.folders.schema import FoldersBaseSchema
 
 
 class FoldersAPI(ExploreBaseEndpoint):
 
     _path = 'api/v3/scans/folders'
     _conv_json = True
+    _schema = FoldersBaseSchema()
 
     def create(self, name: str) -> int:
         '''
@@ -37,7 +39,8 @@ class FoldersAPI(ExploreBaseEndpoint):
         Examples:
             >>> folder = tio.v3.vm.folders.create('New Folder Name')
         '''
-        return self._post(json={'name': name})['id']
+        payload = self._schema.dump(self._schema.load({'name': name}))
+        return self._post(json=payload)['id']
 
     def delete(self, id: int) -> None:
         '''
@@ -73,7 +76,8 @@ class FoldersAPI(ExploreBaseEndpoint):
         Examples:
             >>> tio.v3.vm.folders.edit(1, 'Updated Folder Name')
         '''
-        self._put(f'{id}', json={'name': name})
+        payload = self._schema.dump(self._schema.load({'name': name}))
+        self._put(f'{id}', json=payload)
 
     def search(self, **kwargs) -> List:
         '''
