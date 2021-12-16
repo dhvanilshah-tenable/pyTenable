@@ -12,6 +12,7 @@ Methods available on ``tio.v3.vm.permissions``:
     :members:
 '''
 from typing import Dict, List
+from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.vm.permissions.schema import PermissionSchema
@@ -26,7 +27,7 @@ class PermissionsAPI(ExploreBaseEndpoint):
     _conv_json = True
     _schema = PermissionSchema()
 
-    def change(self, otype: str, id: int, *acls: Dict) -> None:
+    def change(self, otype: str, id: UUID, *acls: Dict) -> None:
         '''
         Modify the permission of a specific object.
 
@@ -35,7 +36,7 @@ class PermissionsAPI(ExploreBaseEndpoint):
         Args:
             otype (str):
                 The type of object to change.
-            id (int):
+            id (UUID):
                 The unique identifier of the object.
             *acls (dict):
                 ACL dictionaries inform Tenable.io how to handle permissions of
@@ -55,16 +56,16 @@ class PermissionsAPI(ExploreBaseEndpoint):
         payload = self._schema.dump(self._schema.load({'acls': acls}))
         self._put(f'{otype}/{id}', json=payload)
 
-    def list(self, otype: str, id: int) -> List:
+    def list(self, otype: str, id: UUID) -> List:
         '''
         List the permissions of a specific object.
 
         :devportal:`permissions: list <permissions-list>`
 
         Args:
-            otype:
-                The type of object being queried.
-            id:
+            otype (str):
+                The type of object to change.
+            id (UUID):
                 The unique identifier of the object.
 
         Returns:
@@ -76,14 +77,3 @@ class PermissionsAPI(ExploreBaseEndpoint):
             >>> tio.v3.vm.permissions.list(otype, id)
         '''
         return self._get(f'{otype}/{id}')['acls']
-
-    def search(self, **kwargs):
-        '''
-        Search method for Permissions API
-
-        Args:
-
-        Returns:
-            SearchIterator
-        '''
-        raise NotImplementedError("Search method will be implemented later")

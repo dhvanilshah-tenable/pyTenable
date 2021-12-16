@@ -1,10 +1,9 @@
 '''
-Testing the Networks endpoints
+Testing the Permissions endpoints
 '''
 
 import uuid
 
-import pytest
 import responses
 from responses import matchers
 
@@ -39,15 +38,19 @@ def test_list_permissions(api):
     '''
     otype = 'scanners'
     api_resp = {
-            'acls': [{
-                'type': 'user',
-                'id': '1035e55d-a984-4b1c-acc7-fd2d472126f1',
-                'name': 'system',
-                'display_name': 'system',
-                'permissions': 128,
-                'owner': 1,
-            }]
-        }
+        'acls': [{
+            'type': 'user',
+            'id': 2236706,
+            'uuid': '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e',
+            'name': 'system',
+            'display_name': 'system',
+            'permissions': 128,
+            'owner': 1
+        }, {
+            'type': 'default',
+            'permissions': 16
+        }]
+    }
     responses.add(
         responses.GET,
         f'{PERMISSIONS_BASE_URL}/{otype}/{OBJECT_ID}',
@@ -55,8 +58,3 @@ def test_list_permissions(api):
     )
     resp = api.v3.vm.permissions.list(otype, OBJECT_ID)
     assert resp == api_resp['acls']
-
-
-def test_search(api):
-    with pytest.raises(NotImplementedError):
-        api.v3.vm.permissions.search()
