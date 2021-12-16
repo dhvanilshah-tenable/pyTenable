@@ -42,7 +42,14 @@ class PermissionsAPI(ExploreBaseEndpoint):
                 ACL dictionaries inform Tenable.io how to handle permissions of
                 the various objects within Tenable.io.  Please refer to the
                 `permissions documentation`_ for more details.
-
+                i.e `{'type': 'user', 'id': 2236706, 'permissions': 64}`
+                    type:
+                        The type of permission (default, user, group).
+                    id (int):
+                        The unique ID of the user or group.
+                    permissions (int):
+                        The permission value to grant access as described in
+                        `permissions documentation`_.
         Returns:
             :obj:`None`:
                 The object permissions were successfully changed.
