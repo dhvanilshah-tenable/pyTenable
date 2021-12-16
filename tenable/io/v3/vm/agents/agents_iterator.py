@@ -24,4 +24,4 @@ class AgentsIterator(TIOIterator):
         total (int):
             The total number of records that exist for the current request.
     '''
-    pass
+    raise NotImplementedError('This method will be implemented later.')

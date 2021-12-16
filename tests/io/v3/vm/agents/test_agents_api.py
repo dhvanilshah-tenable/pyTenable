@@ -42,6 +42,8 @@ def test_details(api):
     )
     res = api.v3.vm.agents.details(agent_id)
     assert isinstance(res, dict)
+    assert 'id' in list(res.keys())
+    assert res['id'] == agent_id
 
 
 @responses.activate
