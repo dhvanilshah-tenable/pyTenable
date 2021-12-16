@@ -8,10 +8,10 @@ class PermissionAclSchema(Schema):
     '''
     Schema for acls for change permissions action
     '''
-    type = fields.Str(required=True, validate=validate.OneOf(
+    type = fields.Str(validate=validate.OneOf(
         ['default', 'user', 'group']))
-    id = fields.Int(required=True)
-    permissions = fields.Int(required=True)
+    id = fields.Int()
+    permissions = fields.Int()
 
 
 class PermissionSchema(Schema):

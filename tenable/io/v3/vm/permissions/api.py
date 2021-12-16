@@ -20,7 +20,7 @@ from tenable.io.v3.vm.permissions.schema import PermissionSchema
 
 class PermissionsAPI(ExploreBaseEndpoint):
     '''
-    This will contain all methods related to Permissions API
+    This class contains all methods related to Permissions API
     '''
 
     _path = "api/v3/permissions"
@@ -42,7 +42,8 @@ class PermissionsAPI(ExploreBaseEndpoint):
                 ACL dictionaries inform Tenable.io how to handle permissions of
                 the various objects within Tenable.io.  Please refer to the
                 `permissions documentation`_ for more details.
-                i.e `{'type': 'user', 'id': 2236706, 'permissions': 64}`
+
+                i.e {'type': 'user', 'id': 2236706, 'permissions': 64}
                     type:
                         The type of permission (default, user, group).
                     id (int):
