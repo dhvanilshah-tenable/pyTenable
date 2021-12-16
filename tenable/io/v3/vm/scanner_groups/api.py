@@ -25,6 +25,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
 
     _path = 'api/v3/scanner-groups'
     _conv_json = True
+    _schema = ScannerGroupsBaseSchema()
 
     def add_scanner(self, group_id: UUID, scanner_id: UUID) -> None:
         '''
@@ -43,15 +44,16 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
                 Scanner successfully added to the scanner group.
 
         Examples:
-            >>> tio.v3.vm.scanner_groups.add_scanner(1, 1)
+            >>> tio.v3.vm.scanner_groups.add_scanner(
+            ... 'b5db63f1-551d-4789-aefa-9629c93ddc45',
+            ... 'b5db63f1-551d-4789-aefa-9629c9qwre67')
         '''
-        schema = ScannerGroupsBaseSchema(only=['group_id', 'scanner_id'])
-        schema.load(dict(group_id=group_id, scanner_id=scanner_id))
         self._post(f'{group_id}/scanners/{scanner_id}')
 
-    def create(
-            self, name: str, group_type: Optional[str] = 'load_balancing'
-    ) -> Dict:
+    def create(self,
+               name: str,
+               group_type: Optional[str] = 'load_balancing'
+               ) -> Dict:
         '''
         Create a scanner group.
 
@@ -74,8 +76,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
             'name': name,
             'type': group_type
         }
-        schema = ScannerGroupsBaseSchema(only=['name', 'type'])
-        schema.load(payload)
+        payload = self._schema.dump(self._schema.load(payload))
         return self._post(json=payload)
 
     def delete(self, group_id: UUID) -> None:
@@ -93,10 +94,9 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
                 The scanner group has been successfully deleted.
 
         Examples:
-            >>> tio.v3.vm.scanner_groups.delete(1)
+            >>> tio.v3.vm.scanner_groups.delete(
+            ... 'b5db63f1-551d-4789-aefa-9629c93ddc45')
         '''
-        schema = ScannerGroupsBaseSchema(only=['group_id'])
-        schema.load(dict(group_id=group_id))
         self._delete(f'{group_id}')
 
     def delete_scanner(self, group_id: UUID, scanner_id: UUID) -> None:
@@ -118,10 +118,10 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
                 The scanner was successfully removed from the scanner group.
 
         Examples:
-            >>> tio.v3.vm.scanner_groups.delete_scanner(1, 1)
+            >>> tio.v3.vm.scanner_groups.delete_scanner(
+            ... 'b5db63f1-551d-4789-aefa-9629c93ddc45',
+            ... 'b5db63f1-551d-4789-aefa-9629c93djh76')
         '''
-        schema = ScannerGroupsBaseSchema(only=['group_id', 'scanner_id'])
-        schema.load(dict(group_id=group_id, scanner_id=scanner_id))
         self._delete(f'{group_id}/scanners/{scanner_id}')
 
     def details(self, group_id: UUID) -> Dict:
@@ -138,11 +138,10 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
                 The scanner group resource record.
 
         Examples:
-            >>> group = tio.v3.vm.scanner_groups.details(1)
+            >>> group = tio.v3.vm.scanner_groups.details(
+            ... 'b5db63f1-551d-4789-aefa-9629c93ddc45')
             >>> pprint(group)
         '''
-        schema = ScannerGroupsBaseSchema(only=['group_id'])
-        schema.load(dict(group_id=group_id))
         return self._get(f'{group_id}')
 
     def edit(self, group_id: UUID, name: str) -> None:
@@ -160,13 +159,13 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
                 The scanner group has been successfully updated.
 
         Examples:
-            >>> tio.v3.vm.scanner_groups.edit(1, 'New Group Name')
+            >>> tio.v3.vm.scanner_groups.edit(
+            ... 'b5db63f1-551d-4789-aefa-9629c93ddc45', 'New Group Name')
         '''
-        schema = ScannerGroupsBaseSchema(only=['group_id', 'name'])
-        schema.load(dict(group_id=group_id, name=name))
-        self._put(f'{group_id}', json={'name': name})
+        payload = self._schema.dump(self._schema.load(dict(name=name)))
+        self._put(f'{group_id}', json=payload)
 
-    def search_scanner_groups(self):
+    def search(self, **kwargs):
         # '''
         # Lists the configured scanner groups.
         #
@@ -181,7 +180,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         #     ...     pprint(group)
         # '''
         # return self._api.get('scanner-groups').json()['scanner_pools']
-        raise NotImplementedError('This endpoint is still is development')
+        raise NotImplementedError('This endpoint is not implemented.')
 
     def list_scanners(self, group_id: UUID) -> List:
         '''
@@ -199,11 +198,10 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
                 to the scanner group.
 
         Examples:
-            >>> for scanner in tio.scanner_groups.list_scanners(1):
+            >>> for scanner in tio.scanner_groups.list_scanners(
+            ... 'b5db63f1-551d-4789-aefa-9629c93ddc45'):
             ...     pprint(scanner)
         '''
-        schema = ScannerGroupsBaseSchema(only=['group_id'])
-        schema.load(dict(group_id=group_id))
         return self._get(f'{group_id}/scanners')['scanners']
 
     def list_routes(self, group_id: UUID) -> List:
@@ -222,11 +220,10 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
                 List of routes associated to the scanner group.
 
          Examples:
-            >>> for scanner in tio.v3.vm.scanner_groups.list_routes(1):
+            >>> for scanner in tio.v3.vm.scanner_groups.list_routes(
+            ... 'b5db63f1-551d-4789-aefa-9629c93ddc45'):
             ...     pprint(scanner)
         '''
-        schema = ScannerGroupsBaseSchema(only=['group_id'])
-        schema.load(dict(group_id=group_id))
         return self._get(f'{group_id}/routes')
 
     def edit_routes(self, group_id: UUID, routes: List[str]) -> None:
@@ -246,11 +243,10 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
                 The scanner group routes has been successfully updated
 
          Examples:
-            >>> tio.v3.vm.scanner_groups.edit_routes(1, ['127.0.0.1'])
+            >>> tio.v3.vm.scanner_groups.edit_routes(
+            ... 'b5db63f1-551d-4789-aefa-9629c93ddc45', ['127.0.0.1'])
         '''
-        schema = ScannerGroupsBaseSchema(only=['routes', 'group_id'])
-        payload = schema.dump(schema.load(
-            dict(routes=routes, group_id=group_id)
+        payload = self._schema.dump(self._schema.load(
+            dict(routes=routes)
         ))
-        payload.pop('group_id')
         self._put(f'{group_id}/routes', json=payload)
