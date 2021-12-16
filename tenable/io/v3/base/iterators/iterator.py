@@ -1,9 +1,9 @@
 '''
 Version 3 Classes
 ======================
-This class is a iterator for search API call
+This class is a iterator for version 3 API call
 
-.. autoclass:: SearchIterator
+.. autoclass:: APIResultIterator
     :members:
 '''
 from restfly.iterator import APIIterator

@@ -116,16 +116,15 @@ class AssetsAPI(ExploreBaseEndpoint):
             >>>  'SCCM'), fields=["name", "netbios_name", "last_login"],
             >>>    limit=2, sort=[('last_observed', 'asc')])
         '''
-        search_api_path = 'api/v3/assets/search'
-        return_csv = kw.pop('return_csv')
-        return super().search(
-            resource='assets',
-            iterator_cls=AssetCSVIterator if return_csv else
-            AssetSearchIterator,
-            is_sort_with_prop=False,
-            api_path=search_api_path,
-            **kw
-        )
+        iclass = AssetSearchIterator
+        if kw.pop('return_csv', False):
+            iclass = AssetCSVIterator
+        return super().search(resource='assets',
+                              iterator_cls=iclass,
+                              is_sort_with_prop=False,
+                              api_path=f'{self._path}/search',
+                              **kw
+                              )
 
     def delete(self, uuid: UUID) -> None:
         '''
@@ -165,10 +164,10 @@ class AssetsAPI(ExploreBaseEndpoint):
         '''
         return self._get(f'{uuid}')
 
-    def assign_tags(
-            self, action: Literal['add', 'remove'],
-            assets: List[UUID], tags: List[UUID]
-    ) -> Dict:
+    def assign_tags(self,
+                    action: Literal['add', 'remove'],
+                    assets: List[UUID], tags: List[UUID]
+                    ) -> Dict:
         '''
         Add/remove tags for asset(s).
 
@@ -312,9 +311,11 @@ class AssetsAPI(ExploreBaseEndpoint):
         '''
         return self._get(f'import/jobs/{uuid}')
 
-    def move_assets(
-            self, source: UUID, destination: UUID, targets: List[str]
-    ) -> int:
+    def move_assets(self,
+                    source: UUID,
+                    destination: UUID,
+                    targets: List[str]
+                    ) -> int:
         '''
         Moves assets from the specified network to another network.
 
@@ -341,15 +342,18 @@ class AssetsAPI(ExploreBaseEndpoint):
         payload = schema.dump(
             schema.load(
                 {'source': source,
-                 'destination': destination, 'targets': targets}
+                 'destination': destination,
+                 'targets': targets
+                 }
             )
         )
 
         return self._patch(json=payload)['response']['data']['asset_count']
 
-    def bulk_delete(
-            self, *filters: Tuple[str], filter_type: str = None
-    ) -> Dict:
+    def bulk_delete(self,
+                    *filters: Tuple[str],
+                    filter_type: str = None
+                    ) -> Dict:
         '''
         Deletes the specified assets.
 

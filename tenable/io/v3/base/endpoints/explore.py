@@ -34,18 +34,18 @@ class ExploreBaseEndpoint(APIEndpoint):
         '''
         self._get(obj_id, conv_json=self._conv_json)
 
-    def search(
-            self,
-            *,
-            resource: str,
-            api_path: str,
-            is_sort_with_prop: bool = True,
-            return_resp: bool = False,
-            iterator_cls: Optional[Union[SearchIterator, CSVChunkIterator]] =
-            SearchIterator,
-            schema_cls: Optional[SearchSchema] = SearchSchema,
-            **kwargs
-    ) -> Union[Response, SearchIterator, CSVChunkIterator]:
+    def search(self,
+               *,
+               resource: str,
+               api_path: str,
+               is_sort_with_prop: bool = True,
+               return_resp: bool = False,
+               iterator_cls: Optional[
+                   Union[SearchIterator, CSVChunkIterator]] =
+               SearchIterator,
+               schema_cls: Optional[SearchSchema] = SearchSchema,
+               **kwargs
+               ) -> Union[Response, SearchIterator, CSVChunkIterator]:
         '''
         Initiate a search
 
