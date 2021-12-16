@@ -1,7 +1,7 @@
 '''
 Testing the Folders Schema
 '''
-from tenable.io.v3.vm.folders.schema import FoldersBaseSchema
+from tenable.io.v3.vm.folders.schema import FoldersSchema
 
 FOLDER_NAME = 'folder'
 FOLDER = {
@@ -10,6 +10,6 @@ FOLDER = {
 
 
 def test_folders_schema(api):
-    schema = FoldersBaseSchema()
+    schema = FoldersSchema()
     payload = schema.dump(schema.load(FOLDER))
     assert payload == FOLDER
