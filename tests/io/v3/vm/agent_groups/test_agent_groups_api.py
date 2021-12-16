@@ -59,6 +59,8 @@ def test_add_agent_with_multiple_agent_id(api):
         '57b74f66-5d95-11ec-bf63-0242ac130002'
     )
     assert isinstance(res, dict)
+    assert 'container_id' in list(res.keys())
+    assert 'task_id' in list(res.keys())
 
 
 @responses.activate
@@ -197,6 +199,8 @@ def test_delete_agent_with_multiple_agent_id(api):
         '57b74f66-5d95-11ec-bf63-0242ac130002'
     )
     assert isinstance(res, dict)
+    assert 'container_id' in list(res.keys())
+    assert 'task_id' in list(res.keys())
 
 
 @responses.activate
@@ -222,6 +226,8 @@ def test_task_status(api):
     )
     res = api.v3.vm.agent_groups.task_status(group_id, task_id)
     assert isinstance(res, dict)
+    assert 'container_id' in list(res.keys())
+    assert 'task_id' in list(res.keys())
 
 
 @responses.activate

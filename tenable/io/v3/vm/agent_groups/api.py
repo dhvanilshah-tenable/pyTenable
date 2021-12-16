@@ -15,12 +15,16 @@ from typing import Dict, Union
 from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.agent_groups.schema import AgentGroupsBaseSchema
+from tenable.io.v3.vm.agent_groups.schema import AgentGroupsSchema
 
 
 class AgentGroupsAPI(ExploreBaseEndpoint):
+    '''
+    This class contain all methods related to agent Groups
+    '''
     _path: str = 'api/v3/agent-groups'
     _conv_json: bool = True
+    _schema = AgentGroupsSchema()
 
     def add_agent(self, group_id: UUID, *agent_ids: UUID) -> Union[None, Dict]:
         '''
@@ -62,8 +66,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
             # If there are many agent_ids, then we will want to perform a
             # bulk operation.
             payload: dict = {'items': [i for i in agent_ids]}
-            schema = AgentGroupsBaseSchema(only=['items'])
-            payload = schema.dump(schema.load(payload))
+            payload = self._schema.dump(self._schema.load(payload))
             return self._post(
                 f'{group_id}/agents/_bulk/add',
                 json=payload
@@ -89,8 +92,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
             ... )
         '''
         payload: dict = {'name': name}
-        schema = AgentGroupsBaseSchema(only=['name'])
-        payload = schema.dump(schema.load(payload))
+        payload = self._schema.dump(self._schema.load(payload))
         return self._put(f'{group_id}', json=payload)
 
     def create(self, name: str) -> Dict:
@@ -110,8 +112,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
             >>> group = tio.v3.vm.agent_groups.create('New Agent Group')
         '''
         payload: dict = {'name': name}
-        schema = AgentGroupsBaseSchema(only=['name'])
-        payload = schema.dump(schema.load(payload))
+        payload = self._schema.dump(self._schema.load(payload))
         return self._post(json=payload)
 
     def delete(self, group_id: UUID) -> None:
@@ -133,8 +134,10 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         '''
         self._delete(f'{group_id}')
 
-    def delete_agent(self, group_id: UUID, *agent_ids: UUID) \
-            -> Union[None, Dict]:
+    def delete_agent(self,
+                     group_id: UUID,
+                     *agent_ids: UUID
+                     ) -> Union[None, Dict]:
         '''
         Delete one or many agents from an agent group.
 
@@ -175,8 +178,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
             # if multiple agent ids were requested to be deleted, then we will
             # call the bulk deletion API.
             payload: dict = {'items': [i for i in agent_ids]}
-            schema = AgentGroupsBaseSchema(only=['items'])
-            payload = schema.dump(schema.load(payload))
+            payload = self._schema.dump(self._schema.load(payload))
             return self._post(
                 f'{group_id}/agents/_bulk/remove',
                 json=payload
@@ -206,7 +208,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
                 Task resource
 
         Examples:
-            >>> item = tio.v3.vm.agent_groups.add_agnet(
+            >>> item = tio.v3.vm.agent_groups.add_agent(
             ...      'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
             ...      'fdbd563f-gr45-45gf-98b7-65fghgdfgrt5',
             ...      'ythtbf56-fe2f-4ba9-98b7-hfghr345353f',
