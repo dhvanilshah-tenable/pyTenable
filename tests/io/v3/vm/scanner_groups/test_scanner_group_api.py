@@ -17,7 +17,7 @@ SCANNER_G_DETAILS = {
     'default_permissions': 16, 'user_permissions': 128,
     'shared': 1, 'scan_count': 0,
     'id': 'b5db63f1-551d-4789-aefa-9629c93ddc45',
-    'type': 'load_balancing', 'name': 'sahil_test2',
+    'type': 'load_balancing', 'name': 'test2',
     'network_name': 'Default', 'supports_webapp': False,
     'scanner_id': 'b5db63f1-551d-4789-aefa-9629c93ddc45',
     'owner_name': 'system'
@@ -29,7 +29,7 @@ SCANNER_CREATE_RESP = {
     'owner_id': '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e',
     'default_permissions': 16, 'scan_count': 0,
     'id': '6100e486-5df2-4849-9d1f-5b20c99abc97',
-    'type': 'load_balancing', 'name': 'sahil_test1',
+    'type': 'load_balancing', 'name': 'test1',
     'owner_name': 'system'
 }
 SCANNER_LIST_SC_RESP = [
@@ -89,7 +89,7 @@ def test_delete(api):
 
 @responses.activate
 def test_create(api):
-    name = 'sahil_test1'
+    name = 'test1'
     group_type = 'load_balancing'
     responses.add(
         responses.POST,
@@ -116,7 +116,7 @@ def test_delete_scanner(api):
 
 @responses.activate
 def test_details(api):
-    name = 'sahil_test2'
+    name = 'test2'
     responses.add(
         responses.GET,
         re.compile(f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}'),
@@ -130,7 +130,7 @@ def test_details(api):
 
 @responses.activate
 def test_edit(api):
-    name = 'sahil_test3'
+    name = 'test3'
     responses.add(
         responses.PUT,
         re.compile(f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}'),

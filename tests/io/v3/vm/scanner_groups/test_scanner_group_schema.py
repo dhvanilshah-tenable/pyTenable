@@ -4,7 +4,7 @@ Tests for scanner groups schema
 import pytest
 from marshmallow import ValidationError
 
-from tenable.io.v3.vm.scanner_groups.schema import ScannerGroupsBaseSchema
+from tenable.io.v3.vm.scanner_groups.schema import ScannerGroupsSchema
 
 
 def test_scanner_group_base():
@@ -13,7 +13,7 @@ def test_scanner_group_base():
         'type': 'load_balancing',
         'routes': ['127.0.0.1']
     }
-    schema = ScannerGroupsBaseSchema()
+    schema = ScannerGroupsSchema()
     data = schema.dump(schema.load(data_req))
     assert data == data_req
 

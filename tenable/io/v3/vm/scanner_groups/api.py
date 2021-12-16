@@ -15,7 +15,7 @@ from typing import Dict, List, Optional
 from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.scanner_groups.schema import ScannerGroupsBaseSchema
+from tenable.io.v3.vm.scanner_groups.schema import ScannerGroupsSchema
 
 
 class ScannerGroupsAPI(ExploreBaseEndpoint):
@@ -25,7 +25,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
 
     _path = 'api/v3/scanner-groups'
     _conv_json = True
-    _schema = ScannerGroupsBaseSchema()
+    _schema = ScannerGroupsSchema()
 
     def add_scanner(self, group_id: UUID, scanner_id: UUID) -> None:
         '''
