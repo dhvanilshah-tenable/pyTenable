@@ -15,7 +15,7 @@ from typing import Dict, Union
 from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.agents.schema import AgentsBaseSchema
+from tenable.io.v3.vm.agents.schema import AgentsSchema
 
 
 class AgentsAPI(ExploreBaseEndpoint):
@@ -130,7 +130,7 @@ class AgentsAPI(ExploreBaseEndpoint):
             self._delete(f'{agent_ids[0]}')
         else:
             payload: dict = {'items': [i for i in agent_ids]}
-            schema = AgentsBaseSchema()
+            schema = AgentsSchema()
             payload = schema.dump(schema.load(payload))
             return self._post(
                 '_bulk/unlink',
