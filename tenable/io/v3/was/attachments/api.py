@@ -8,7 +8,7 @@ The following methods allow for interaction into the Tenable.io
 Methods available on ``tio.v3.was.attachments``:
 
 .. rst-class:: hide-signature
-.. autoclass:: Attachment
+.. autoclass:: AttachmentsAPI
     :members:
 '''
 from io import BytesIO
@@ -20,25 +20,28 @@ from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
 class AttachmentsAPI(ExploreBaseEndpoint):
 
+    '''
+    This class contains methods related to Attachments API
+    '''
+
     _path = 'api/v3/was/attachments'
 
-    def download_attachment(
-        self,
-        attachment_id: UUID,
-        fobj: Optional[BinaryIO] = None
-    ) -> BinaryIO:
+    def download_attachment(self,
+                            attachment_id: UUID,
+                            fobj: Optional[BinaryIO] = None
+                            ) -> BinaryIO:
         '''
-        Create a folder.
+        Download an attachment.
 
-        :devportal:`folders: create <folders-create>`
+        :devportal:`attachments: download <was-v2-attachments-download>`
 
         Args:
             attachment_id:
                 The unique identifier for attachment.
             fobj:
-                A file-like object to write the contents of the policy to.  If
-                none is provided a BytesIO object will be returned with the
-                policy.
+                A file-like object to write the contents of the attachment to.
+                If none is provided a BytesIO object will be returned with the
+                attachment.
 
         Returns:
             :obj:`Response`
@@ -52,7 +55,7 @@ class AttachmentsAPI(ExploreBaseEndpoint):
             ...     )
         '''
 
-        # If no file object was givent to us, then lets create a new BytesIO
+        # If no file object was given to us, then lets create a new BytesIO
         # object to dump the data into.
         if not fobj:
             fobj = BytesIO()

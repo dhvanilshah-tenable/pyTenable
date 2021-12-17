@@ -17,12 +17,14 @@ Methods available on ``tio.v3.was``:
     :glob:
 
     attachments
+    folders
 '''
-from tenable.io.v3.base.endpoints.explore import APIEndpoint
+from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.was.attachments.api import AttachmentsAPI
+from tenable.io.v3.was.folders.api import FoldersAPI
 
 
-class WebApplicationScanning(APIEndpoint):  # noqa: PLR0904
+class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
     '''
     This class will contain property for all resources under Web Application
     Scanning i.e plugins, scans, folders etc.
@@ -35,3 +37,11 @@ class WebApplicationScanning(APIEndpoint):  # noqa: PLR0904
         :doc:`Attachments API <attachments>`
         '''
         return AttachmentsAPI(self._api)
+
+    @property
+    def folders(self):
+        '''
+        The interface object for the
+        :doc:`Folders API <folders>`
+        '''
+        return FoldersAPI(self._api)
