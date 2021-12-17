@@ -14,14 +14,14 @@ Methods available on ``tio.v3.vm.folders``:
 from typing import List
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.folders.schema import FoldersSchema
+from tenable.io.v3.vm.folders.schema import FolderSchema
 
 
 class FoldersAPI(ExploreBaseEndpoint):
 
     _path = 'api/v3/scans/folders'
     _conv_json = True
-    _schema = FoldersSchema()
+    _schema = FolderSchema()
 
     def create(self, name: str) -> int:
         '''

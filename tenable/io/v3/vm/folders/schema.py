@@ -4,7 +4,7 @@ Folders API Endpoint Schemas
 from marshmallow import Schema, fields
 
 
-class FoldersSchema(Schema):
+class FolderSchema(Schema):
     '''
     Schema for folders API
     '''
