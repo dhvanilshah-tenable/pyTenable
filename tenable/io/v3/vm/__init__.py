@@ -26,6 +26,7 @@ from tenable.io.v3.vm.agent_config.api import AgentConfigAPI
 from tenable.io.v3.vm.files.api import FileAPI
 from tenable.io.v3.vm.plugins.api import PluginsAPI
 from tenable.io.v3.vm.scanners.api import ScannersAPI
+from tenable.io.v3.vm.server.api import ServerAPI
 
 
 class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
@@ -66,3 +67,11 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Scanners API <scanners>`
         '''
         return ScannersAPI(self._api)
+
+    @property
+    def server(self):
+        '''
+        The interface object for the
+        :doc:`Server API <server>`
+        '''
+        return ServerAPI(self._api)
