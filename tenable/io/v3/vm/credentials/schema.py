@@ -15,7 +15,7 @@ class CredentialsPermissionsSchema(Schema):
 
     type = fields.Str(validate=v.OneOf(['user', 'group']))
     permissions = fields.Int(validate=v.OneOf([32, 64]))
-    grantee_uuid = fields.UUID()
+    grantee_id = fields.UUID()
 
     @pre_load
     def validate_and_transform(self, data, **kwargs):
@@ -25,7 +25,7 @@ class CredentialsPermissionsSchema(Schema):
         '''
 
         if isinstance(data, dict) and len(data) == 3 and \
-                ('type' and 'permissions' and 'grantee_uuid' in data.keys()):
+                ('type' and 'permissions' and 'grantee_id' in data.keys()):
             return data
         elif isinstance(data, tuple) and len(data) == 3:
             return self.permissions_tuple_expansion(data)
@@ -41,7 +41,7 @@ class CredentialsPermissionsSchema(Schema):
 
             >>> f = ('user', 64, '0000000-0000000-0000-0000')
             >>> filter.dump(filter.load(f))
-            {'type': 'filter', 'permissions': 64, 'grantee_uuid':
+            {'type': 'filter', 'permissions': 64, 'grantee_id':
             'value'}
         '''
         permission_val = data[1]
@@ -53,7 +53,7 @@ class CredentialsPermissionsSchema(Schema):
 
         return {
             'type': data[0], 'permissions': permission_val,
-            'grantee_uuid': data[2]
+            'grantee_id': data[2]
         }
 
 

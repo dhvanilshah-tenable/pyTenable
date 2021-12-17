@@ -23,40 +23,40 @@ TYPES_RESPONSE = {
                             "type": "file",
                             "name": "Client Certificate",
                             "hint": "PEM formatted certificate.",
-                            "id": "datapower_client_cert"
+                            "id": "datapower_client_cert",
                         },
                         {
                             "type": "file",
                             "name": "Client Certificate Private Key",
                             "hint": "PEM formatted certificate.",
-                            "id": "datapower_private_key"
+                            "id": "datapower_private_key",
                         },
                         {
                             "type": "password",
                             "name": "Client Certificate "
                                     "Private Key Passphrase",
-                            "id": "datapower_private_key_passphrase"
+                            "id": "datapower_private_key_passphrase",
                         },
                         {
                             "type": "text",
                             "name": "Custom Header Key",
-                            "id": "datapower_custom_header_key"
+                            "id": "datapower_custom_header_key",
                         },
                         {
                             "type": "text",
                             "name": "Custom Header Value",
-                            "id": "datapower_custom_header_value"
+                            "id": "datapower_custom_header_value",
                         },
                         {
                             "type": "checkbox",
                             "name": "Enable for Hashicorp Vault",
                             "required": True,
                             "default": "yes",
-                            "id": "datapower_enable_hashicorp"
-                        }
-                    ]
+                            "id": "datapower_enable_hashicorp",
+                        },
+                    ],
                 }
-            ]
+            ],
         }
     ]
 }
@@ -76,16 +76,16 @@ DETAILS_RESPONSE = {
     "settings": {
         "domain": "",
         "username": "user@example.com",
-        "auth_method": "Password"
+        "auth_method": "Password",
     },
     "permissions": [
         {
             "grantee_uuid": "59042c90-5379-43a2-8cf4-87d97f7cb68f",
             "type": "user",
             "permissions": 64,
-            "name": "user1@tenable.com"
+            "name": "user1@tenable.com",
         }
-    ]
+    ],
 }
 
 
@@ -98,9 +98,7 @@ def test_delete(api):
     responses.add(
         responses.DELETE,
         url=f'{CREDENTIALS_BASE_URL}/{cred_id}',
-        json={
-            'deleted': True
-        }
+        json={'deleted': True},
     )
 
     data = api.v3.vm.credentials.delete(cred_id)
@@ -115,23 +113,24 @@ def test_create(api):
     cred_id = '00000000-0000-0000-0000-000000000000'
 
     responses.add(
-            responses.POST,
-            url=f'{CREDENTIALS_BASE_URL}',
-            json={
-                'id': '00000000-0000-0000-0000-000000000000'
-            }
-        )
+        responses.POST,
+        url=f'{CREDENTIALS_BASE_URL}',
+        json={'id': '00000000-0000-0000-0000-000000000000'},
+    )
 
-    data = api.v3.vm.credentials.create('test5', 'SSH', permissions=[(
-        'group', 64, '00000000-0000-0000-0000-000000000000')],
-                                        auth_method='password',
-                                        username='user1',
-                                        password='sekretsquirrel',
-                                        escalation_account='root',
-                                        escalation_password='sudopassword',
-                                        elevate_privileges_with='sudo',
-                                        bin_directory='/usr/bin',
-                                        custom_password_prompt='')
+    data = api.v3.vm.credentials.create(
+        'test5',
+        'SSH',
+        permissions=[('group', 64, '00000000-0000-0000-0000-000000000000')],
+        auth_method='password',
+        username='user1',
+        password='sekretsquirrel',
+        escalation_account='root',
+        escalation_password='sudopassword',
+        elevate_privileges_with='sudo',
+        bin_directory='/usr/bin',
+        custom_password_prompt='',
+    )
     assert data == cred_id
 
 
@@ -154,8 +153,9 @@ def test_edit(api):
             }
         )
 
-    data = api.v3.vm.credentials.edit(cred_id, cred_name='test2',
-                                      description='test', ad_hoc=False)
+    data = api.v3.vm.credentials.edit(
+        cred_id, cred_name='test2', description='test', ad_hoc=False
+    )
     assert data
 
 
@@ -201,16 +201,12 @@ def test_upload(api):
     responses.add(
         responses.POST,
         f"{CREDENTIALS_BASE_URL}/files",
-        json={
-            "fileuploaded": "credentials_test.txt"
-        }
+        json={"fileuploaded": "credentials_test.txt"},
     )
 
     dummy_file_path = os.path.join(
-        os.path.dirname(
-            os.path.abspath(__file__)
-            ), "credentials_test.txt"
-        )
+        os.path.dirname(os.path.abspath(__file__)), "credentials_test.txt"
+    )
     with open(dummy_file_path, 'w+') as fobj:
         resp = api.v3.vm.credentials.upload(fobj)
 
