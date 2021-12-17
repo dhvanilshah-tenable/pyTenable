@@ -16,7 +16,7 @@ from tenable.io.v3.base.schema.explore.search import SearchSchema
 class ExploreBaseEndpoint(APIEndpoint):
     _conv_json = False
 
-    def details(self, obj_id: Union[str, UUID]):
+    def details(self, obj_id: Union[str, UUID]) -> dict:
         '''
         Gets the details for the specified id.
 
@@ -32,7 +32,7 @@ class ExploreBaseEndpoint(APIEndpoint):
 
             >>> tio.{PATHWAY}.details('00000000-0000-0000-0000-000000000000')
         '''
-        self._get(obj_id, conv_json=self._conv_json)
+        return self._get(obj_id, conv_json=self._conv_json)
 
     def search(self,
                *,
