@@ -112,9 +112,9 @@ class AssetsAPI(ExploreBaseEndpoint):
                     object is instead returned instead of an iterable.
 
         Examples:
-            >>> tio.v3.assets.search_assets(filter=('netbios_name', 'eq',
-            >>>  'SCCM'), fields=["name", "netbios_name", "last_login"],
-            >>>    limit=2, sort=[('last_observed', 'asc')])
+            >>> tio.v3.assets.search(filter=('netbios_name', 'eq',
+            ...  'SCCM'), fields=["name", "netbios_name", "last_login"],
+            ...    limit=2, sort=[('last_observed', 'asc')])
         '''
         iclass = AssetSearchIterator
         if kw.pop('return_csv', False):
