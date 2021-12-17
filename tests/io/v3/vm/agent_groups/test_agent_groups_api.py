@@ -69,23 +69,23 @@ def test_configure(api):
     Test case for configure method
     '''
     group_id: UUID = 'e069b272-ed76-487a-8cf9-1c32836698b7'
-    name: str = "test name 2"
+    name: str = 'test name 2'
     payload = {'name': name}
     test_response = {
-        "agent_groups": [
+        'agent_groups': [
             {
-                "owner_id": "2e3a71fc-2442-4024-9fee-085cc61750cb",
-                "created": 1595001140400,
-                "modified": 1595001217809,
-                "container_id": "d6c3e937-4467-4171-92d8-debf5ef3c917",
-                "id": "e069b272-ed76-487a-8cf9-1c32836698b7",
-                "name": name,
-                "agents_count": 0,
-                "default_permissions": 16,
-                "shared": 1,
-                "user_permissions": 128,
-                "created_in_seconds": 1595001140,
-                "modified_in_seconds": 1595001217
+                'owner_id': '2e3a71fc-2442-4024-9fee-085cc61750cb',
+                'created': 1595001140400,
+                'modified': 1595001217809,
+                'container_id': 'd6c3e937-4467-4171-92d8-debf5ef3c917',
+                'id': 'e069b272-ed76-487a-8cf9-1c32836698b7',
+                'name': name,
+                'agents_count': 0,
+                'default_permissions': 16,
+                'shared': 1,
+                'user_permissions': 128,
+                'created_in_seconds': 1595001140,
+                'modified_in_seconds': 1595001217
             }
         ]
     }
@@ -107,20 +107,20 @@ def test_create(api):
     '''
     name: str = 'test'
     test_response: dict = {
-        "agent_groups": [
+        'agent_groups': [
             {
-                "id": "ef62870e-fe2f-4ba9-98b7-43d3a53ffe85",
-                "name": name,
-                "creation_date": 1635756224,
-                "last_modification_date": 1635756224,
-                "timestamp": 1635756224,
-                "shared": 1,
-                "owner": {
-                    "name": "system",
-                    "id": "3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e"
+                'id': 'ef62870e-fe2f-4ba9-98b7-43d3a53ffe85',
+                'name': name,
+                'creation_date': 1635756224,
+                'last_modification_date': 1635756224,
+                'timestamp': 1635756224,
+                'shared': 1,
+                'owner': {
+                    'name': 'system',
+                    'id': '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e'
                 },
-                "user_permissions": 128,
-                "agents_count": 0
+                'user_permissions': 128,
+                'agents_count': 0
             }
         ]
     }
@@ -180,7 +180,7 @@ def test_delete_agent_with_multiple_agent_id(api):
             )
         ]
     }
-    test_repsonse = {
+    test_response = {
         'task_id': 'c26d637e-8533-411b-920c-5f49faeb270d',
         'container_id': 'cfdabb09-6aef-481d-b28f-aecb1c38f297',
         'status': 'NEW',
@@ -190,7 +190,7 @@ def test_delete_agent_with_multiple_agent_id(api):
         responses.POST,
         re.compile(f'{BASE_URL}/{group_id}/agents/_bulk/remove'),
         match=[responses.matchers.json_params_matcher(payload)],
-        json=test_repsonse
+        json=test_response
     )
     res = api.v3.vm.agent_groups.delete_agent(
         group_id,
