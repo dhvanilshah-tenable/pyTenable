@@ -10,49 +10,49 @@ CREDENTIALS_BASE_URL = r'https://cloud.tenable.com/api/v3/credentials'
 TYPES_RESPONSE = {
     'credentials': [
         {
-            "id": "API Gateway",
-            "category": "API Gateway",
-            "default_expand": False,
-            "types": [
+            'id': 'API Gateway',
+            'category': 'API Gateway',
+            'default_expand': False,
+            'types': [
                 {
-                    "id": "IBM DataPower Gateway",
-                    "name": "IBM DataPower Gateway",
-                    "max": 1,
-                    "configuration": [
+                    'id': 'IBM DataPower Gateway',
+                    'name': 'IBM DataPower Gateway',
+                    'max': 1,
+                    'configuration': [
                         {
-                            "type": "file",
-                            "name": "Client Certificate",
-                            "hint": "PEM formatted certificate.",
-                            "id": "datapower_client_cert",
+                            'type': 'file',
+                            'name': 'Client Certificate',
+                            'hint': 'PEM formatted certificate.',
+                            'id': 'datapower_client_cert',
                         },
                         {
-                            "type": "file",
-                            "name": "Client Certificate Private Key",
-                            "hint": "PEM formatted certificate.",
-                            "id": "datapower_private_key",
+                            'type': 'file',
+                            'name': 'Client Certificate Private Key',
+                            'hint': 'PEM formatted certificate.',
+                            'id': 'datapower_private_key',
                         },
                         {
-                            "type": "password",
-                            "name": "Client Certificate "
-                                    "Private Key Passphrase",
-                            "id": "datapower_private_key_passphrase",
+                            'type': 'password',
+                            'name': 'Client Certificate '
+                                    'Private Key Passphrase',
+                            'id': 'datapower_private_key_passphrase',
                         },
                         {
-                            "type": "text",
-                            "name": "Custom Header Key",
-                            "id": "datapower_custom_header_key",
+                            'type': 'text',
+                            'name': 'Custom Header Key',
+                            'id': 'datapower_custom_header_key',
                         },
                         {
-                            "type": "text",
-                            "name": "Custom Header Value",
-                            "id": "datapower_custom_header_value",
+                            'type': 'text',
+                            'name': 'Custom Header Value',
+                            'id': 'datapower_custom_header_value',
                         },
                         {
-                            "type": "checkbox",
-                            "name": "Enable for Hashicorp Vault",
-                            "required": True,
-                            "default": "yes",
-                            "id": "datapower_enable_hashicorp",
+                            'type': 'checkbox',
+                            'name': 'Enable for Hashicorp Vault',
+                            'required': True,
+                            'default': 'yes',
+                            'id': 'datapower_enable_hashicorp',
                         },
                     ],
                 }
@@ -61,29 +61,29 @@ TYPES_RESPONSE = {
     ]
 }
 DETAILS_RESPONSE = {
-    "name": "Windows devices (Headquarters)",
-    "description": "Use for scans of Windows devices located at headquarters.",
-    "category": {
-        "id": "Host",
-        "name": "Host",
+    'name': 'Windows devices (Headquarters)',
+    'description': 'Use for scans of Windows devices located at headquarters.',
+    'category': {
+        'id': 'Host',
+        'name': 'Host',
     },
-    "type": {
-        "id": "Windows",
-        "name": "Windows",
+    'type': {
+        'id': 'Windows',
+        'name': 'Windows',
     },
-    "ad_hoc": False,
-    "user_permissions": 64,
-    "settings": {
-        "domain": "",
-        "username": "user@example.com",
-        "auth_method": "Password",
+    'ad_hoc': False,
+    'user_permissions': 64,
+    'settings': {
+        'domain': "",
+        'username': 'user@example.com',
+        'auth_method': 'Password',
     },
-    "permissions": [
+    'permissions': [
         {
-            "grantee_uuid": "59042c90-5379-43a2-8cf4-87d97f7cb68f",
-            "type": "user",
-            "permissions": 64,
-            "name": "user1@tenable.com",
+            'grantee_uuid': '59042c90-5379-43a2-8cf4-87d97f7cb68f',
+            'type': 'user',
+            'permissions': 64,
+            'name': 'user1@tenable.com',
         }
     ],
 }
@@ -200,14 +200,14 @@ def test_upload(api):
     '''
     responses.add(
         responses.POST,
-        f"{CREDENTIALS_BASE_URL}/files",
-        json={"fileuploaded": "credentials_test.txt"},
+        f'{CREDENTIALS_BASE_URL}/files',
+        json={'fileuploaded': 'credentials_test.txt'},
     )
 
     dummy_file_path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "credentials_test.txt"
+        os.path.dirname(os.path.abspath(__file__)), 'credentials_test.txt'
     )
     with open(dummy_file_path, 'w+') as fobj:
         resp = api.v3.vm.credentials.upload(fobj)
 
-    assert resp == "credentials_test.txt"
+    assert resp == 'credentials_test.txt'
