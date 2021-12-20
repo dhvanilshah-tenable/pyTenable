@@ -51,56 +51,8 @@ def test_list_agents_from_group(api):
     '''
     Test case for agents list_agents_from_group method
     '''
-    test_response = {
-        'agents': [
-            {
-                'id': '96efbd47-9d96-443f-be29-2ac723dde270',
-                'name': 'Codys-MacBook-Pro.local',
-                'platform': 'DARWIN',
-                'distro': 'macosx',
-                'ip': '10.31.100.110',
-                'last_scanned': 1545272687,
-                'plugin_feed_id': '201812281741',
-                'core_build': '1',
-                'core_version': '7.2.1',
-                'linked_on': 1452106253,
-                'last_connect': 1546264939,
-                'status': 'off',
-                'groups': [
-                    {
-                        'name': 'Agent Group A',
-                        'id': 8
-                    },
-                    {
-                        'name': 'Agent Group B',
-                        'id': 31
-                    }
-                ],
-                'supports_remote_logs': False
-            }
-        ],
-        'pagination': {
-            'total': 3,
-            'limit': 50,
-            'offset': 0,
-            'sort': [
-                {
-                    'name': 'name',
-                    'order': 'asc'
-                }
-            ]
-        }
-    }
-    agent_group_id: UUID = '96efbd47-9d96-443f-be29-2ac723dde270'
-    api_endpoint = BASE_URL.replace('agents', 'agent-groups')
-    responses.add(
-        responses.GET,
-        re.compile(f'{api_endpoint}/{agent_group_id}/agents'),
-        json=test_response
-    )
-    res = api.v3.vm.agents.list_agents_from_group(agent_group_id)
-    assert isinstance(res, dict)
-    assert list(test_response.keys()) == ['agents', 'pagination']
+    with pytest.raises(NotImplementedError):
+        api.v3.vm.agents.list_agents_from_group()
 
 
 @responses.activate
@@ -126,6 +78,7 @@ def test_task_status(api):
     res = api.v3.vm.agents.task_status(task_id)
     assert isinstance(res, dict)
     assert 'task_id' in list(res.keys())
+    assert res['task_id'] == task_id
 
 
 @responses.activate

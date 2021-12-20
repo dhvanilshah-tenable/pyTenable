@@ -1,7 +1,7 @@
 '''
 Testing the Agents schemas
 '''
-from tenable.io.v3.vm.agents.schema import AgentsSchema
+from tenable.io.v3.vm.agents.schema import AgentSchema
 
 
 def test_agent_groups_schema_with_name():
@@ -22,5 +22,5 @@ def test_agent_groups_schema_with_name():
             '57b74f66-5d95-11ec-bf63-0242ac130002'
         ]
     }
-    schema = AgentsSchema(only=['items'])
+    schema = AgentSchema(only=['items'])
     assert test_resp == schema.dump(schema.load(payload))

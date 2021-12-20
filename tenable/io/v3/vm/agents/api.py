@@ -15,10 +15,13 @@ from typing import Dict, Union
 from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.agents.schema import AgentsSchema
+from tenable.io.v3.vm.agents.schema import AgentSchema
 
 
 class AgentsAPI(ExploreBaseEndpoint):
+    '''
+    This class contains methods related to Agents API
+    '''
     _path: str = 'api/v3/agents'
     _conv_json: bool = True
 
@@ -43,27 +46,10 @@ class AgentsAPI(ExploreBaseEndpoint):
         '''
         return self._get(f'{agent_id}')
 
-    def list_agents_from_group(self, agent_group_id: UUID) -> Dict:
-        '''
-        Retrive the list of agents for the specified agent group.
-
-        :devportal:`agent: get <agent-group-list-agents>`
-
-        Args:
-            agent_group_id (UUID): The unique identifier of the agent.
-
-        Returns:
-            :obj:`dict`:
-                The agent groups dictionary of all the agents.
-
-        Examples:
-            >>> agent = tio.v3.vm.agents.list_agents_from_groups(
-            ...     '00000000-0000-0000-0000-000000000000'
-            ... )
-            >>> print(agent_from_group)
-        '''
-        self._path: str = self._path.replace('agents', 'agent-groups')
-        return self._get(f'{agent_group_id}/agents/')
+    def list_agents_from_group(self):
+        raise NotImplementedError(
+            "This method will be implemented later."
+        )
 
     def task_status(self, task_uuid: UUID) -> Dict:
         '''
@@ -130,7 +116,7 @@ class AgentsAPI(ExploreBaseEndpoint):
             self._delete(f'{agent_ids[0]}')
         else:
             payload: dict = {'items': [i for i in agent_ids]}
-            schema = AgentsSchema()
+            schema = AgentSchema()
             payload = schema.dump(schema.load(payload))
             return self._post(
                 '_bulk/unlink',
