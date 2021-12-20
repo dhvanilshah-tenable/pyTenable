@@ -1,6 +1,6 @@
 '''
 Plugins
-========
+=======
 
 The following methods allow for interaction into the Tenable.io
 :devportal:`Web Application Scanning v3 plugins <was-v2-plugins>` API.
@@ -20,7 +20,7 @@ class PluginsAPI(ExploreBaseEndpoint):
     _path = 'api/v3/was/plugins'
     _conv_json = True
 
-    def plugin_details(self, id: int) -> Dict:
+    def details(self, id: int) -> Dict:
         '''
         Returns details for the specified Tenable.io
         Web Application Scanning plugin.
@@ -36,7 +36,7 @@ class PluginsAPI(ExploreBaseEndpoint):
                 The resource record of the was plugin.
 
         Examples:
-            >>> folder = tio.v3.was.plugins.plugin_details(1)
+            >>> plugin = tio.v3.was.plugins.details(1)
         '''
         return self._get(f'{id}')
 
