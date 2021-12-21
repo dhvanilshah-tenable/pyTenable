@@ -15,7 +15,7 @@ from typing import Dict, Union
 from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.agent_groups.schema import AgentGroupsSchema
+from tenable.io.v3.vm.agent_groups.schema import AgentGroupSchema
 
 
 class AgentGroupsAPI(ExploreBaseEndpoint):
@@ -24,7 +24,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
     '''
     _path: str = 'api/v3/agent-groups'
     _conv_json: bool = True
-    _schema = AgentGroupsSchema()
+    _schema = AgentGroupSchema()
 
     def add_agent(self, group_id: UUID, *agent_ids: UUID) -> Union[None, Dict]:
         '''

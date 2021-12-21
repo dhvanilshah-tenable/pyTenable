@@ -4,7 +4,7 @@ Agent Groups API Endpoint Schemas
 from marshmallow import Schema, fields
 
 
-class AgentGroupsSchema(Schema):
+class AgentGroupSchema(Schema):
     '''
     Schema for agent_groups API
     '''
