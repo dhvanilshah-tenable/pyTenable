@@ -16,9 +16,11 @@ Methods available on ``tio.v3.was``:
     :hidden:
     :glob:
 
+    filters
     folders
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.was.filters.api import FiltersAPI
 from tenable.io.v3.was.folders.api import FoldersAPI
 
 
@@ -27,6 +29,14 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
     This class will contain property for all resources under Web Application
     Scanning i.e plugins, scans, folders etc.
     '''
+
+    @property
+    def filters(self):
+        '''
+        The interface object for the
+        :doc:`Filters API <filters>`
+        '''
+        return FiltersAPI(self._api)
 
     @property
     def folders(self):
