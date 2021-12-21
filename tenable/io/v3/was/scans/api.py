@@ -16,9 +16,7 @@ from typing import Dict, Optional
 from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.was.scans.schema import (IteratorSchema, ScanReportSchema,
-                                            ScanStatusSchema)
-from tenable.utils import dict_clean
+from tenable.io.v3.was.scans.schema import ScanReportSchema, ScanStatusSchema
 
 
 class ScansAPI(ExploreBaseEndpoint):
@@ -107,7 +105,7 @@ class ScansAPI(ExploreBaseEndpoint):
         headers = schema.dump(schema.load(headers))
         headers['Content-Type'] = headers.pop('content_type')
 
-        resp = self._get(f'scans/{id}/report', stream=True, headers=headers)
+        resp = self._get(f'scans/{id}/report', headers=headers, stream=True)
 
         for chunk in resp.iter_content(chunk_size=1024):
             if chunk:
@@ -167,7 +165,7 @@ class ScansAPI(ExploreBaseEndpoint):
         '''
         return self._post(f'configs/{config_id}/scans').get('id')
 
-    # TODO: Requires iterator
+    # TODO: Requires search iterator
     def notes(self,
               id: UUID,
               limit: int = 10,
@@ -175,63 +173,17 @@ class ScansAPI(ExploreBaseEndpoint):
               sort: str = None
               ) -> None:
         '''
-        Get notes of a scan
-
-        :devportal:`was scans: update scan status <was-v2-scans-notes-list>`
-
-        Args:
-            id (UUID): The UUID of the scan for which you want to view notes.
-            limit (int, optional):
-                The number of records to retrieve. If this parameter is
-                omitted, Tenable.io uses the default value of 10. The minimum
-                value is 0 and the maximum value is 200. If you need to
-                retrieve more than 200 records, use the offset value to
-                iterate through page responses.
-            offset (int, optional):
-                The starting record to retrieve. If this parameter is omitted,
-                Tenable.io uses the default value of 0.
-            sort (str, optional):
-                The field you want to use to sort the results by along with the
-                sort order. The field is specified first, followed by a colon,
-                and the order is specified second (asc or desc).
-                For example, name:desc would sort results by the name field in
-                descending order.
-                If you specify multiple fields, the fields must be separated by
-                commas. For example, name:desc,created_at:asc would first sort
-                results by the name field in descending order and then by the
-                created_at field in ascending order.
-
-        Returns:
-
-        Examples:
-            >>> tio.v3.was.scans.notes('91843ecb-ecb8-48a3-b623-d4682c2594',
-            ...     20, sort='name:asc')
+        Not Implemented
         '''
-        payload = {
-            'limit': limit,
-            'offset': offset,
-            'sort': sort
-        }
-        schema = IteratorSchema()
-        payload = schema.dump(schema.load(payload))
-        payload = dict_clean(payload)
-        self._get(f'scans/{id}/notes', json=payload)
+        raise NotImplementedError(
+            'This method will be updated once ExploreSearchIterator is \
+                implemented for v3'
+        )
 
     # TODO: Requires search iterator
     def search(self, config_id: UUID, **kwargs) -> None:
         '''
-        Search for scans.
-
-        :devportal:`was scans: search <was-v2-scans-search>`
-
-        Args:
-            config_id (UUID):
-                The UUID of the config that was used for the scan.
-
-        Returns:
-
-        Examples:
-            >>> tio.v3.was.folders.delete('91843ecb-ecb8-48a3-b623-d4682c28c')
+        Not Implemented
         '''
         raise NotImplementedError(
             'This method will be updated once ExploreSearchIterator is \
@@ -270,21 +222,7 @@ class ScansAPI(ExploreBaseEndpoint):
     # TODO: Requires search iterator
     def vulnerabilities(self, id: UUID, **kwargs) -> None:
         '''
-        Get vulnerabilities for a scan.
-
-        :devportal:`was scans: search vulnerabilities for scan
-        <was-v2-scans-details-vulns-search>`
-
-        Args:
-            id (UUID): The UUID of the scan for which you want to view notes.
-
-        Returns:
-
-        Examples:
-            >>> tio.v3.was.folders.edit(
-            ...     '91843ecb-ecb8-48a3-b623-d4682c2594',
-            ...     'Updated Folder Name'
-            ... )
+        Not Implemented
         '''
         raise NotImplementedError(
             'This method will be updated once ExploreSearchIterator is \

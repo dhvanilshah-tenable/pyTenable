@@ -20,18 +20,3 @@ class ScanReportSchema(Schema):
         ]),
         default='application/json'
     )
-
-
-class IteratorSchema(Schema):
-    limit = fields.Int(
-        allow_none=True,
-        default=10,
-        validate=validate.Range(min=0, max=200)
-    )
-    offset = fields.Int(
-        allow_none=True,
-        default=0
-    )
-    sort = fields.Str(
-        allow_none=True
-    )

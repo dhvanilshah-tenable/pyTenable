@@ -1,3 +1,6 @@
+from pathlib import Path
+
+import pytest
 import responses
 
 WAS_SCANS_BASE_URL = 'https://cloud.tenable.com/api/v3/was'
@@ -68,30 +71,26 @@ def test_details(api):
 
 
 @responses.activate
-def test_update_status(api):
-    '''
-    Test was scans update status method
-    '''
-    responses.add(
-        responses.PATCH,
-        f'{WAS_SCANS_BASE_URL}/scans/{SAMPLE_SCAN_ID}'
-    )
-    result = api.v3.was.scans.update_status(SAMPLE_SCAN_ID, 'stop')
-    assert result is None
+def test_download_report(api):
+    sample_report = Path('sample_report.csv')
 
+    with open(sample_report, 'rb') as report:
+        file_contents = report.read()
 
-@responses.activate
-def test_launch(api):
-    '''
-    Test was scans update status method
-    '''
     responses.add(
-        responses.POST,
-        f'{WAS_SCANS_BASE_URL}/configs/{SAMPLE_CONFIG_ID}/scans',
-        json={'scan_id': SAMPLE_SCAN_ID}
+        responses.GET,
+        f'{WAS_SCANS_BASE_URL}/scans/{SAMPLE_SCAN_ID}/report',
+        body=file_contents
     )
-    result = api.v3.was.scans.launch(SAMPLE_CONFIG_ID)
-    assert result == SAMPLE_SCAN_ID
+
+    received_report = Path('received_report.csv')
+    with open(received_report, 'wb') as report:
+        api.v3.was.scans.download_report(SAMPLE_SCAN_ID, 'text/csv', report)
+
+    with open(received_report, 'rb') as report:
+        assert report.read() == file_contents
+
+    received_report.unlink()
 
 
 @responses.activate
@@ -105,5 +104,45 @@ def test_export_report(api):
 
 
 @responses.activate
-def test_download_report(api):
-    pass
+def test_launch(api):
+    '''
+    Test was scans update status method
+    '''
+    responses.add(
+        responses.POST,
+        f'{WAS_SCANS_BASE_URL}/configs/{SAMPLE_CONFIG_ID}/scans',
+        json={'id': SAMPLE_SCAN_ID}
+    )
+    result = api.v3.was.scans.launch(SAMPLE_CONFIG_ID)
+    assert result == SAMPLE_SCAN_ID
+
+
+@responses.activate
+def test_notes(api):
+    with pytest.raises(NotImplementedError):
+        api.v3.was.scans.notes(SAMPLE_SCAN_ID)
+
+
+@responses.activate
+def test_search(api):
+    with pytest.raises(NotImplementedError):
+        api.v3.was.scans.search(SAMPLE_SCAN_ID)
+
+
+@responses.activate
+def test_update_status(api):
+    '''
+    Test was scans update status method
+    '''
+    responses.add(
+        responses.PATCH,
+        f'{WAS_SCANS_BASE_URL}/scans/{SAMPLE_SCAN_ID}'
+    )
+    result = api.v3.was.scans.update_status(SAMPLE_SCAN_ID, 'stop')
+    assert result is None
+
+
+@responses.activate
+def test_vulnerabilities(api):
+    with pytest.raises(NotImplementedError):
+        api.v3.was.scans.vulnerabilities(SAMPLE_SCAN_ID)
