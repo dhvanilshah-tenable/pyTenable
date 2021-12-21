@@ -24,6 +24,7 @@ class AgentsAPI(ExploreBaseEndpoint):
     '''
     _path: str = 'api/v3/agents'
     _conv_json: bool = True
+    _schema = AgentSchema()
 
     def details(self, agent_id: UUID) -> Dict:
         '''
@@ -116,8 +117,7 @@ class AgentsAPI(ExploreBaseEndpoint):
             self._delete(f'{agent_ids[0]}')
         else:
             payload: dict = {'items': [i for i in agent_ids]}
-            schema = AgentSchema()
-            payload = schema.dump(schema.load(payload))
+            payload = self._schema.dump(self._schema.load(payload))
             return self._post(
                 '_bulk/unlink',
                 json=payload
