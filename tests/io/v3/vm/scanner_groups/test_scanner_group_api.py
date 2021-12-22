@@ -23,8 +23,8 @@ SCANNER_G_DETAILS = {
     'owner_name': 'system'
 }
 SCANNER_CREATE_RESP = {
-    'creation_date': 1639384715,
-    'last_modification_date': 1639384715,
+    'creation_date': '2020-07-10 15:00:00.000',
+    'last_modification_date': '2020-07-10 15:01:00.000',
     'owner': 'system',
     'owner_id': '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e',
     'default_permissions': 16, 'scan_count': 0,
@@ -34,11 +34,11 @@ SCANNER_CREATE_RESP = {
 }
 SCANNER_LIST_SC_RESP = [
     {
-        "creation_date": 1543416914,
+        "creation_date": '2020-07-10 15:00:00.000',
         "group": True,
         "key": "e3eeecca0d998c466af126549d68ef0f4e0d0ba3ab04a6e59a1d8a8a57079",
         "last_connect": None,
-        "last_modification_date": 1543416914,
+        "last_modification_date": '2020-07-10 15:01:00.000',
         "license": None,
         "linked": 1,
         "name": "EU Frankfurt Cloud Scanners",
@@ -50,7 +50,7 @@ SCANNER_LIST_SC_RESP = [
         "scan_count": 0,
         "source": "service",
         "status": "on",
-        "timestamp": 1543416914,
+        "timestamp": '2020-07-10 15:00:00.000',
         "type": "local",
         "id": 'b5db63f1-551d-4789-aefa-9629c93ddc45'
     }
