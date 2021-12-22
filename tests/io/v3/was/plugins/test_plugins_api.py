@@ -2,9 +2,9 @@ import pytest
 import responses
 
 WAS_PLUGINS_BASE_URL = 'https://cloud.tenable.com/api/v3/was/plugins'
-SAMPLE_PLUGIN_ID = 1
-SAMPLE_PLUGIN = {
-    'plugin_id': SAMPLE_PLUGIN_ID,
+ID = 1
+PLUGIN = {
+    'id': ID,
     'name': 'Scan Information',
     'risk_factor': 'info',
     'cpe': None,
@@ -48,12 +48,12 @@ def test_details(api):
     '''
     responses.add(
         responses.GET,
-        f'{WAS_PLUGINS_BASE_URL}/{SAMPLE_PLUGIN_ID}',
-        json=SAMPLE_PLUGIN
+        f'{WAS_PLUGINS_BASE_URL}/{ID}',
+        json=PLUGIN
     )
-    plugin = api.v3.was.plugins.details(SAMPLE_PLUGIN_ID)
+    plugin = api.v3.was.plugins.details(ID)
     assert isinstance(plugin, dict)
-    assert plugin == SAMPLE_PLUGIN
+    assert plugin == PLUGIN
 
 
 @responses.activate
