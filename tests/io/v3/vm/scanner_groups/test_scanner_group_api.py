@@ -10,8 +10,8 @@ SCANNER_GROUPS_BASE_URL = r'https://cloud.tenable.com/api/v3/scanner-groups'
 GROUP_ID = 'b5db63f1-551d-4789-aefa-9629c93ddc45'
 SCANNER_ID = 'b5db63f1-551d-4789-aefa-9629c93ddc45'
 SCANNER_G_DETAILS = {
-    'creation_date': 1639386455,
-    'last_modification_date': 1639386455,
+    'creation_date': '2019-12-31T20:50:23.635Z',
+    'last_modification_date': '2019-12-31T20:50:23.635Z',
     'owner': 'system',
     'owner_id': '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e',
     'default_permissions': 16, 'user_permissions': 128,
@@ -23,8 +23,8 @@ SCANNER_G_DETAILS = {
     'owner_name': 'system'
 }
 SCANNER_CREATE_RESP = {
-    'creation_date': '2020-07-10 15:00:00.000',
-    'last_modification_date': '2020-07-10 15:01:00.000',
+    'creation_date': '2019-12-31T20:50:23.635Z',
+    'last_modification_date': '2019-12-31T20:50:23.635Z',
     'owner': 'system',
     'owner_id': '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e',
     'default_permissions': 16, 'scan_count': 0,
@@ -34,11 +34,11 @@ SCANNER_CREATE_RESP = {
 }
 SCANNER_LIST_SC_RESP = [
     {
-        "creation_date": '2020-07-10 15:00:00.000',
+        "creation_date": '2019-12-31T20:50:23.635Z',
         "group": True,
         "key": "e3eeecca0d998c466af126549d68ef0f4e0d0ba3ab04a6e59a1d8a8a57079",
         "last_connect": None,
-        "last_modification_date": '2020-07-10 15:01:00.000',
+        "last_modification_date": '2019-12-31T20:50:23.635Z',
         "license": None,
         "linked": 1,
         "name": "EU Frankfurt Cloud Scanners",
@@ -50,7 +50,7 @@ SCANNER_LIST_SC_RESP = [
         "scan_count": 0,
         "source": "service",
         "status": "on",
-        "timestamp": '2020-07-10 15:00:00.000',
+        "timestamp": '2019-12-31T20:50:23.635Z',
         "type": "local",
         "id": 'b5db63f1-551d-4789-aefa-9629c93ddc45'
     }
