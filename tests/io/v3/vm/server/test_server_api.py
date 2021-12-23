@@ -49,7 +49,7 @@ def test_properties(api):
         'region': 'abc',
         'scanner_boottime': 1617702260,
         'server_build': 'D20144',
-        'server_uuid': '1b6c59f6-0000-0000-0000-01996d3b57911c81433cc5c59a7b',
+        'id': '1b6c59f6-0000-0000-0000-01996d3b57911c81433cc5c59a7b',
         'server_version': '6.9.1',
         'site_id': 'abc',
         'update': {'href': None, 'new_version': False, 'restart': False},
