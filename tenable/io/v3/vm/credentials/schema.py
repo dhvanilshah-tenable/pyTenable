@@ -39,7 +39,7 @@ class CredentialsPermissionsSchema(Schema):
 
         Example:
 
-            >>> f = ('user', 64, '0000000-0000000-0000-0000')
+            >>> f = ('user', 64, '00000000-0000-0000-0000-000000000000')
             >>> filter.dump(filter.load(f))
             {'type': 'filter', 'permissions': 64, 'grantee_id':
             'value'}

@@ -47,12 +47,12 @@ class CredentialsAPI(ExploreBaseEndpoint):
                 A list of permissions (in either tuple or native dict format)
                 detailing whom is allowed to use or edit this credential set.
                 For the dictionary format, refer to the API docs.  The tuple
-                format uses the customary ``(type, perm, uuid)`` format.
+                format uses the customary ``(type, perm, id)`` format.
 
                 Examples:
-                    - ``('user', 32, user_uuid)``
-                    - ``('group', 32, group_uuid)``
-                    - ``('user', 'use', user_uuid)``
+                    - ``('user', 32, user_id)``
+                    - ``('group', 32, group_id)``
+                    - ``('user', 'use', user_id)``
 
             **settings (dict, optional):
                 Additional keywords passed will be added to the settings dict
@@ -116,10 +116,10 @@ class CredentialsAPI(ExploreBaseEndpoint):
                 format uses the customary ``(type, perm, uuid)`` format.
 
                 Examples:
-                    - ``('user', 32, user_uuid)``
-                    - ``('group', 32, group_uuid)``
-                    - ``('user', 'use', user_uuid)``
-                    - ``('group', 'edit', group_uuid)``
+                    - ``('user', 32, user_id)``
+                    - ``('group', 32, group_id)``
+                    - ``('user', 'use', user_id)``
+                    - ``('group', 'edit', group_id)``
 
             **settings (dict, optional):
                 Additional keywords passed will be added to the settings dict

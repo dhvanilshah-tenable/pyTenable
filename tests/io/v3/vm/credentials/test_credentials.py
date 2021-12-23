@@ -80,7 +80,7 @@ DETAILS_RESPONSE = {
     },
     'permissions': [
         {
-            'grantee_uuid': '59042c90-5379-43a2-8cf4-87d97f7cb68f',
+            'grantee_id': '59042c90-5379-43a2-8cf4-87d97f7cb68f',
             'type': 'user',
             'permissions': 64,
             'name': 'user1@tenable.com',
