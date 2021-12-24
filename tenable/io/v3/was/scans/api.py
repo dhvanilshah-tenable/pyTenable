@@ -60,10 +60,11 @@ class ScansAPI(ExploreBaseEndpoint):
         '''
         return super().details(f'scans/{id}')
 
-    def download_report(self, id: UUID,
-                        content_type: Optional[str] = 'application/json',
-                        fobj: Optional[BytesIO] = None
-                        ) -> BytesIO:
+    def download(self,
+                 id: UUID,
+                 content_type: Optional[str] = 'application/json',
+                 fobj: Optional[BytesIO] = None
+                 ) -> BytesIO:
         '''
         Download exported scan report.
 
@@ -89,7 +90,7 @@ class ScansAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> with open('report_001.json', 'wb') as report:
-            ...     tio.v3.was.scans.download_report(
+            ...     tio.v3.was.scans.download(
             ...         '00000000-0000-0000-0000-000000000000',
             ...         'application/json',
             ...         report
@@ -116,7 +117,7 @@ class ScansAPI(ExploreBaseEndpoint):
 
         return fobj
 
-    def export_report(self, id: UUID, content_type: str = None) -> None:
+    def export(self, id: UUID, content_type: str = None) -> None:
         '''
         Export scan details.
 
@@ -136,8 +137,7 @@ class ScansAPI(ExploreBaseEndpoint):
             obj:`None`
 
         Examples:
-            >>> tio.v3.was.scans.export_report(
-            ...     '91843ecb-ecb8-48a3-b623-d4682c2594')
+            >>> tio.v3.was.scans.export('91843ecb-ecb8-48a3-b623-d4682c2594')
         '''
         headers = {
             'content_type': content_type
@@ -220,7 +220,7 @@ class ScansAPI(ExploreBaseEndpoint):
         self._patch(f'scans/{id}', json=payload)
 
     # TODO: Requires search iterator
-    def vulnerabilities(self, id: UUID, **kwargs) -> None:
+    def search_vulnerabilities(self, id: UUID, **kwargs) -> None:
         '''
         Not Implemented
         '''

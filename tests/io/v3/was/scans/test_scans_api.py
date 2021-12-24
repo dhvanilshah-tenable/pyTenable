@@ -85,7 +85,7 @@ def test_download_report(api):
 
     received_report = Path('received_report.csv')
     with open(received_report, 'wb') as report:
-        api.v3.was.scans.download_report(SAMPLE_SCAN_ID, 'text/csv', report)
+        api.v3.was.scans.download(SAMPLE_SCAN_ID, 'text/csv', report)
 
     with open(received_report, 'rb') as report:
         assert report.read() == file_contents
@@ -99,7 +99,7 @@ def test_export_report(api):
         responses.PUT,
         f'{WAS_SCANS_BASE_URL}/scans/{SAMPLE_SCAN_ID}/report'
     )
-    result = api.v3.was.scans.export_report(SAMPLE_SCAN_ID)
+    result = api.v3.was.scans.export(SAMPLE_SCAN_ID)
     assert result is None
 
 
@@ -145,4 +145,4 @@ def test_update_status(api):
 @responses.activate
 def test_vulnerabilities(api):
     with pytest.raises(NotImplementedError):
-        api.v3.was.scans.vulnerabilities(SAMPLE_SCAN_ID)
+        api.v3.was.scans.search_vulnerabilities(SAMPLE_SCAN_ID)
