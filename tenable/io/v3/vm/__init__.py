@@ -61,6 +61,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         '''
         return AgentGroupsAPI(self)
 
+    @property
     def agents(self):
         '''
         The interface object for the
