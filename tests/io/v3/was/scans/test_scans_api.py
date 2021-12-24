@@ -72,7 +72,7 @@ def test_details(api):
 
 @responses.activate
 def test_download(api):
-    sample_report = Path('sample_report.csv').resolve()
+    sample_report = Path.cwd() / Path('sample_report.csv')
 
     with open(sample_report, 'rb') as report:
         file_contents = report.read()
@@ -83,7 +83,7 @@ def test_download(api):
         body=file_contents
     )
 
-    received_report = Path('received_report.csv').resolve()
+    received_report = Path.cwd() / Path('received_report.csv')
     with open(received_report, 'wb') as report:
         api.v3.was.scans.download(SAMPLE_SCAN_ID, 'text/csv', report)
 
