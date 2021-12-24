@@ -71,8 +71,8 @@ def test_details(api):
 
 
 @responses.activate
-def test_download_report(api):
-    sample_report = Path('sample_report.csv')
+def test_download(api):
+    sample_report = Path('sample_report.csv').resolve()
 
     with open(sample_report, 'rb') as report:
         file_contents = report.read()
@@ -83,7 +83,7 @@ def test_download_report(api):
         body=file_contents
     )
 
-    received_report = Path('received_report.csv')
+    received_report = Path('received_report.csv').resolve()
     with open(received_report, 'wb') as report:
         api.v3.was.scans.download(SAMPLE_SCAN_ID, 'text/csv', report)
 
@@ -94,7 +94,7 @@ def test_download_report(api):
 
 
 @responses.activate
-def test_export_report(api):
+def test_export(api):
     responses.add(
         responses.PUT,
         f'{WAS_SCANS_BASE_URL}/scans/{SAMPLE_SCAN_ID}/report'
@@ -143,6 +143,6 @@ def test_update_status(api):
 
 
 @responses.activate
-def test_vulnerabilities(api):
+def test_search_vulnerabilities(api):
     with pytest.raises(NotImplementedError):
         api.v3.was.scans.search_vulnerabilities(SAMPLE_SCAN_ID)

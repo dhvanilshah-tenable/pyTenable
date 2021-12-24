@@ -190,6 +190,16 @@ class ScansAPI(ExploreBaseEndpoint):
                 implemented for v3'
         )
 
+    # TODO: Requires search iterator
+    def search_vulnerabilities(self, id: UUID, **kwargs) -> None:
+        '''
+        Not Implemented
+        '''
+        raise NotImplementedError(
+            'This method will be updated once ExploreSearchIterator is \
+                implemented for v3'
+        )
+
     def update_status(self, id: UUID, requested_action: str) -> None:
         '''
         Update the requested_action attribute for a scan. The requested action
@@ -218,13 +228,3 @@ class ScansAPI(ExploreBaseEndpoint):
         }
         payload = schema.dump(schema.load(payload))
         self._patch(f'scans/{id}', json=payload)
-
-    # TODO: Requires search iterator
-    def search_vulnerabilities(self, id: UUID, **kwargs) -> None:
-        '''
-        Not Implemented
-        '''
-        raise NotImplementedError(
-            'This method will be updated once ExploreSearchIterator is \
-                implemented for v3'
-        )
