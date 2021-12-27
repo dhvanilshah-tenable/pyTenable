@@ -9,7 +9,7 @@ from responses import matchers
 SCANNER_GROUPS_BASE_URL = r'https://cloud.tenable.com/api/v3/scanner-groups'
 GROUP_ID = 'b5db63f1-551d-4789-aefa-9629c93ddc45'
 SCANNER_ID = 'b5db63f1-551d-4789-aefa-9629c93ddc45'
-SCANNER_G_DETAILS = {
+SCANNER_GROUP_DETAILS = {
     'creation_date': '2019-12-31T20:50:23.635Z',
     'last_modification_date': '2019-12-31T20:50:23.635Z',
     'owner': 'system',
@@ -32,38 +32,38 @@ SCANNER_CREATE_RESP = {
     'type': 'load_balancing', 'name': 'test1',
     'owner_name': 'system'
 }
-SCANNER_LIST_SC_RESP = [
+LIST_SCANNER_RESP = [
     {
-        "creation_date": '2019-12-31T20:50:23.635Z',
-        "group": True,
-        "key": "e3eeecca0d998c466af126549d68ef0f4e0d0ba3ab04a6e59a1d8a8a57079",
-        "last_connect": None,
-        "last_modification_date": '2019-12-31T20:50:23.635Z',
-        "license": None,
-        "linked": 1,
-        "name": "EU Frankfurt Cloud Scanners",
-        "num_scans": 0,
-        "owner": "system",
-        "owner_name": "system",
-        "owner_id": "09d69c34-4b27-469b-b861-04d57834bc25",
-        "pool": True,
-        "scan_count": 0,
-        "source": "service",
-        "status": "on",
-        "timestamp": '2019-12-31T20:50:23.635Z',
-        "type": "local",
-        "id": 'b5db63f1-551d-4789-aefa-9629c93ddc45'
+        'creation_date': '2019-12-31T20:50:23.635Z',
+        'group': True,
+        'key': 'e3eeecca0d998c466af126549d68ef0f4e0d0ba3ab04a6e59a1d8a8a57079',
+        'last_connect': None,
+        'last_modification_date': '2019-12-31T20:50:23.635Z',
+        'license': None,
+        'linked': 1,
+        'name': 'EU Frankfurt Cloud Scanners',
+        'num_scans': 0,
+        'owner': 'system',
+        'owner_name': 'system',
+        'owner_id': '09d69c34-4b27-469b-b861-04d57834bc25',
+        'pool': True,
+        'scan_count': 0,
+        'source': 'service',
+        'status': 'on',
+        'timestamp': '2019-12-31T20:50:23.635Z',
+        'type': 'local',
+        'id': 'b5db63f1-551d-4789-aefa-9629c93ddc45'
     }
 ]
-SCANNER_LIST_ROU_RESP = [
+SCANNER_LIST_ROUTE_RESP = [
     {
-        "route": "example.com"
+        'route': 'example.com'
     },
     {
-        "route": "10.1.2.3"
+        'route': '10.1.2.3'
     },
     {
-        "route": "2001:db8::/64"
+        'route': '2001:db8::/64'
     }
 ]
 
@@ -120,7 +120,7 @@ def test_details(api):
     responses.add(
         responses.GET,
         re.compile(f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}'),
-        json=SCANNER_G_DETAILS
+        json=SCANNER_GROUP_DETAILS
     )
 
     data = api.v3.vm.scanner_groups.details(GROUP_ID)
@@ -143,12 +143,12 @@ def test_edit(api):
 
 @responses.activate
 def test_list_scanners(api):
-    name = "EU Frankfurt Cloud Scanners"
+    name = 'EU Frankfurt Cloud Scanners'
     responses.add(
         responses.GET,
         re.compile(f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}/scanners'),
         json={
-            'scanners': SCANNER_LIST_SC_RESP
+            'scanners': LIST_SCANNER_RESP
         }
     )
 
@@ -162,11 +162,12 @@ def test_list_routes(api):
     responses.add(
         responses.GET,
         re.compile(f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}/routes'),
-        json=SCANNER_LIST_ROU_RESP
+        json=SCANNER_LIST_ROUTE_RESP
     )
 
     data = api.v3.vm.scanner_groups.list_routes(GROUP_ID)
     assert isinstance(data, list)
+    assert data[0]['route'] == 'example.com'
 
 
 @responses.activate

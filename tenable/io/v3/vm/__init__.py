@@ -25,7 +25,7 @@ Methods available on ``tio.v3.vm``:
     permissions
     plugins
     scanners
-    scanner_group
+    scanner_groups
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.vm.agent_config.api import AgentConfigAPI
@@ -123,6 +123,6 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def scanner_groups(self):
         '''
         The interface object for the
-        :doc:`Scanners API <scanners>`
+        :doc:`Scanner Groups API <scanner_groups>`
         '''
         return ScannerGroupsAPI(self._api)
