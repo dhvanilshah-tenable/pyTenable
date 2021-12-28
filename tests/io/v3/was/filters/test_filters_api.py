@@ -3,7 +3,7 @@ test filters
 '''
 import responses
 
-WAS_FILTERS_BASE_URL = 'https://cloud.tenable.com/api/v3/was'
+WAS_FILTERS_BASE_URL = 'https://cloud.tenable.com/api/v3/definitions'
 CONFIG_ID = '36adf672-0b08-43b5-a15f-6b32044f6b1f'
 SCAN_ID = 'cade336b-29fb-4188-b42a-04d8f95d7de6'
 
@@ -29,7 +29,7 @@ def test_scans_filters(api):
     }
     responses.add(
         responses.GET,
-        f'{WAS_FILTERS_BASE_URL}/configs/{CONFIG_ID}/scans/filters',
+        f'{WAS_FILTERS_BASE_URL}/configs/{CONFIG_ID}/scans/was',
         json=filters
     )
     resp = api.v3.was.filters.scans_filters(CONFIG_ID)
@@ -64,7 +64,7 @@ def test_scan_configurations_filters(api):
     }
     responses.add(
         responses.GET,
-        f'{WAS_FILTERS_BASE_URL}/configs/filters',
+        f'{WAS_FILTERS_BASE_URL}/configs/was',
         json=filters
     )
     resp = api.v3.was.filters.scan_configurations_filters()
@@ -92,7 +92,7 @@ def test_scan_vulnerabilities_filters(api):
     }
     responses.add(
         responses.GET,
-        f'{WAS_FILTERS_BASE_URL}/scans/{SCAN_ID}/vulnerabilities/filters',
+        f'{WAS_FILTERS_BASE_URL}/scans/{SCAN_ID}/vulnerabilities/was',
         json=filters
     )
     resp = api.v3.was.filters.scan_vulnerabilities_filters(SCAN_ID)
@@ -126,7 +126,7 @@ def test_user_templates_filters(api):
     }
     responses.add(
         responses.GET,
-        f'{WAS_FILTERS_BASE_URL}/user-templates/filters',
+        f'{WAS_FILTERS_BASE_URL}/user-templates/was',
         json=filters
     )
     resp = api.v3.was.filters.user_templates_filters()
@@ -150,7 +150,7 @@ def test_vulnerabilities_filters(api):
     }
     responses.add(
         responses.GET,
-        f'{WAS_FILTERS_BASE_URL}/vulnerabilities/filters',
+        f'{WAS_FILTERS_BASE_URL}/vulnerabilities/was',
         json=filters
     )
     resp = api.v3.was.filters.vulnerabilities_filters()

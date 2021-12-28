@@ -18,7 +18,7 @@ from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
 
 class FiltersAPI(ExploreBaseEndpoint):
-    _path = 'api/v3/was'
+    _path = 'api/v3/definitions'
     _conv_json = True
 
     def scans_filters(self, config_id: UUID) -> List:
@@ -40,7 +40,7 @@ class FiltersAPI(ExploreBaseEndpoint):
             >>> for filter in tio.v3.was.filters.scans_filters():
             ...     pprint(filter)
         '''
-        return self._get(f'configs/{config_id}/scans/filters')['filters']
+        return self._get(f'configs/{config_id}/scans/was')['filters']
 
     def scan_configurations_filters(self) -> List:
         '''
@@ -57,7 +57,7 @@ class FiltersAPI(ExploreBaseEndpoint):
             >>> for filter in tio.v3.was.filters.scan_configurations_filters():
             ...     pprint(filter)
         '''
-        return self._get('configs/filters')['filters']
+        return self._get('configs/was')['filters']
 
     def scan_vulnerabilities_filters(self, scan_id: UUID) -> List:
         '''
@@ -81,7 +81,7 @@ class FiltersAPI(ExploreBaseEndpoint):
             ...     scan_vulnerabilities_filters()):
             ...     pprint(filter)
         '''
-        return self._get(f'scans/{scan_id}/vulnerabilities/filters')['filters']
+        return self._get(f'scans/{scan_id}/vulnerabilities/was')['filters']
 
     def user_templates_filters(self) -> List:
         '''
@@ -98,7 +98,7 @@ class FiltersAPI(ExploreBaseEndpoint):
             >>> for filter in tio.v3.was.filters.user_templates_filters():
             ...     pprint(filter)
         '''
-        return self._get(f'user-templates/filters')['filters']
+        return self._get(f'user-templates/was')['filters']
 
     def vulnerabilities_filters(self) -> List:
         '''
@@ -115,4 +115,4 @@ class FiltersAPI(ExploreBaseEndpoint):
             >>> for filter in tio.v3.was.filters.vulnerabilities_filters():
             ...     pprint(filter)
         '''
-        return self._get(f'vulnerabilities/filters')['filters']
+        return self._get(f'vulnerabilities/was')['filters']
