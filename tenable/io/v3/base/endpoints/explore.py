@@ -8,8 +8,7 @@ from uuid import UUID
 from requests import Response
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
-                                                           ExploreIterator,
+from tenable.io.v3.base.iterators.explore_iterator import (ExploreIterator,
                                                            SearchIterator)
 from tenable.io.v3.base.schema.explore.search import SearchSchema
 
@@ -44,7 +43,7 @@ class ExploreBaseEndpoint(APIEndpoint):
                iterator_cls: ExploreIterator = SearchIterator,
                schema_cls: SearchSchema = SearchSchema,
                **kwargs
-               ) -> Union[Response, SearchIterator, CSVChunkIterator]:
+               ) -> Union[Response, ExploreIterator]:
         '''
         Initiate a search
 
