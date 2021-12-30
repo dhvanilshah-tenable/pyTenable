@@ -2,13 +2,14 @@
 Base Explore Endpoint Class
 '''
 import time
-from typing import Optional, Union
+from typing import Union
 from uuid import UUID
 
 from requests import Response
 
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           ExploreIterator,
                                                            SearchIterator)
 from tenable.io.v3.base.schema.explore.search import SearchSchema
 
@@ -40,10 +41,8 @@ class ExploreBaseEndpoint(APIEndpoint):
                api_path: str,
                is_sort_with_prop: bool = True,
                return_resp: bool = False,
-               iterator_cls: Optional[
-                   Union[SearchIterator, CSVChunkIterator]] =
-               SearchIterator,
-               schema_cls: Optional[SearchSchema] = SearchSchema,
+               iterator_cls: ExploreIterator = SearchIterator,
+               schema_cls: SearchSchema = SearchSchema,
                **kwargs
                ) -> Union[Response, SearchIterator, CSVChunkIterator]:
         '''
