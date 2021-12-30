@@ -57,7 +57,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def agent_groups(self):
         '''
         The interface object for the
-        :doc:`Agent Groups APIs <agent_groups>`.
+        :doc:`Tenable.io Agent Groups APIs <agent_groups>`.
         '''
         return AgentGroupsAPI(self._api)
 
@@ -65,7 +65,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def agents(self):
         '''
         The interface object for the
-        :doc:`Agents APIs <agents>`.
+        :doc:`Tenable.io Agents APIs <agents>`.
         '''
         return AgentsAPI(self._api)
 
