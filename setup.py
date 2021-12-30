@@ -1,5 +1,6 @@
-from setuptools import setup, find_packages
 import os
+
+from setuptools import find_packages, setup
 
 with open('tenable/version.py', 'r') as vfile:
     exec(vfile.read())
@@ -9,7 +10,7 @@ try:
         os.path.join(
             os.path.abspath(os.path.dirname(__file__)),
             'README.rst')).read()
-except:
+except:  # noqa: E722
     long_description = 'Please refer to https://pytenable.readthedocs.io'
     print('! could not read README.rst file.')
 
@@ -49,5 +50,10 @@ setup(
         'urllib3>=1.26.5',
         'typing-extensions>=4.0.1',
         'dataclasses>=0.8;python_version=="3.6"',
+        'click'
     ],
+    entrypoints='''
+    [console_scripts]
+    scan_bridge=tenable.utilities.scan_bridge.cli:scan_bridge
+    '''
 )
