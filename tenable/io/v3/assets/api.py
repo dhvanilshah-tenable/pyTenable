@@ -11,9 +11,10 @@ Methods available on ``tio.v3.assets``:
 .. autoclass:: AssetsAPI
     :members:
 '''
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 from uuid import UUID
 
+from requests import Response
 from typing_extensions import Literal
 
 from tenable.io.v3.assets.schema import (AssignTagsAssetSchema,
@@ -44,7 +45,9 @@ class AssetsAPI(ExploreBaseEndpoint):
     _path = 'api/v3/assets'
     _conv_json = True
 
-    def search(self, **kw) -> Union[AssetSearchIterator, Dict]:
+    def search(self,
+               **kw
+               ) -> Union[AssetSearchIterator, AssetCSVIterator, Response]:
         '''
         Retrieves the assets.
 
@@ -166,7 +169,8 @@ class AssetsAPI(ExploreBaseEndpoint):
 
     def assign_tags(self,
                     action: Literal['add', 'remove'],
-                    assets: List[UUID], tags: List[UUID]
+                    assets: List[UUID],
+                    tags: List[UUID]
                     ) -> Dict:
         '''
         Add/remove tags for asset(s).
@@ -352,7 +356,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
     def bulk_delete(self,
                     *filters: Tuple[str],
-                    filter_type: str = None
+                    filter_type: Optional[str] = None
                     ) -> Dict:
         '''
         Deletes the specified assets.
