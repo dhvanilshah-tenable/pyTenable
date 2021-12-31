@@ -1,3 +1,6 @@
+'''
+Iterator for search Endpoint
+'''
 from copy import copy
 from typing import Dict
 

@@ -17,6 +17,9 @@ class AssignTagsAssetSchema(Schema):
 
 
 class AssetSchema(Schema):
+    '''
+    Asset API Schema
+    '''
     class Meta:
         unknown = INCLUDE
 
@@ -33,6 +36,9 @@ class AssetSchema(Schema):
 
 
 class ImportAssetSchema(Schema):
+    '''
+    Import Asset API Schema
+    '''
     assets = fields.List(fields.Nested(AssetSchema),
                          validate=v.Length(min=1),
                          required=True

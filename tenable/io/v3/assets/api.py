@@ -87,8 +87,8 @@ class AssetsAPI(ExploreBaseEndpoint):
                 that is to be returned.
 
                 Examples:
-                    - ``[("field_name_1", "asc"),
-                             ("field_name_2", "desc")]``
+                    - ``[('field_name_1', 'asc'),
+                             ('field_name_2', 'desc')]``
                     - ``[{'property': 'last_observed', 'order': 'desc'}]``
             limit (int):
                 Number of objects to be returned in each request.
@@ -116,7 +116,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> tio.v3.assets.search(filter=('netbios_name', 'eq',
-            ...  'SCCM'), fields=["name", "netbios_name", "last_login"],
+            ...  'SCCM'), fields=['name', 'netbios_name', 'last_login'],
             ...    limit=2, sort=[('last_observed', 'asc')])
         '''
         iclass = AssetSearchIterator
@@ -154,7 +154,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         :devportal:`assets: asset-info <assets-asset-info>`
 
         Args:
-            uuid:
+            uuid (UUID):
                 The UUID (unique identifier) for the asset.
 
         Returns:
@@ -178,10 +178,10 @@ class AssetsAPI(ExploreBaseEndpoint):
         :devportal:`tags: assign-asset-tags <tags-assign-asset-tags>`
 
         Args:
-            action:
+            action (str):
                 Specifies whether to add or remove tags.
                  Valid values: add, remove.
-            assets:
+            assets (List):
                 An array of asset UUIDs.
             tags:
                 An array of tag value UUIDs.
@@ -211,7 +211,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         :devportal:`tags: asset-tags <tags-list-asset-tags>`
 
         Args:
-            uuid:
+            uuid (UUID):
                 The UUID (unique identifier) for the asset.
 
         Returns:
@@ -237,9 +237,9 @@ class AssetsAPI(ExploreBaseEndpoint):
         additional properties.
 
         Args:
-            *assets:
+            *assets (dict):
                 One or more asset definition dictionaries
-            source:
+            source (str):
                 An identifier to be used to upload the assets.
 
         Returns:
@@ -301,7 +301,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         :devportal:`assets: import-job-info <assets-import-job-info>`
 
-        uuid:
+        uuid (UUID):
             The UUID (unique identifier) for the job.
 
         Returns:
@@ -325,11 +325,11 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         :devportal:`assets: move-assets <assets-bulk-move>`
 
-        source:
+        source (UUID):
             The UUID of the network currently associated with the assets.
-        destination:
+        destination (UUID):
             The UUID of the network to associate with the specified assets.
-        targets:
+        targets (List(str)):
             The IPv4 addresses of the assets to move.
 
         Returns:
