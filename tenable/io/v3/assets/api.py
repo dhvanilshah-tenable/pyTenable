@@ -17,25 +17,10 @@ from uuid import UUID
 from requests import Response
 from typing_extensions import Literal
 
+from tenable.io.v3.assets.iterator import AssetCSVIterator, AssetSearchIterator
 from tenable.io.v3.assets.schema import (AssignTagsAssetSchema,
                                          ImportAssetSchema, MoveAssetSchema)
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
-                                                           SearchIterator)
-
-
-class AssetSearchIterator(SearchIterator):
-    '''
-    Asset search iterator
-    '''
-    pass
-
-
-class AssetCSVIterator(CSVChunkIterator):
-    '''
-    Asset csv iterator
-    '''
-    pass
 
 
 class AssetsAPI(ExploreBaseEndpoint):

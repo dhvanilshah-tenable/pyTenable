@@ -10,6 +10,9 @@ from tenable.io.v3.base.iterators.iterator import APIResultIterator
 
 
 class ExploreIterator(APIResultIterator):
+    '''
+    Base Iterator for explore
+    '''
     _path: str = None
     _next_token: str = None
     _resource: str = None
@@ -52,6 +55,9 @@ class ExploreIterator(APIResultIterator):
 
 
 class SearchIterator(ExploreIterator):
+    '''
+    Search Iterator for explore
+    '''
     def _process_response(self, response: Response) -> None:
         '''
         Process the API Response
@@ -64,6 +70,9 @@ class SearchIterator(ExploreIterator):
 
 
 class CSVChunkIterator(ExploreIterator):
+    '''
+    CSV Iterator for explore
+    '''
     _headers = {'Accept': 'text/csv'}
     row_headers: str = None
 
