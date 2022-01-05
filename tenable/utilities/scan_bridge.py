@@ -34,7 +34,7 @@ class ScanBridge(object):
         self.tio = tio
         self.tsc = tsc
 
-    def move(self, scan_id: int, repo_id: int) -> None:
+    def bridge(self, scan_id: int, repo_id: int) -> None:
         '''
         This methods sends the TenableIO scan details to a TenableSC repo ID
 
@@ -55,6 +55,7 @@ class ScanBridge(object):
         '''
         with open(f'{scan_id}.nessus', 'wb') as nessus:
             self.tio.scans.export(scan_id, fobj=nessus)
+            # self.tio.v3.vm.scans.export(scan_id, fobj=nessus)
         with open(f'{scan_id}.nessus') as file:
             self.tsc.scan_instances.import_scan(file, repo_id)
         os.remove(f'{scan_id}.nessus')
