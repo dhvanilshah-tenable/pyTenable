@@ -120,10 +120,18 @@ class ExploreBaseEndpoint(APIEndpoint):
         '''
         schema = schema_cls(
             context={'is_sort_with_prop': is_sort_with_prop})
+        return_csv = kwargs.pop('return_csv', False)
         payload = schema.dump(schema.load(kwargs))
 
         if return_resp:
-            return self._api.post(api_path, json=payload)
+            headers = {}
+            if return_csv:
+                headers = {'Accept': 'text/csv'}
+            return self._api.post(
+                api_path,
+                json=payload,
+                headers=headers
+            )
         return iterator_cls(
             self._api,
             _path=api_path,

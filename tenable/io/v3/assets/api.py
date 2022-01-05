@@ -105,7 +105,7 @@ class AssetsAPI(ExploreBaseEndpoint):
             ...    limit=2, sort=[('last_observed', 'asc')])
         '''
         iclass = AssetSearchIterator
-        if kw.pop('return_csv', False):
+        if kw.get('return_csv', False):
             iclass = AssetCSVIterator
         return super().search(resource='assets',
                               iterator_cls=iclass,
