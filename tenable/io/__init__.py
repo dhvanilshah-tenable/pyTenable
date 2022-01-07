@@ -427,9 +427,8 @@ class TenableIO(APIPlatform):  # noqa: R0904
         '''
         return UsersAPI(self)
 
-    # pylint: disable=invalid-name
     @property
-    def v3(self):
+    def v3(self):  # noqa
         '''
         The interface object for the
         :doc:`Tenable.io v3 APIs <v3/index>`.
