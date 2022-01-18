@@ -46,7 +46,7 @@ def test_search_schema_invalid_limit():
     Test the search schema with invalid limit value
     '''
     search_schema = {
-        'limit': 1000,
+        'limit': 'abc',
         'fields': ['bios_name', 'name'],
         'next': 'sdf000dfssdSDFSDFSFE00dfsdffaf',
         'filter': {'value': 'SCCM', 'property': 'bios_name', 'operator': 'eq'},
