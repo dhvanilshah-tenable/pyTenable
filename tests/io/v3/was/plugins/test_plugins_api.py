@@ -1,7 +1,10 @@
-import pytest
+import requests
 import responses
 
-WAS_PLUGINS_BASE_URL = 'https://cloud.tenable.com/api/v3/was/plugins'
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
+
+WAS_PLUGINS_URL = 'https://cloud.tenable.com/api/v3/was/plugins'
 ID = 1
 PLUGIN = {
     'id': ID,
@@ -40,6 +43,34 @@ PLUGIN = {
     'bids': []
 }
 
+SEARCH_RESP = {
+    'pagination': {
+        'total': 2,
+        'offset': 0,
+        'limit': 10,
+        'sort': [
+            {
+                'name': 'plugin_id',
+                'order': 'asc',
+            }
+        ]
+    },
+    'items': [
+        {
+            'plugin_id': 98000,
+            'name': 'Scan Information',
+            'family': 'General',
+            'policy': []
+        },
+        {
+            'plugin_id': 98003,
+            'name': 'OS Detection',
+            'family': 'General',
+            'policy': []
+        }
+    ]
+}
+
 
 @responses.activate
 def test_details(api):
@@ -48,7 +79,7 @@ def test_details(api):
     '''
     responses.add(
         responses.GET,
-        f'{WAS_PLUGINS_BASE_URL}/{ID}',
+        f'{WAS_PLUGINS_URL}/{ID}',
         json=PLUGIN
     )
     plugin = api.v3.was.plugins.details(ID)
@@ -61,5 +92,60 @@ def test_search(api):
     '''
     Test was plugins search method
     '''
-    with pytest.raises(NotImplementedError):
-        api.v3.was.plugins.search()
+
+    fields = ['plugin_id',
+              'name',
+              'family',
+              'policy']
+
+    filters = {
+        'and': [
+            {
+                'property': 'family',
+                'operator': 'eq',
+                'value': 'General'
+            }
+        ]
+    }
+
+    api_payload = {
+        'fields': fields,
+        'filter': filters,
+        'limit': 2,
+        'sort': [{'name': 'name', 'order': 'desc'}],
+    }
+
+    responses.add(
+        responses.POST,
+        f'{WAS_PLUGINS_URL}/search',
+        json=SEARCH_RESP,
+        match=[responses.matchers.json_params_matcher(api_payload)]
+    )
+    resp = api.v3.was.plugins.search(
+        fields=fields,
+        filter=filters,
+        sort=[('name', 'desc')],
+        limit=2
+    )
+    assert isinstance(resp, SearchIterator)
+
+    for ind, folder in enumerate(resp):
+        assert folder == SEARCH_RESP['items'][ind]
+
+    resp = api.v3.was.plugins.search(
+        fields=fields,
+        filter=filters,
+        sort=[('name', 'desc')],
+        limit=2,
+        return_csv=True
+    )
+    assert isinstance(resp, CSVChunkIterator)
+
+    resp = api.v3.was.plugins.search(
+        fields=fields,
+        filter=filters,
+        sort=[('name', 'desc')],
+        limit=2,
+        return_resp=True
+    )
+    assert isinstance(resp, requests.Response)
