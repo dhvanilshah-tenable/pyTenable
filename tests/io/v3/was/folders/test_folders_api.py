@@ -69,9 +69,6 @@ def test_search(api):
     '''
     Test was folders search method
     '''
-    '''
-        Test editor search_templates
-        '''
     response = {
         'folders': [FOLDER],
         'pagination': {'total': 1, 'next': 'nextToken'}

@@ -87,7 +87,7 @@ class FoldersAPI(ExploreBaseEndpoint):
                                         Response,
                                         SearchIterator]:
         '''
-        Search and retrieve the accounts based on supported conditions.
+        Search and retrieve the folders based on supported conditions.
         Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.
