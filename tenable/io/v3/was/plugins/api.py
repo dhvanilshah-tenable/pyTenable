@@ -115,7 +115,7 @@ class PluginsAPI(ExploreBaseEndpoint):
                 If ``return_json`` was set to ``True``, then a response
                 object is instead returned instead of an iterable.
         Examples:
-            >>> tio.v3.mssp.accounts.search(filter=('type', 'eq',
+            >>> tio.v3.was.plugins.search(filter=('type', 'eq',
             ...     'private'), fields=['unread_count', 'name', 'id'],
             ...     limit=2, sort=[('name', 'desc')])
         '''
