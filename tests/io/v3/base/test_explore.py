@@ -6,6 +6,8 @@ from requests import Response
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import SearchIterator
+from tenable.io.v3.base.iterators.was_iterator import \
+    SearchIterator as SearchIteratorWas
 
 SEARCH_BASE_URL = r'https://cloud.tenable.com/api/v3/assets/search'
 
@@ -25,6 +27,20 @@ REQUESTDATA_2 = dict(
         ('test', 'oper', 3),
     ),
     limit=10,
+    sort=[('name', 'asc'), {'property': 'bios_name', 'order': 'desc'}],
+)
+
+REQUESTDATA_WAS_API = dict(
+    fields=['test1', 'test2'],
+    filter=(
+        'or',
+        ('and', ('test', 'oper', '1'), ('test', 'oper', '2')),
+        'and',
+        ('test', 'oper', 3),
+    ),
+    limit=10,
+    offset=0,
+    num_pages=1,
     sort=[('name', 'asc'), {'property': 'bios_name', 'order': 'desc'}],
 )
 
@@ -125,12 +141,114 @@ RESPONSE_2 = {
     },
 }
 
+RESPONSE_WAS_API = {
+    'assets': [
+        {
+            'ipv6_addresses': [],
+            'types': ['host'],
+            'sources': ['test_v3'],
+            'created': '2021-11-24T13:43:56.709Z',
+            'observation_sources': [
+                {
+                    'first_observed': '2021-11-24T13:43:56.442Z',
+                    'last_observed': '2021-11-24T13:43:56.442Z',
+                    'name': 'test_v3',
+                }
+            ],
+            'is_licensed': False,
+            'ipv4_addresses': ['192.12.13.7'],
+            'network': {
+                'id': '00000000-0000-0000-0000-000000000000',
+                'name': 'Default',
+            },
+            'display_ipv4_address': '192.12.13.7',
+            'first_observed': '2021-11-24T13:43:56.442Z',
+            'is_deleted': False,
+            'last_observed': '2021-11-24T13:43:56.442Z',
+            'is_public': True,
+            'name': '192.12.13.7',
+            'id': '0142df77-dbc4-4706-8456-b756c06ee8a2',
+            'updated': '2021-11-24T13:43:56.709Z',
+        },
+        {
+            'ipv6_addresses': [],
+            'types': ['host'],
+            'tenable_id': '981465f994c546be8d19ed7522d3269d',
+            'sources': ['NESSUS_AGENT'],
+            'created': '2021-12-09T11:48:37.525Z',
+            'observation_sources': [
+                {
+                    'first_observed': '2021-12-09T11:48:37.116Z',
+                    'last_observed': '2021-12-09T11:48:37.116Z',
+                    'name': 'NESSUS_AGENT',
+                }
+            ],
+            'is_licensed': False,
+            'ipv4_addresses': ['215.168.176.25'],
+            'network': {
+                'id': '00000000-0000-0000-0000-000000000000',
+                'name': 'Default',
+            },
+            'display_ipv4_address': '215.168.176.25',
+            'first_observed': '2021-12-09T11:48:37.116Z',
+            'is_deleted': False,
+            'last_observed': '2021-12-09T11:48:37.116Z',
+            'is_public': True,
+            'name': 'fncplqraaihnogjyyvkivljshdmigtbblsdlk',
+            'id': '028e544c-8e39-42fa-abe0-c843dc41d93f',
+            'updated': '2021-12-09T11:48:37.525Z',
+            'host_name': 'fncplqraaihnogjyyvkivljshdmigtbblsdlk',
+        },
+        {
+            'ipv6_addresses': [],
+            'types': ['host'],
+            'sources': ['test_v3'],
+            'created': '2021-11-24T13:46:11.566Z',
+            'observation_sources': [
+                {
+                    'first_observed': '2021-11-24T13:46:11.283Z',
+                    'last_observed': '2021-11-24T13:46:11.283Z',
+                    'name': 'test_v3',
+                }
+            ],
+            'is_licensed': False,
+            'ipv4_addresses': ['192.12.13.29'],
+            'network': {
+                'id': '00000000-0000-0000-0000-000000000000',
+                'name': 'Default',
+            },
+            'display_ipv4_address': '192.12.13.29',
+            'first_observed': '2021-11-24T13:46:11.283Z',
+            'is_deleted': False,
+            'last_observed': '2021-11-24T13:46:11.283Z',
+            'is_public': True,
+            'name': '192.12.13.29',
+            'id': '03d29dee-dfc6-45f1-99ae-f1301ac34f80',
+            'updated': '2021-11-24T13:46:11.566Z',
+        },
+    ],
+    'pagination': {
+        'limit': 3,
+        'total': 123,
+    },
+}
+
 
 def test_search(api):
     search_iterator = ExploreBaseEndpoint(api)._search(
         resource='assets', api_path='api/v3/assets/search', **REQUESTDATA
     )
     assert isinstance(search_iterator, SearchIterator)
+
+
+def test_search_was(api):
+    search_iterator = ExploreBaseEndpoint(api)._search_was(
+        resource='assets',
+        api_version=1,
+        api_path='api/v3/assets/search',
+        **REQUESTDATA
+    )
+    assert isinstance(search_iterator, SearchIteratorWas)
 
 
 @responses.activate
@@ -146,3 +264,22 @@ def test_search_response(api):
     )
     assert isinstance(response, Response)
     assert RESPONSE_2 == response.json()
+
+
+@responses.activate
+def test_search_response_was(api):
+    responses.add(
+        responses.POST,
+        url=f'{SEARCH_BASE_URL}',
+        json=RESPONSE_WAS_API,
+        status=200
+    )
+    response = ExploreBaseEndpoint(api)._search_was(
+        resource='assets',
+        api_version=1,
+        api_path='api/v3/assets/search',
+        return_resp=True,
+        **REQUESTDATA
+    )
+    assert isinstance(response, Response)
+    assert RESPONSE_WAS_API == response.json()
