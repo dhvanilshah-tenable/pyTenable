@@ -13,10 +13,11 @@ from tenable.io.v3.base.iterators.explore_iterator import (ExploreIterator,
                                                            SearchIterator)
 from tenable.io.v3.base.iterators.was_iterator import ExploreIteratorWas
 from tenable.io.v3.base.iterators.was_iterator import \
-    SearchIterator as SearchIteratorWas
+    SearchIterator as SearchIteratorWAS
 from tenable.io.v3.base.schema.explore.search import (SearchSchema,
-                                                      SearchWasSchema,
+                                                      SearchWASSchema,
                                                       SortType)
+from tenable.utils import dict_clean
 
 
 class ExploreBaseEndpoint(APIEndpoint):
@@ -160,8 +161,8 @@ class ExploreBaseEndpoint(APIEndpoint):
                     api_version: int = 1,
                     sort_type: Enum = _sort_type.default,
                     return_resp: bool = False,
-                    iterator_cls: ExploreIteratorWas = SearchIteratorWas,
-                    schema_cls: SearchWasSchema = SearchWasSchema,
+                    iterator_cls: ExploreIteratorWas = SearchIteratorWAS,
+                    schema_cls: SearchWASSchema = SearchWASSchema,
                     **kwargs
                     ) -> Union[Response, ExploreIteratorWas]:
         '''
@@ -262,7 +263,7 @@ class ExploreBaseEndpoint(APIEndpoint):
         payload = schema.dump(schema.load(kwargs))
         num_pages = payload.pop('num_pages', None)
         query = {}
-        payload, query = self._update_payload(payload, query, api_version)
+        payload, query = self._update_payload(payload, query)
 
         if return_resp:
             headers = {}
@@ -275,7 +276,6 @@ class ExploreBaseEndpoint(APIEndpoint):
                 headers=headers
             )
         return iterator_cls(self._api,
-                            _api_version=api_version,
                             _path=api_path,
                             _resource=resource,
                             _payload=payload,
@@ -283,17 +283,11 @@ class ExploreBaseEndpoint(APIEndpoint):
                             _pages_total=num_pages
                             )
 
-    def _update_payload(self, payload, query, api_version):
-        if api_version == 2:
-            query['size'] = payload.pop('size')
-            query['page'] = payload.pop('page')
-            payload.pop('limit')
-            payload.pop('offset')
-        else:
-            query['limit'] = payload.pop('limit')
-            query['offset'] = payload.pop('offset')
-            payload.pop('size')
-            payload.pop('page')
+    def _update_payload(self, payload, query):
+        query['limit'] = payload.pop('limit')
+        query['sort'] = payload.pop('sort', None)
+        query['offset'] = payload.pop('offset')
+        query = dict_clean(query)
 
         return payload, query
 

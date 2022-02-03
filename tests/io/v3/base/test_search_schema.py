@@ -6,7 +6,7 @@ from marshmallow.exceptions import ValidationError
 
 from tenable.io.v3.base.schema.explore.filters import FilterSchema
 from tenable.io.v3.base.schema.explore.search import (SearchSchema,
-                                                      SearchWasSchema,
+                                                      SearchWASSchema,
                                                       SortSchema, SortType)
 
 SEARCH_DATA = dict(
@@ -61,8 +61,6 @@ def test_search_schema_was():
         'fields': ['bios_name', 'name'],
         'offset': 0,
         'num_pages': 1,
-        'size': 200,
-        'page': 1,
         'filter': {'value': 'SCCM', 'property': 'bios_name', 'operator': 'eq'},
         'sort': [
             {'order': 'asc', 'property': 'name'},
@@ -70,7 +68,7 @@ def test_search_schema_was():
         ]
     }
 
-    schema = SearchWasSchema(context={'sort_type': SortType.property_based})
+    schema = SearchWASSchema(context={'sort_type': SortType.property_based})
     assert test_resp == schema.dump(schema.load(SEARCH_DATA_WAS))
 
     with pytest.raises(ValidationError):
@@ -108,7 +106,7 @@ def test_search_schema_invalid_limit_was():
         'sort': [('name', 'asc'), ('bios_name', 'desc')],
     }
 
-    schema = SearchWasSchema(context={'sort_type': SortType.property_based})
+    schema = SearchWASSchema(context={'sort_type': SortType.property_based})
 
     with pytest.raises(ValidationError):
         schema.load(search_schema)

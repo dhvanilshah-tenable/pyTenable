@@ -20,7 +20,6 @@ class ExploreIteratorWas(APIResultIterator):
     _resource = None
     _size = 100
     _page_num = 0
-    _api_version = 1
     _offset = 0
     _limit = None
     _query = None
@@ -64,12 +63,8 @@ class ExploreIteratorWas(APIResultIterator):
         headers = self._construct_headers()
         query = self._query
 
-        if self._api_version == 2:
-            self._size = query['size']
-            self._page_num = query['page']
-        else:
-            self._limit = query['limit']
-            self._offset = query['offset']
+        self._limit = query['limit']
+        self._offset = query['offset']
 
         # Lets make the actual call at this point.
         resp = self._api.post(self._path,
@@ -78,10 +73,7 @@ class ExploreIteratorWas(APIResultIterator):
                               headers=headers
                               )
 
-        if self._api_version == 2:
-            self._page_num += 1
-        else:
-            self._offset += self._limit
+        self._offset += self._limit
 
         return resp
 
@@ -116,12 +108,9 @@ class SearchIterator(ExploreIteratorWas):
         body = response.json()
         # Lastly we want to refresh the page data and the total based on the
         # most recent data we have.
-        if self._api_version == 2:
-            self.page = body['data'][self._resource]
-            self.total = body['total_count']
-        else:
-            self.page = body[self._resource]
-            self.total = body['pagination']['total']
+
+        self.page = body[self._resource]
+        self.total = body['pagination']['total']
 
 
 class CSVChunkIterator(ExploreIteratorWas):

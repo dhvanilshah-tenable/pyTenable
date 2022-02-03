@@ -62,7 +62,7 @@ class SearchSchema(Schema):
     sort = fields.List(fields.Nested(SortSchema), allow_none=True)
 
 
-class SearchWasSchema(Schema):
+class SearchWASSchema(Schema):
     '''
     Schema supporting the search request for was API
     '''
@@ -70,8 +70,5 @@ class SearchWasSchema(Schema):
     filter = fields.Nested(FilterSchema, allow_none=True)
     limit = fields.Int(dump_default=200)
     offset = fields.Int(dump_default=0)
-    size = fields.Int(dump_default=200)
-    page = fields.Int(dump_default=1)
     num_pages = fields.Int()
-    next = fields.Str(allow_none=True)
     sort = fields.List(fields.Nested(SortSchema), allow_none=True)

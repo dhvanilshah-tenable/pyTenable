@@ -89,38 +89,3 @@ def test_csv_iterator(api):
     assert next(csv_iterator) == CSV_TEXT_2
     with pytest.raises(StopIteration):
         next(csv_iterator)
-
-
-@responses.activate
-def test_csv_iterator_api_2(api):
-    '''
-    Test for csv iterator api 2 was
-    '''
-    size = 1
-    page = 1
-    query = {
-        'size': size,
-        'page': page
-    }
-    payload = dict(
-        fields=['id']
-    )
-    pages_total = 2
-    responses.add(
-        method=responses.POST,
-        url=BASE_URL,
-        body=CSV_TEXT,
-        headers=CSV_HEADERS
-    )
-    csv_iterator = CSVChunkIterator(api=api,
-                                    _api_version=2,
-                                    _payload=payload,
-                                    _page_total=pages_total,
-                                    _query=query,
-                                    _path='api/v3/assets/search',
-                                    _resource='assets'
-                                    )
-    assert next(csv_iterator) == CSV_TEXT
-    assert next(csv_iterator) == CSV_TEXT_2
-    with pytest.raises(StopIteration):
-        next(csv_iterator)
