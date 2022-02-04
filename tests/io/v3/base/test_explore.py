@@ -134,9 +134,9 @@ RESPONSE_2 = {
     'pagination': {
         'next':
             'H4sIAAAAAAAAADWOwQrCMBBE/2WO0kBrqtj+SillTTa4UE1JclBK/t2t4GlgZt/'
-        'M7giyFk4Yd7xiOWRLceNUPhjhJdN9Zb9QQYPDphL1FvyWXDJqbZBjUmzaIV4Dyg'
-        '51VpcpucdC4dc9obX+PHhm44O7mv4SOjMMxCZ0tu3I2T7cWii3ylO0zjb/N4T'
-        'zwZ90Xwfm+gXgzWmZsQAAAA',
+            'M7giyFk4Yd7xiOWRLceNUPhjhJdN9Zb9QQYPDphL1FvyWXDJqbZBjUmzaIV4Dyg'
+            '51VpcpucdC4dc9obX+PHhm44O7mv4SOjMMxCZ0tu3I2T7cWii3ylO0zjb/N4T'
+            'zwZ90Xwfm+gXgzWmZsQAAAA',
         'limit': 3,
         'total': 123,
     },
@@ -284,14 +284,15 @@ def test_search_response_was(api):
     )
     assert isinstance(response, Response)
     assert RESPONSE_WAS_API == response.json()
-    
-    
+
+
+@responses.activate
 def test_details_lookup(api):
     '''
     Test details lookup endpoint
     '''
     sample_respose: str = 'field_1,field_2,field_3,field_4\n' \
-    'value1,value_2,value_3,value_4'
+                          'value1,value_2,value_3,value_4'
 
     responses.add(
         responses.GET,
