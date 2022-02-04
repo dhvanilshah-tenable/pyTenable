@@ -10,6 +10,7 @@ from tenable.io.v3.base.iterators.was_iterator import \
     SearchIterator as SearchIteratorWas
 
 SEARCH_BASE_URL = r'https://cloud.tenable.com/api/v3/assets/search'
+DETAILS_BASE_URL: str = f'https://cloud.tenable.com/api/v3/assets'
 
 REQUESTDATA = dict(
     fields=['test1', 'test2'],
@@ -283,3 +284,22 @@ def test_search_response_was(api):
     )
     assert isinstance(response, Response)
     assert RESPONSE_WAS_API == response.json()
+    
+    
+def test_details_lookup(api):
+    '''
+    Test details lookup endpoint
+    '''
+    sample_respose: str = 'field_1,field_2,field_3,field_4\n' \
+    'value1,value_2,value_3,value_4'
+
+    responses.add(
+        responses.GET,
+        url=f'{DETAILS_BASE_URL}/00000000-0000-0000-0000-000000000000',
+        headers={'Accept': 'text/csv'},
+        json=sample_respose
+    )
+    path: str = 'api/v3/assets/00000000-0000-0000-0000-000000000000'
+    res = ExploreBaseEndpoint(api)._details(path, return_csv=True)
+
+    assert res == sample_respose

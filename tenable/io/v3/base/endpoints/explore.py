@@ -3,7 +3,7 @@ Base Explore Endpoint Class
 '''
 import time
 from enum import Enum
-from typing import Union
+from typing import Dict, Union
 from uuid import UUID
 
 from requests import Response
@@ -24,23 +24,32 @@ class ExploreBaseEndpoint(APIEndpoint):
     _conv_json = False
     _sort_type = SortType
 
-    def _details(self, obj_id: Union[str, UUID]) -> dict:
+    def _details(self, obj_id: Union[str, UUID], **kwargs) -> Dict:
         '''
         Gets the details for the specified id.
 
         Args:
-            obj_id:
+            obj_id (str, UUID):
                 The unique identifier for the records to be retrieved.
+            **kwargs (Dict):
+                return_csv (bool):
+                    Provide this boolean to get the response in form of
+                    text or csv.
 
         Returns:
-            dict:
+            Dict:
                 The requested object
 
         Example:
 
             >>> tio.{PATHWAY}.details('00000000-0000-0000-0000-000000000000')
         '''
-        return self._get(obj_id, conv_json=self._conv_json)
+        headers: dict = {}
+        if kwargs.get('return_csv', False):
+            headers = {'Accept': 'text/csv'}
+            self._conv_json = True
+
+        return self._get(obj_id, headers=headers, conv_json=self._conv_json)
 
     def _search(self,
                 *,
