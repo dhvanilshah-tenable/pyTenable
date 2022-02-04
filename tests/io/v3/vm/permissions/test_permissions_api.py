@@ -40,15 +40,11 @@ def test_list_permissions(api):
     api_resp = {
         'acls': [{
             'type': 'user',
-            'id': 2236706,
-            'uuid': '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e',
+            'id': '1035e55d-a984-4b1c-acc7-fd2d472126f1',
             'name': 'system',
             'display_name': 'system',
             'permissions': 128,
             'owner': 1
-        }, {
-            'type': 'default',
-            'permissions': 16
         }]
     }
     responses.add(
