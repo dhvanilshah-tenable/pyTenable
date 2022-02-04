@@ -124,7 +124,7 @@ class FoldersAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.was.folders.filters()`
+                the :py:meth:`tio.v3.definitions.was.folders()`
                 endpoint to get more details.
             sort (list[tuple], optional):
                 A list of dictionaries describing how to sort the data
