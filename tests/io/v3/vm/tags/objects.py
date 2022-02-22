@@ -84,6 +84,20 @@ NEGATIVE_CURRENT_DOMAIN_PERMISSION = [
         'name': 'abc',
         'type': 'USER',
         'permissions': ['ALL', 'INVALID']
+    },
+    # Testing pre-load
+    (
+        'c74f05b6-d83a-413d-97c2-c54beed0fc91', 'abc', 'USER'
+    ),
+    (
+        'c74f05b6-d83a-413d-97c2-c54beed0fc91', 'abc', 'USER', 'ALL', 'invalid'
+    ),
+    {
+        'id': 'c74f05b6-d83a-413d-97c2-c54beed0fc91',
+        'name': 'abc',
+        'type': 'USER',
+        'permissions': ['ALL', 'INVALID'],
+        'invalid': 'key'
     }
 ]
 
