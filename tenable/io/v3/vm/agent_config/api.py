@@ -8,7 +8,7 @@ The following methods allow for interaction into the Tenable.io
 Methods available on ``tio.v3.vm.agent_config``:
 
 .. rst-class:: hide-signature
-.. autoclass:: AgentConfigAPI
+.. autoclass:: AgentsConfigAPI
     :members:
 '''
 from typing import Dict, Optional
@@ -16,22 +16,22 @@ from typing import Dict, Optional
 from restfly.utils import dict_clean
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.agent_config.schema import AgentConfigSchema
+from tenable.io.v3.vm.agent_config.schema import AgentsConfigSchema
 
 
-class AgentConfigAPI(ExploreBaseEndpoint):
+class AgentsConfigAPI(ExploreBaseEndpoint):
     '''
     This will contain all methods related to agent config
     '''
     _path: str = 'api/v3/agents/config'
     _conv_json: bool = True
-    _schema = AgentConfigSchema()
+    _schema = AgentsConfigSchema()
 
     def details(self) -> Dict:
         '''
         Returns the current agent configuration.
 
-        :devportal:`agent-config: details <agent-config-edit>`
+        :devportal:`agent-config: details <agent-config-details>`
 
         Returns:
             :obj:`dict`:
@@ -49,7 +49,7 @@ class AgentConfigAPI(ExploreBaseEndpoint):
         '''
         Edits the agent configuration.
 
-        :devportal:`agent-config: edit <agent-config-details>`
+        :devportal:`agent-config: edit <agent-config-edit>`
 
         Args:
             auto_unlink (int, optional):

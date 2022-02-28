@@ -15,6 +15,7 @@ def test_agent_config_schema():
     '''
     Test case for agent config schema
     '''
+    schema = AgentsConfigSchema()
 
     # Schema validation if expiration is greater then one
     input_payload: dict = {
