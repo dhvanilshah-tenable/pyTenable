@@ -3,12 +3,12 @@ Test cases for Agent Config Schema
 '''
 import pytest
 
-from tenable.io.v3.vm.agent_config.schema import (AgentConfigSchema,
+from tenable.io.v3.vm.agent_config.schema import (AgentsConfigSchema,
                                                   AutoLinkSchema)
 from tests.io.v3.vm.agent_config.objects import (NEGATIVE_AGENT_CONFIG_SCHEMA,
                                                  NEGATIVE_AUTO_LINK_SCHEMA)
 
-agent_config_schema = AgentConfigSchema()
+agent_config_schema = AgentsConfigSchema()
 
 
 def test_agent_config_schema():
